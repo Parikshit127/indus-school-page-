@@ -1,0 +1,57 @@
+import { Button } from "@/components/ui/button";
+import { LeadForm } from "@/components/LeadForm";
+import { Download } from "lucide-react";
+
+export function HeroSection() {
+    return (
+        <section className="relative min-h-[110vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-0">
+            {/* Background with Overlay */}
+            <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 bg-gradient-to-r from-royal/90 via-royal/70 to-transparent z-10" />
+                {/* Placeholder for actual image - using a solid color/gradient fallback for now */}
+                <div
+                    className="w-full h-full bg-cover bg-center"
+                    style={{ backgroundImage: "url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop')" }}
+                />
+            </div>
+
+            <div className="container mx-auto px-4 md:px-6 relative z-10 grid md:grid-cols-2 gap-12 items-center">
+                {/* Left Content */}
+                <div className="text-white space-y-6 md:space-y-8 text-center md:text-left">
+                    <div className="inline-block px-3 py-1 bg-gold/20 text-gold border border-gold/30 rounded-full text-xs font-bold tracking-widest uppercase mb-2">
+                        Admissions Open 2025-26
+                    </div>
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight">
+                        Shaping Excellence <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold to-gold-light">
+                            Since 2003
+                        </span>
+                    </h1>
+                    <p className="text-lg md:text-xl text-white/80 max-w-lg mx-auto md:mx-0 font-light">
+                        Indus Public School, Rohtak offers a heritage of discipline blended with modern academic rigor. Join a legacy of leaders.
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
+                        <Button variant="gold" size="lg" className="w-full sm:w-auto">
+                            Apply for Admission
+                        </Button>
+                        <Button variant="outline" size="lg" className="w-full sm:w-auto text-white border-white hover:bg-white/10">
+                            <Download className="mr-2 h-4 w-4" />
+                            Download Prospectus
+                        </Button>
+                    </div>
+                </div>
+
+                {/* Right Form */}
+                <div className="hidden md:block w-full max-w-md ml-auto">
+                    <LeadForm />
+                </div>
+            </div>
+
+            {/* Mobile Form (Only visible on small screens below content) */}
+            <div className="md:hidden relative z-10 w-full px-4 pb-20 mt-10">
+                <LeadForm />
+            </div>
+        </section>
+    );
+}
