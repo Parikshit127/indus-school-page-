@@ -46,7 +46,6 @@ export default function AdminDashboard() {
     const filteredLeads = leads.filter((lead: any) => {
         const matchesSearch =
             lead.studentName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            lead.parentName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             lead.phone?.includes(searchTerm);
 
         const matchesClass = classFilter === "All" || lead.class === classFilter;
@@ -207,7 +206,6 @@ export default function AdminDashboard() {
                                 <tr>
                                     <th className="px-6 py-4 font-bold">Date</th>
                                     <th className="px-6 py-4 font-bold">Student</th>
-                                    <th className="px-6 py-4 font-bold">Parent</th>
                                     <th className="px-6 py-4 font-bold">Contact</th>
                                     <th className="px-6 py-4 font-bold">Class</th>
                                     <th className="px-6 py-4 font-bold">Details</th>
@@ -215,9 +213,9 @@ export default function AdminDashboard() {
                             </thead>
                             <tbody>
                                 {loading ? (
-                                    <tr><td colSpan={6} className="px-6 py-8 text-center">Loading...</td></tr>
+                                    <tr><td colSpan={5} className="px-6 py-8 text-center">Loading...</td></tr>
                                 ) : filteredLeads.length === 0 ? (
-                                    <tr><td colSpan={6} className="px-6 py-8 text-center text-slate-400">No leads found.</td></tr>
+                                    <tr><td colSpan={5} className="px-6 py-8 text-center text-slate-400">No leads found.</td></tr>
                                 ) : (
                                     filteredLeads.map((lead: any) => (
                                         <tr key={lead._id || lead.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
@@ -227,7 +225,6 @@ export default function AdminDashboard() {
                                             <td className="px-6 py-4 font-bold text-royal">
                                                 {lead.studentName}
                                             </td>
-                                            <td className="px-6 py-4">{lead.parentName}</td>
                                             <td className="px-6 py-4">
                                                 <div className="flex flex-col">
                                                     <span>{lead.phone}</span>

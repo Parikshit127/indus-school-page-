@@ -52,16 +52,13 @@ export function LeadForm() {
     }
 
     return (
-        <div className="bg-white/95 p-8 rounded-lg shadow-2xl border-t-4 border-gold">
+        <div className="bg-white/95 p-5 md:p-8 rounded-lg shadow-2xl border-t-4 border-gold">
             <h3 className="text-2xl font-serif text-royal mb-6 text-center">
                 Admissions Open 2025-26
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                     <Input name="studentName" required placeholder="Student Name" />
-                </div>
-                <div className="space-y-2">
-                    <Input name="parentName" required placeholder="Parent Name" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     <Input name="phone" required placeholder="Mobile Number" type="tel" />
@@ -78,7 +75,14 @@ export function LeadForm() {
                         <option value="Primary (1-5)">Primary (1-5)</option>
                         <option value="Middle (6-8)">Middle (6-8)</option>
                         <option value="Secondary (9-10)">Secondary (9-10)</option>
-                        <option value="Senior Secondary (11-12)">Senior Secondary (11-12)</option>
+                        <option value="XI Medical">XI Medical</option>
+                        <option value="XI Non-Medical">XI Non-Medical</option>
+                        <option value="XI Commerce">XI Commerce</option>
+                        <option value="XI Arts">XI Arts</option>
+                        <option value="XII Medical">XII Medical</option>
+                        <option value="XII Non-Medical">XII Non-Medical</option>
+                        <option value="XII Commerce">XII Commerce</option>
+                        <option value="XII Arts">XII Arts</option>
                     </select>
                 </div>
                 <div className="space-y-2">

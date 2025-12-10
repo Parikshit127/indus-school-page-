@@ -15,11 +15,11 @@ export function Gallery() {
                     Life at Indus
                 </h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 h-96">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:h-96">
                 {images.map((src, i) => (
                     <div
                         key={i}
-                        className={`relative overflow-hidden rounded-lg group ${i === 0 ? "md:col-span-2 md:row-span-2 h-full" : "h-48 md:h-full"}`}
+                        className={`relative overflow-hidden rounded-lg group ${i === 0 ? "h-64 md:h-full md:col-span-2 md:row-span-2" : "h-48 md:h-full"}`}
                     >
                         <div
                             className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"

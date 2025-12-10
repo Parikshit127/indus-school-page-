@@ -44,7 +44,7 @@ export function Achievements() {
                 {achievements.map((item, index) => (
                     <div
                         key={index}
-                        className="p-8 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-center group"
+                        className="p-6 md:p-8 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-center group"
                     >
                         <div className="w-16 h-16 mx-auto bg-gold/10 rounded-full flex items-center justify-center text-gold mb-6 group-hover:scale-110 transition-transform">
                             <item.icon size={32} />

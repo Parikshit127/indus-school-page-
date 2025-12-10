@@ -39,7 +39,7 @@ export function Footer() {
                         </div>
                     </div>
 
-                    {/* Quick Links */}
+                    {/* Quick Links - Commented out
                     <div className="grid grid-cols-2 gap-8">
                         <div>
                             <h4 className="font-bold text-lg mb-4">Quick Links</h4>
@@ -58,6 +58,7 @@ export function Footer() {
                             </ul>
                         </div>
                     </div>
+                    */}
 
                     {/* Footer Form */}
                     <div>

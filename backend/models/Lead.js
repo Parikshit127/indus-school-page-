@@ -5,10 +5,7 @@ const LeadSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add student name']
     },
-    parentName: {
-        type: String,
-        required: [true, 'Please add parent name']
-    },
+
     phone: {
         type: String,
         required: [true, 'Please add phone number']

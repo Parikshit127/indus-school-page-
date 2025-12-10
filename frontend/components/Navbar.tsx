@@ -35,13 +35,13 @@ export function Navbar() {
                     </div>
                     <div className="flex flex-col">
                         <span className={cn(
-                            "font-serif text-xl font-bold leading-none",
+                            "font-serif text-lg md:text-xl font-bold leading-none",
                             isScrolled ? "text-royal" : "text-white"
                         )}>
                             INDUS
                         </span>
                         <span className={cn(
-                            "text-xs tracking-widest uppercase",
+                            "text-[0.65rem] md:text-xs tracking-widest uppercase",
                             isScrolled ? "text-royal/80" : "text-white/80"
                         )}>
                             Public School
@@ -49,7 +49,7 @@ export function Navbar() {
                     </div>
                 </Link>
 
-                {/* Desktop Nav */}
+                {/* Desktop Nav - Commented out for single page view
                 <div className="hidden md:flex items-center gap-8">
                     {["About", "Academics", "Admissions", "Campus", "Contact"].map((item) => (
                         <Link
@@ -67,8 +67,9 @@ export function Navbar() {
                         Apply Now
                     </Button>
                 </div>
+                */}
 
-                {/* Mobile Toggle */}
+                {/* Mobile Toggle - Commented out
                 <button
                     className="md:hidden"
                     onClick={() => setIsOpen(!isOpen)}
@@ -79,9 +80,10 @@ export function Navbar() {
                         <Menu className={isScrolled ? "text-royal" : "text-white"} />
                     )}
                 </button>
+                */}
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu - Commented out for single page view
             {isOpen && (
                 <div className="absolute top-full left-0 w-full bg-white shadow-xl p-4 flex flex-col gap-4 md:hidden animate-fade-in-up">
                     {["About", "Academics", "Admissions", "Campus", "Contact"].map((item) => (
@@ -99,6 +101,7 @@ export function Navbar() {
                     </Button>
                 </div>
             )}
+            */}
         </nav>
     );
 }
