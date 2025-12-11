@@ -92,6 +92,8 @@ export default function AdminDashboard() {
 
             if (leadsRes.status === 401 || leadsRes.status === 403) {
                 localStorage.removeItem("adminToken");
+                // Clear cookie
+                document.cookie = "adminToken=; path=/; max-age=0";
                 router.push("/admin/login");
                 return;
             }

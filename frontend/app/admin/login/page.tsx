@@ -9,11 +9,13 @@ export default function AdminLogin() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+        setLoading(true);
 
         try {
             const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
@@ -25,13 +27,18 @@ export default function AdminLogin() {
 
             if (res.ok) {
                 const data = await res.json();
+                // Store in localStorage
                 localStorage.setItem("adminToken", data.token);
+                // Store in cookies for middleware
+                document.cookie = `adminToken=${data.token}; path=/; max-age=3600; SameSite=Strict`;
                 router.push("/admin/leads");
             } else {
                 setError("Invalid Credentials");
             }
         } catch (err) {
-            setError("Something went wrong");
+            setError("Connection Error");
+        } finally {
+            setLoading(false);
         }
     };
 
