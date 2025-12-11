@@ -60,6 +60,13 @@ export function LeadForm() {
                 <div className="space-y-2">
                     <Input name="studentName" required placeholder="Student Name" />
                 </div>
+                <div className="space-y-2">
+                    <Input name="fatherName" required placeholder="Father's Name" />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                    <Input name="city" required placeholder="City" />
+                    <Input name="state" required placeholder="State" />
+                </div>
                 <div className="grid grid-cols-2 gap-4">
                     <Input name="phone" required placeholder="Mobile Number" type="tel" />
                     <Input name="email" required placeholder="Email Address" type="email" />

@@ -6,6 +6,18 @@ const LeadSchema = new mongoose.Schema({
         required: [true, 'Please add student name']
     },
 
+    fatherName: {
+        type: String,
+        required: [true, 'Please add father\'s name']
+    },
+    city: {
+        type: String,
+        required: [true, 'Please add city']
+    },
+    state: {
+        type: String,
+        required: [true, 'Please add state']
+    },
     phone: {
         type: String,
         required: [true, 'Please add phone number']
@@ -25,6 +37,11 @@ const LeadSchema = new mongoose.Schema({
     message: {
         type: String,
         default: ''
+    },
+    status: {
+        type: String,
+        enum: ['New', 'Contacted', 'Admitted', 'Closed'],
+        default: 'New'
     },
     createdAt: {
         type: Date,
