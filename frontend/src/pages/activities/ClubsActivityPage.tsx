@@ -2,7 +2,6 @@
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/section";
 import { Brain, Globe, Microscope, BookOpen, Lightbulb, Users } from "lucide-react";
-import { motion } from "framer-motion";
 
 export default function ClubsActivityPage() {
     return (

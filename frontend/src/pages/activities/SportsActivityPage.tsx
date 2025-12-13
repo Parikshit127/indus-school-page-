@@ -2,7 +2,6 @@
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/section";
 import { Trophy, Medal, Star, Target, Activity } from "lucide-react";
-import { motion } from "framer-motion";
 
 export default function SportsActivityPage() {
     return (

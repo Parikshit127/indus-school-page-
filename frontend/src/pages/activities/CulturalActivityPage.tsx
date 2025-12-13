@@ -2,7 +2,6 @@
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/section";
 import { Music, Palette, Mic, Drama } from "lucide-react";
-import { motion } from "framer-motion";
 
 export default function CulturalActivityPage() {
     return (
