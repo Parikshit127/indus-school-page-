@@ -30,6 +30,10 @@ app.use('/api/leads', leadRoutes);
 const contentRoutes = require('./routes/content');
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/content', contentRoutes);
+const uploadRoutes = require('./routes/upload');
+app.use('/api/upload', uploadRoutes);
+const galleryRoutes = require('./routes/gallery');
+app.use('/api/gallery', galleryRoutes);
 
 // Start Server
 app.listen(PORT, () => {

@@ -9,8 +9,10 @@ const pageContentSchema = new mongoose.Schema({
     },
     data: {
         hero: {
-            mediaType: { type: String, enum: ['image', 'video'], default: 'image' },
-            mediaUrl: { type: String, default: '' },
+            slides: [{
+                type: { type: String, enum: ['image', 'video'], default: 'image' },
+                url: { type: String, required: true }
+            }],
             announcement: {
                 text: { type: String, default: 'Admissions Open for 2024-25' },
                 isActive: { type: Boolean, default: true },
