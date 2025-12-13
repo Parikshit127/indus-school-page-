@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Save, Loader2, Image as ImageIcon, Megaphone, Calendar, Users, Trophy, GraduationCap, Upload, X, Plus, GripVertical } from "lucide-react";
-import { motion, Reorder } from "framer-motion";
+import { Save, Loader2, Image as ImageIcon, Megaphone, Calendar, Users, Trophy, GraduationCap, Upload, X, Plus } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface Slide {
     type: 'image' | 'video';
@@ -135,10 +135,10 @@ export function ContentEditor() {
 
     const handleAddLink = () => {
         if (!newSlideUrl || !content) return;
-        
+
         // Simple heuristic for video type
         const isVideo = newSlideUrl.match(/\.(mp4|webm|ogg)$/i) || newSlideUrl.includes('youtube') || newSlideUrl.includes('vimeo');
-        
+
         const newSlide: Slide = {
             type: isVideo ? 'video' : 'image',
             url: newSlideUrl
@@ -232,10 +232,10 @@ export function ContentEditor() {
                                 <label className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-slate-50 text-slate-700 rounded-lg cursor-pointer border border-dashed border-slate-300 hover:bg-white hover:border-royal transition-all">
                                     {uploading ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
                                     <span className="text-sm">{uploading ? 'Uploading...' : 'Upload Image/Video'}</span>
-                                    <input 
-                                        type="file" 
-                                        className="hidden" 
-                                        onChange={handleFileUpload} 
+                                    <input
+                                        type="file"
+                                        className="hidden"
+                                        onChange={handleFileUpload}
                                         accept="image/*,video/*"
                                         disabled={uploading}
                                     />

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Camera, Calendar, PlayCircle, Clock, ExternalLink } from "lucide-react";
+import { Calendar, PlayCircle, ExternalLink } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
 
 interface GalleryItem {
@@ -70,8 +70,8 @@ export default function GalleryPage() {
                         <button
                             onClick={() => setActiveTab('photos')}
                             className={`px-8 py-3 rounded-full text-sm md:text-base font-bold transition-all duration-300 ${activeTab === 'photos'
-                                    ? "bg-royal text-white shadow-lg"
-                                    : "text-gray-500 hover:text-royal"
+                                ? "bg-royal text-white shadow-lg"
+                                : "text-gray-500 hover:text-royal"
                                 }`}
                         >
                             Photo Gallery
@@ -79,8 +79,8 @@ export default function GalleryPage() {
                         <button
                             onClick={() => setActiveTab('videos')}
                             className={`px-8 py-3 rounded-full text-sm md:text-base font-bold transition-all duration-300 ${activeTab === 'videos'
-                                    ? "bg-royal text-white shadow-lg"
-                                    : "text-gray-500 hover:text-royal"
+                                ? "bg-royal text-white shadow-lg"
+                                : "text-gray-500 hover:text-royal"
                                 }`}
                         >
                             Video Gallery

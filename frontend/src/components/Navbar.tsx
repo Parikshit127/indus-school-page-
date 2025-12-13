@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Navbar() {
@@ -136,7 +136,7 @@ export function Navbar() {
                                 <div key={link.name}>
                                     {link.dropdown ? (
                                         <div>
-                                            <div 
+                                            <div
                                                 className="flex items-center justify-between text-lg font-medium text-white cursor-pointer"
                                                 onClick={() => setActiveDropdown(activeDropdown === link.name ? null : link.name)}
                                             >

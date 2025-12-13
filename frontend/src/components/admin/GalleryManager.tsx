@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Plus, Trash2, Edit2, Image as ImageIcon, Youtube, Loader2, Save, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface GalleryItem {
     _id: string;
@@ -167,7 +167,7 @@ export function GalleryManager() {
         try {
             const token = localStorage.getItem("adminToken");
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
-            
+
             let updateData: Partial<GalleryItem> = {
                 title: editingItem.type === 'photo' ? newPhotoTitle : newVideoTitle
             };
@@ -240,8 +240,8 @@ export function GalleryManager() {
                 <div className="mb-8 p-4 bg-slate-50 rounded-lg border border-slate-200">
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-sm font-bold text-slate-700 uppercase tracking-wider">
-                            {editingItem 
-                                ? `Edit ${editingItem.type === 'photo' ? 'Photo' : 'Video'}` 
+                            {editingItem
+                                ? `Edit ${editingItem.type === 'photo' ? 'Photo' : 'Video'}`
                                 : (activeTab === 'photos' ? 'Add New Photo' : 'Add New Video')
                             }
                         </h3>
@@ -251,7 +251,7 @@ export function GalleryManager() {
                             </button>
                         )}
                     </div>
-                    
+
                     {activeTab === 'photos' ? (
                         <div className="flex flex-col md:flex-row gap-4 items-end">
                             <div className="flex-1 w-full md:max-w-md">
@@ -309,7 +309,7 @@ export function GalleryManager() {
                                 disabled={!newVideoUrl}
                                 className={`px-4 py-2 text-white rounded-lg transition-colors flex items-center gap-2 ${editingItem ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}`}
                             >
-                                {editingItem ? <Save size={18} /> : <Plus size={18} />} 
+                                {editingItem ? <Save size={18} /> : <Plus size={18} />}
                                 {editingItem ? 'Update Video' : 'Add Video'}
                             </button>
                         </div>
@@ -329,9 +329,9 @@ export function GalleryManager() {
                                     <img src={item.url} alt={item.title} className="w-full h-full object-cover" />
                                 ) : (
                                     <div className="w-full h-full bg-black flex items-center justify-center relative">
-                                        <img 
-                                            src={`https://img.youtube.com/vi/${item.url.split('/embed/')[1]?.split('?')[0]}/0.jpg`} 
-                                            alt={item.title} 
+                                        <img
+                                            src={`https://img.youtube.com/vi/${item.url.split('/embed/')[1]?.split('?')[0]}/0.jpg`}
+                                            alt={item.title}
                                             className="w-full h-full object-cover opacity-80"
                                             onError={(e) => {
                                                 // Fallback if regex fails (e.g. for short URLs not handled perfectly)
@@ -343,7 +343,7 @@ export function GalleryManager() {
                                         </div>
                                     </div>
                                 )}
-                                
+
                                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                                     <p className="text-white text-sm font-medium truncate mb-2">{item.title}</p>
                                     <div className="flex gap-2">
