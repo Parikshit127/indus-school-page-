@@ -12,6 +12,9 @@ import FacilitiesPage from "@/pages/FacilitiesPage";
 import AboutUsPage from "@/pages/AboutUsPage";
 import GalleryPage from "@/pages/GalleryPage";
 import ActivitiesPage from "@/pages/ActivitiesPage";
+import SportsActivityPage from "@/pages/activities/SportsActivityPage";
+import CulturalActivityPage from "@/pages/activities/CulturalActivityPage";
+import ClubsActivityPage from "@/pages/activities/ClubsActivityPage";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
 
@@ -51,6 +54,9 @@ function App() {
           <Route path="/academics" element={<AcademicsPage />} />
           <Route path="/facilities" element={<FacilitiesPage />} />
           <Route path="/activities" element={<ActivitiesPage />} />
+          <Route path="/activities/sports" element={<SportsActivityPage />} />
+          <Route path="/activities/cultural" element={<CulturalActivityPage />} />
+          <Route path="/activities/clubs" element={<ClubsActivityPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/about" element={<AboutUsPage />} />
         </Route>
