@@ -24,8 +24,8 @@ export function Navbar() {
 
     // Navbar background style based on scroll only (transparent at top for all pages)
     const navbarClass = `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-            ? "bg-royal-dark/95 backdrop-blur-md shadow-lg py-3"
-            : "bg-transparent py-6"
+        ? "bg-royal-dark/95 backdrop-blur-md shadow-lg py-3"
+        : "bg-transparent py-6"
         }`;
 
     const navLinks = [
@@ -65,12 +65,7 @@ export function Navbar() {
                             <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-gold transition-all group-hover:w-full ${location.pathname === link.path ? "w-full" : ""}`} />
                         </Link>
                     ))}
-                    <Link
-                        to="/admin/login"
-                        className="px-5 py-2 text-xs font-bold uppercase tracking-wider text-royal-dark bg-gold rounded-full hover:bg-white transition-colors"
-                    >
-                        Admin Login
-                    </Link>
+
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -102,14 +97,7 @@ export function Navbar() {
                                     {link.name}
                                 </Link>
                             ))}
-                            <div className="pt-4 border-t border-white/10">
-                                <Link
-                                    to="/admin/login"
-                                    className="block w-full text-center py-3 bg-gold text-royal-dark font-bold rounded-lg"
-                                >
-                                    Admin Login
-                                </Link>
-                            </div>
+
                         </div>
                     </motion.div>
                 )}
