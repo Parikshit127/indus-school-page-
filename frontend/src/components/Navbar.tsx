@@ -37,9 +37,10 @@ export function Navbar() {
             name: "Academics",
             path: "/academics",
             dropdown: [
-                { name: "Academics Overview", path: "/academics" },
-                { name: "Teaching Staff", path: "/academics/teaching-staff" },
-                { name: "School Calendar", path: "/calendar" }
+                { name: "Academic Overview", path: "/academics" },
+                { name: "Teaching Methodology", path: "/academics/methodology" },
+                { name: "Curriculum", path: "/academics/curriculum" },
+                { name: "Teaching Staff", path: "/academics/teaching-staff" }
             ]
         },
         {
@@ -48,12 +49,15 @@ export function Navbar() {
             dropdown: [
                 { name: "Academic Clubs", path: "/activities/clubs" },
                 { name: "Arts & Culture", path: "/activities/cultural" },
-                { name: "Sports & Athletics", path: "/activities/sports" }
+                { name: "Sports & Athletics", path: "/activities/sports" },
+                { name: "Swimming Pool", path: "/activities/swimming" },
+                { name: "Horse Riding", path: "/activities/horse-riding" }
             ]
         },
         { name: "Gallery", path: "/gallery" },
         { name: "Facilities", path: "/facilities" },
-        { name: "Admissions", path: "/#admissions" },
+        { name: "Contact Us", path: "/contact" },
+        { name: "Calendar", path: "/calendar" },
     ];
 
     return (

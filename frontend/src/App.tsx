@@ -8,6 +8,8 @@ import { Achievements } from "@/components/Achievements";
 import { Gallery } from "@/components/Gallery";
 
 import AcademicsPage from "@/pages/AcademicsPage";
+import TeachingMethodologyPage from "@/pages/academics/TeachingMethodologyPage";
+import CurriculumPage from "@/pages/academics/CurriculumPage";
 import FacilitiesPage from "@/pages/FacilitiesPage";
 import AboutUsPage from "@/pages/AboutUsPage";
 import GalleryPage from "@/pages/GalleryPage";
@@ -17,6 +19,9 @@ import CulturalActivityPage from "@/pages/activities/CulturalActivityPage";
 import ClubsActivityPage from "@/pages/activities/ClubsActivityPage";
 import SchoolCalendarPage from "@/pages/SchoolCalendarPage";
 import TeachingStaffPage from "@/pages/TeachingStaffPage";
+import SwimmingActivityPage from "@/pages/activities/SwimmingActivityPage";
+import HorseRidingActivityPage from "@/pages/activities/HorseRidingActivityPage";
+import ContactPage from "@/pages/ContactPage";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -56,6 +61,8 @@ function App() {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/academics" element={<AcademicsPage />} />
+          <Route path="/academics/methodology" element={<TeachingMethodologyPage />} />
+          <Route path="/academics/curriculum" element={<CurriculumPage />} />
           <Route path="/facilities" element={<FacilitiesPage />} />
           <Route path="/academics/teaching-staff" element={<TeachingStaffPage />} />
           <Route path="/activities" element={<ActivitiesPage />} />
@@ -63,8 +70,11 @@ function App() {
           <Route path="/activities/sports" element={<SportsActivityPage />} />
           <Route path="/activities/cultural" element={<CulturalActivityPage />} />
           <Route path="/activities/clubs" element={<ClubsActivityPage />} />
+          <Route path="/activities/swimming" element={<SwimmingActivityPage />} />
+          <Route path="/activities/horse-riding" element={<HorseRidingActivityPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/about" element={<AboutUsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
         </Route>
 
         {/* Admin Routes (No Navbar/Footer) */}

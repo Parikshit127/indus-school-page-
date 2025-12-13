@@ -1,7 +1,6 @@
-
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/section";
-import { Trophy, Users, Palette, BookOpen, MoveRight, Star, Heart, Lightbulb, Target } from "lucide-react";
+import { Trophy, Users, Palette, BookOpen, MoveRight, Star, Heart, Lightbulb, Target, Waves, Bird } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -59,6 +58,22 @@ export default function ActivitiesPage() {
                         image="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2022&auto=format&fit=crop"
                         icon={<BookOpen size={32} />}
                         link="/activities/clubs"
+                        align="left"
+                    />
+                    <CategoryRow
+                        title="Swimming Pool"
+                        desc="Dive into our world-class half-Olympic size pool. Whether for fitness, competition, or leisure, our aquatic facilities foster health and confidence."
+                        image="https://images.unsplash.com/photo-1576610616656-d3aa5d1f4534?q=80&w=1974&auto=format&fit=crop"
+                        icon={<Waves size={32} />}
+                        link="/activities/swimming"
+                        align="right"
+                    />
+                    <CategoryRow
+                        title="Horse Riding"
+                        desc="Experience the unique bond between rider and horse. Our equestrian program teaches discipline, balance, and respect for nature."
+                        image="https://images.unsplash.com/photo-1534017688538-2a2ba012a4df?q=80&w=2066&auto=format&fit=crop"
+                        icon={<Bird size={32} />} // Using Bird as placeholder for Horse
+                        link="/activities/horse-riding"
                         align="left"
                     />
                 </div>
