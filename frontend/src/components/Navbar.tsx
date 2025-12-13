@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const location = useLocation();
 
     // Handle scroll effect
@@ -20,6 +21,7 @@ export function Navbar() {
     // Close mobile menu on route change
     useEffect(() => {
         setIsOpen(false);
+        setActiveDropdown(null);
     }, [location]);
 
     // Navbar background style based on scroll only (transparent at top for all pages)
@@ -32,10 +34,18 @@ export function Navbar() {
         { name: "Home", path: "/" },
         { name: "About Us", path: "/about" },
         { name: "Academics", path: "/academics" },
-        { name: "Activities", path: "/activities" },
+        {
+            name: "Activities",
+            path: "/activities",
+            dropdown: [
+                { name: "Academic Clubs", path: "/activities/clubs" },
+                { name: "Arts & Culture", path: "/activities/cultural" },
+                { name: "Sports & Athletics", path: "/activities/sports" }
+            ]
+        },
         { name: "Gallery", path: "/gallery" },
         { name: "Facilities", path: "/facilities" },
-        { name: "Admissions", path: "/#admissions" }, // Scroll to form
+        { name: "Admissions", path: "/#admissions" },
     ];
 
     return (
@@ -57,17 +67,50 @@ export function Navbar() {
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex items-center gap-8">
                     {navLinks.map((link) => (
-                        <Link
+                        <div
                             key={link.name}
-                            to={link.path}
-                            className={`text-sm font-medium tracking-wide transition-colors relative group ${location.pathname === link.path ? "text-gold" : "text-white hover:text-gold"
-                                }`}
+                            className="relative group"
+                            onMouseEnter={() => setActiveDropdown(link.name)}
+                            onMouseLeave={() => setActiveDropdown(null)}
                         >
-                            {link.name}
-                            <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-gold transition-all group-hover:w-full ${location.pathname === link.path ? "w-full" : ""}`} />
-                        </Link>
-                    ))}
+                            <Link
+                                to={link.path}
+                                className={`flex items-center gap-1 text-sm font-medium tracking-wide transition-colors relative ${location.pathname === link.path || (link.dropdown && location.pathname.startsWith(link.path))
+                                    ? "text-gold"
+                                    : "text-white hover:text-gold"
+                                    }`}
+                            >
+                                {link.name}
+                                {link.dropdown && <ChevronDown size={14} />}
+                                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-gold transition-all group-hover:w-full ${location.pathname === link.path || (link.dropdown && location.pathname.startsWith(link.path)) ? "w-full" : ""}`} />
+                            </Link>
 
+                            {/* Dropdown Menu */}
+                            {link.dropdown && (
+                                <AnimatePresence>
+                                    {activeDropdown === link.name && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 10 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 overflow-hidden"
+                                        >
+                                            {link.dropdown.map((subItem) => (
+                                                <Link
+                                                    key={subItem.name}
+                                                    to={subItem.path}
+                                                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-royal/5 hover:text-royal transition-colors"
+                                                >
+                                                    {subItem.name}
+                                                </Link>
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            )}
+                        </div>
+                    ))}
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -90,16 +133,48 @@ export function Navbar() {
                     >
                         <div className="flex flex-col p-6 space-y-4">
                             {navLinks.map((link) => (
-                                <Link
-                                    key={link.name}
-                                    to={link.path}
-                                    className={`text-lg font-medium ${location.pathname === link.path ? "text-gold" : "text-white"
-                                        }`}
-                                >
-                                    {link.name}
-                                </Link>
+                                <div key={link.name}>
+                                    {link.dropdown ? (
+                                        <div>
+                                            <div 
+                                                className="flex items-center justify-between text-lg font-medium text-white cursor-pointer"
+                                                onClick={() => setActiveDropdown(activeDropdown === link.name ? null : link.name)}
+                                            >
+                                                <span className={location.pathname.startsWith(link.path) ? "text-gold" : ""}>{link.name}</span>
+                                                <ChevronDown size={20} className={`transition-transform ${activeDropdown === link.name ? "rotate-180" : ""}`} />
+                                            </div>
+                                            <AnimatePresence>
+                                                {activeDropdown === link.name && (
+                                                    <motion.div
+                                                        initial={{ height: 0, opacity: 0 }}
+                                                        animate={{ height: "auto", opacity: 1 }}
+                                                        exit={{ height: 0, opacity: 0 }}
+                                                        className="overflow-hidden pl-4 border-l border-white/10 mt-2 space-y-2"
+                                                    >
+                                                        {link.dropdown.map((subItem) => (
+                                                            <Link
+                                                                key={subItem.name}
+                                                                to={subItem.path}
+                                                                className="block py-2 text-white/80 hover:text-gold text-base"
+                                                            >
+                                                                {subItem.name}
+                                                            </Link>
+                                                        ))}
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
+                                        </div>
+                                    ) : (
+                                        <Link
+                                            to={link.path}
+                                            className={`block text-lg font-medium ${location.pathname === link.path ? "text-gold" : "text-white"}`}
+                                        >
+                                            {link.name}
+                                        </Link>
+                                    )}
+                                </div>
                             ))}
-
+                            {/* Mobile specific Login as Admin button if needed */}
                         </div>
                     </motion.div>
                 )}

@@ -17,6 +17,7 @@ import CulturalActivityPage from "@/pages/activities/CulturalActivityPage";
 import ClubsActivityPage from "@/pages/activities/ClubsActivityPage";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 // Layout for public pages (includes Navbar and Footer)
 function PublicLayout() {
@@ -47,6 +48,7 @@ function LandingPage() {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         {/* Public Routes with Navbar & Footer */}
         <Route element={<PublicLayout />}>

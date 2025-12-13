@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
-import { Save, Loader2, Image as ImageIcon, Megaphone, Calendar, Users, Trophy, GraduationCap } from "lucide-react";
-import { motion } from "framer-motion";
+import { Save, Loader2, Image as ImageIcon, Megaphone, Calendar, Users, Trophy, GraduationCap, Upload, X, Plus, GripVertical } from "lucide-react";
+import { motion, Reorder } from "framer-motion";
+
+interface Slide {
+    type: 'image' | 'video';
+    url: string;
+}
 
 interface HeroContent {
-    mediaType: 'image' | 'video';
-    mediaUrl: string;
+    slides: Slide[];
     announcement: {
         text: string;
         isActive: boolean;
@@ -27,7 +31,9 @@ export function ContentEditor() {
     const [content, setContent] = useState<HeroContent | null>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [uploading, setUploading] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+    const [newSlideUrl, setNewSlideUrl] = useState('');
 
     useEffect(() => {
         fetchContent();
@@ -39,6 +45,14 @@ export function ContentEditor() {
             const response = await fetch(`${apiUrl}/api/content/hero`);
             if (response.ok) {
                 const data = await response.json();
+                // Ensure slides exists
+                if (!data.slides) data.slides = [];
+                // Migration support if needed (though backend schema changed)
+                if (data.mediaUrl) {
+                    data.slides.push({ type: data.mediaType || 'image', url: data.mediaUrl });
+                    delete data.mediaUrl;
+                    delete data.mediaType;
+                }
                 setContent(data);
             }
         } catch (error) {
@@ -68,8 +82,6 @@ export function ContentEditor() {
 
             if (response.ok) {
                 setMessage({ type: 'success', text: 'Content updated successfully!' });
-
-                // Refresh content to ensure sync
                 const updated = await response.json();
                 setContent(updated);
             } else {
@@ -80,6 +92,67 @@ export function ContentEditor() {
         } finally {
             setSaving(false);
         }
+    };
+
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setUploading(true);
+        setMessage(null);
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const token = localStorage.getItem("adminToken");
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
+            const response = await fetch(`${apiUrl}/api/upload`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: formData
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const newSlide: Slide = {
+                    type: data.resource_type === 'video' ? 'video' : 'image',
+                    url: data.url
+                };
+                setContent(prev => prev ? { ...prev, slides: [...prev.slides, newSlide] } : null);
+                setMessage({ type: 'success', text: 'File uploaded and added to slides!' });
+            } else {
+                throw new Error('Upload failed');
+            }
+        } catch (error) {
+            console.error('Upload error:', error);
+            setMessage({ type: 'error', text: 'Failed to upload file.' });
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    const handleAddLink = () => {
+        if (!newSlideUrl || !content) return;
+        
+        // Simple heuristic for video type
+        const isVideo = newSlideUrl.match(/\.(mp4|webm|ogg)$/i) || newSlideUrl.includes('youtube') || newSlideUrl.includes('vimeo');
+        
+        const newSlide: Slide = {
+            type: isVideo ? 'video' : 'image',
+            url: newSlideUrl
+        };
+
+        setContent({ ...content, slides: [...content.slides, newSlide] });
+        setNewSlideUrl('');
+    };
+
+    const handleRemoveSlide = (index: number) => {
+        if (!content) return;
+        const newSlides = [...content.slides];
+        newSlides.splice(index, 1);
+        setContent({ ...content, slides: newSlides });
     };
 
     if (loading) return <div className="p-8 text-center text-slate-500">Loading editor...</div>;
@@ -106,56 +179,88 @@ export function ContentEditor() {
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`p-4 rounded-lg mb-6 ${message.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'
-                        }`}
+                    className={`p-4 rounded-lg mb-6 ${message.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}
                 >
                     {message.text}
                 </motion.div>
             )}
 
             <div className="space-y-6">
-                {/* Media Section */}
+                {/* Media Slider Section */}
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div className="flex items-center gap-2 mb-4 text-royal font-bold border-b border-slate-100 pb-2">
                         <ImageIcon size={20} />
-                        <h3>Hero Media</h3>
+                        <h3>Hero Slider Images/Videos</h3>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-2">Media Type</label>
-                            <div className="flex gap-4">
-                                <label className="flex items-center gap-2 cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        checked={content.mediaType === 'image'}
-                                        onChange={() => setContent({ ...content, mediaType: 'image' })}
-                                        className="text-royal focus:ring-royal"
+                    <div className="space-y-6">
+                        {/* Current Slides */}
+                        {content.slides.length > 0 ? (
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                                {content.slides.map((slide, index) => (
+                                    <div key={index} className="relative group rounded-lg overflow-hidden border border-slate-200 aspect-video bg-slate-100">
+                                        {slide.type === 'video' ? (
+                                            <div className="w-full h-full flex items-center justify-center bg-black text-white text-xs">Video</div>
+                                        ) : (
+                                            <img src={slide.url} alt={`Slide ${index}`} className="w-full h-full object-cover" />
+                                        )}
+                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <button
+                                                onClick={() => handleRemoveSlide(index)}
+                                                className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                                                title="Remove Slide"
+                                            >
+                                                <X size={16} />
+                                            </button>
+                                        </div>
+                                        <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-1 truncate px-2">
+                                            {index + 1}. {slide.type}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-8 bg-slate-50 border border-dashed border-slate-300 rounded-lg text-slate-500 mb-6">
+                                No slides added. Add some images or videos below!
+                            </div>
+                        )}
+
+                        {/* Add New Slide */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-slate-100">
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-2">Upload File</label>
+                                <label className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-slate-50 text-slate-700 rounded-lg cursor-pointer border border-dashed border-slate-300 hover:bg-white hover:border-royal transition-all">
+                                    {uploading ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
+                                    <span className="text-sm">{uploading ? 'Uploading...' : 'Upload Image/Video'}</span>
+                                    <input 
+                                        type="file" 
+                                        className="hidden" 
+                                        onChange={handleFileUpload} 
+                                        accept="image/*,video/*"
+                                        disabled={uploading}
                                     />
-                                    <span>Image</span>
-                                </label>
-                                <label className="flex items-center gap-2 cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        checked={content.mediaType === 'video'}
-                                        onChange={() => setContent({ ...content, mediaType: 'video' })}
-                                        className="text-royal focus:ring-royal"
-                                    />
-                                    <span>Video</span>
                                 </label>
                             </div>
-                        </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-2">Media URL</label>
-                            <input
-                                type="text"
-                                value={content.mediaUrl}
-                                onChange={(e) => setContent({ ...content, mediaUrl: e.target.value })}
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none"
-                                placeholder="https://example.com/image.jpg"
-                            />
-                            <p className="text-xs text-slate-400 mt-1">Use a high-quality hosted image/video link</p>
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-2">Add Direct Link</label>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        value={newSlideUrl}
+                                        onChange={(e) => setNewSlideUrl(e.target.value)}
+                                        placeholder="https://example.com/image.jpg"
+                                        className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-1 focus:ring-royal outline-none"
+                                    />
+                                    <button
+                                        onClick={handleAddLink}
+                                        disabled={!newSlideUrl}
+                                        className="px-4 py-2 bg-royal text-white rounded-lg hover:bg-royal-dark transition-colors disabled:opacity-50"
+                                    >
+                                        <Plus size={20} />
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

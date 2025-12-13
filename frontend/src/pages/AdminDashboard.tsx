@@ -4,10 +4,11 @@ import { Section } from "@/components/ui/section";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { DashboardOverview } from "@/components/admin/DashboardOverview";
 import { ContentEditor } from "@/components/admin/ContentEditor";
+import { GalleryManager } from "@/components/admin/GalleryManager";
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'content'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery'>('dashboard');
 
     useEffect(() => {
         const token = localStorage.getItem("adminToken");
@@ -36,8 +37,10 @@ export default function AdminDashboard() {
                     <div className="max-w-7xl mx-auto px-4">
                         {activeTab === 'dashboard' ? (
                             <DashboardOverview />
-                        ) : (
+                        ) : activeTab === 'content' ? (
                             <ContentEditor />
+                        ) : (
+                            <GalleryManager />
                         )}
                     </div>
                 </Section>

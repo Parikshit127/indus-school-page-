@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import { LeadForm } from "@/components/LeadForm";
-import { Trophy, Users, GraduationCap, Medal } from "lucide-react";
-import { motion } from "framer-motion";
+import { Trophy, Users, GraduationCap, Medal, ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+interface Slide {
+    type: 'image' | 'video';
+    url: string;
+}
 
 interface HeroContent {
-    mediaType: 'image' | 'video';
-    mediaUrl: string;
+    slides?: Slide[];
+    mediaType?: 'image' | 'video'; // Legacy support
+    mediaUrl?: string; // Legacy support
     announcement: {
         text: string;
         isActive: boolean;
@@ -27,6 +33,7 @@ interface HeroContent {
 export function HeroSection() {
     const [content, setContent] = useState<HeroContent | null>(null);
     const [loading, setLoading] = useState(true);
+    const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(() => {
         const fetchContent = async () => {
@@ -47,6 +54,49 @@ export function HeroSection() {
         fetchContent();
     }, []);
 
+    // Construct display content with fallback and migration logic
+    const getSlides = (): Slide[] => {
+        if (!content) {
+            // Default fallback
+            return [{ type: 'image', url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070' }];
+        }
+        
+        if (content.slides && content.slides.length > 0) {
+            return content.slides;
+        }
+
+        // Legacy fallback
+        if (content.mediaUrl) {
+            return [{ type: content.mediaType || 'image', url: content.mediaUrl }];
+        }
+
+        return [{ type: 'image', url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070' }];
+    };
+
+    const slides = getSlides();
+    const displayContent = content || {
+        announcement: { text: "Admissions Open 2025-26", isActive: true, link: "#" },
+        admission: { deadline: "", gradesOpen: "", ctaText: "" },
+        stats: { years: 22, students: 2500, teachers: 150, boardResults: "100%" }
+    };
+
+    // Auto-advance slides
+    useEffect(() => {
+        if (slides.length <= 1) return;
+        const timer = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % slides.length);
+        }, 5000);
+        return () => clearInterval(timer);
+    }, [slides.length, currentSlide]); // Reset timer on manual interaction
+
+    const nextSlide = () => {
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
+    };
+
+    const prevSlide = () => {
+        setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    };
+
     if (loading) {
         return (
             <div className="h-screen bg-royal flex items-center justify-center">
@@ -55,42 +105,63 @@ export function HeroSection() {
         );
     }
 
-    // Default Fallback content if API fails or while loading (skeleton could be better but this is safer)
-    const displayContent = content || {
-        mediaType: 'image',
-        mediaUrl: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070',
-        announcement: { text: "Admissions Open 2025-26", isActive: true, link: "#" },
-        admission: { deadline: "", gradesOpen: "", ctaText: "" },
-        stats: { years: 22, students: 2500, teachers: 150, boardResults: "100%" }
-    };
-
     return (
         <section className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center overflow-hidden pt-20 pb-12 md:py-0">
-            {/* Background with Overlay */}
+            {/* Background Slider */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-royal/95 via-royal/80 to-royal/40 z-10" />
-                {displayContent.mediaType === 'video' ? (
-                    <video
-                        src={displayContent.mediaUrl}
-                        autoPlay
-                        muted
-                        loop
-                        className="w-full h-full object-cover"
-                    />
-                ) : (
-                    <div
-                        className="w-full h-full bg-cover bg-center transition-all duration-1000"
-                        style={{ backgroundImage: `url('${displayContent.mediaUrl}')` }}
-                    />
-                )}
+                
+                <AnimatePresence mode="popLayout">
+                    <motion.div
+                        key={currentSlide}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1 }}
+                        className="absolute inset-0"
+                    >
+                        {slides[currentSlide].type === 'video' ? (
+                            <video
+                                src={slides[currentSlide].url}
+                                autoPlay
+                                muted
+                                loop
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <div
+                                className="w-full h-full bg-cover bg-center"
+                                style={{ backgroundImage: `url('${slides[currentSlide].url}')` }}
+                            />
+                        )}
+                    </motion.div>
+                </AnimatePresence>
             </div>
 
-
+            {/* Navigation Arrows */}
+            {slides.length > 1 && (
+                <div className="absolute bottom-8 right-8 z-30 flex gap-2">
+                    <button
+                        onClick={prevSlide}
+                        className="p-2 bg-black/30 hover:bg-black/50 text-white/80 hover:text-white rounded-full backdrop-blur-sm transition-all border border-white/10"
+                        aria-label="Previous Slide"
+                    >
+                        <ChevronLeft size={18} />
+                    </button>
+                    <button
+                        onClick={nextSlide}
+                        className="p-2 bg-black/30 hover:bg-black/50 text-white/80 hover:text-white rounded-full backdrop-blur-sm transition-all border border-white/10"
+                        aria-label="Next Slide"
+                    >
+                        <ChevronRight size={18} />
+                    </button>
+                </div>
+            )}
 
             <div className="container mx-auto px-4 md:px-6 relative z-10 grid md:grid-cols-12 gap-8 items-center mt-12 md:mt-0">
                 {/* Left Content */}
                 <div className="md:col-span-7 text-white space-y-8 text-center md:text-left">
-                    {displayContent.announcement.isActive && (
+                    {displayContent.announcement?.isActive && (
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -126,28 +197,28 @@ export function HeroSection() {
                         <div className="text-center md:text-left">
                             <h4 className="text-2xl md:text-3xl font-bold text-gold flex items-center justify-center md:justify-start gap-2">
                                 <Medal size={24} className="text-gold" />
-                                {displayContent.stats.years}+
+                                {displayContent.stats?.years}+
                             </h4>
                             <p className="text-xs text-white/60 uppercase tracking-wider">Years of Excellence</p>
                         </div>
                         <div className="text-center md:text-left">
                             <h4 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
                                 <Users size={24} className="text-white" />
-                                {displayContent.stats.students}+
+                                {displayContent.stats?.students}+
                             </h4>
                             <p className="text-xs text-white/60 uppercase tracking-wider">Students Enrolled</p>
                         </div>
                         <div className="text-center md:text-left">
                             <h4 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
                                 <GraduationCap size={24} className="text-white" />
-                                {displayContent.stats.teachers}+
+                                {displayContent.stats?.teachers}+
                             </h4>
                             <p className="text-xs text-white/60 uppercase tracking-wider">Expert Teachers</p>
                         </div>
                         <div className="text-center md:text-left">
                             <h4 className="text-2xl md:text-3xl font-bold text-gold flex items-center justify-center md:justify-start gap-2">
                                 <Trophy size={24} className="text-gold" />
-                                {displayContent.stats.boardResults}
+                                {displayContent.stats?.boardResults}
                             </h4>
                             <p className="text-xs text-white/60 uppercase tracking-wider">Board Results</p>
                         </div>
