@@ -27,7 +27,9 @@ const leadRoutes = require('./routes/leads');
 const analyticsRoutes = require('./routes/analytics');
 
 app.use('/api/leads', leadRoutes);
+const contentRoutes = require('./routes/content');
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/content', contentRoutes);
 
 // Start Server
 app.listen(PORT, () => {
