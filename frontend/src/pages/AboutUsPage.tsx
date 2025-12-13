@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Section } from "@/components/ui/section";
 import { PageHero } from "@/components/ui/PageHero";
 import { Quote, Target, Lightbulb, Users, Award } from "lucide-react";
@@ -27,6 +28,26 @@ const fadeIn = {
 };
 
 export default function AboutUsPage() {
+    const [dynamicMembers, setDynamicMembers] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchMembers = async () => {
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+                const response = await fetch(`${apiUrl}/api/members`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setDynamicMembers(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch members", error);
+            }
+        };
+        fetchMembers();
+    }, []);
+
+    const allMembers = [...committeeMembers, ...dynamicMembers];
+
     return (
         <div className="bg-slate-50 min-h-screen">
             <PageHero
@@ -185,9 +206,9 @@ export default function AboutUsPage() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
-                                    {committeeMembers.map((member) => (
-                                        <tr key={member.no} className="hover:bg-slate-50/50 transition-colors">
-                                            <td className="px-6 py-4 font-medium text-slate-400">{member.no}</td>
+                                    {allMembers.map((member, index) => (
+                                        <tr key={index} className="hover:bg-slate-50/50 transition-colors">
+                                            <td className="px-6 py-4 font-medium text-slate-400">{index + 1}</td>
                                             <td className="px-6 py-4 font-bold text-royal">{member.name}</td>
                                             <td className="px-6 py-4 text-slate-600">{member.relation}</td>
                                             <td className="px-6 py-4">

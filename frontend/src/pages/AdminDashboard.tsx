@@ -5,10 +5,11 @@ import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { DashboardOverview } from "@/components/admin/DashboardOverview";
 import { ContentEditor } from "@/components/admin/ContentEditor";
 import { GalleryManager } from "@/components/admin/GalleryManager";
+import { MemberManager } from "@/components/admin/MemberManager";
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery' | 'members'>('dashboard');
 
     useEffect(() => {
         const token = localStorage.getItem("adminToken");
@@ -35,13 +36,10 @@ export default function AdminDashboard() {
             <div className="flex-1 ml-64">
                 <Section className="min-h-screen pt-8 pb-12">
                     <div className="max-w-7xl mx-auto px-4">
-                        {activeTab === 'dashboard' ? (
-                            <DashboardOverview />
-                        ) : activeTab === 'content' ? (
-                            <ContentEditor />
-                        ) : (
-                            <GalleryManager />
-                        )}
+                        {activeTab === 'dashboard' && <DashboardOverview />}
+                        {activeTab === 'content' && <ContentEditor />}
+                        {activeTab === 'gallery' && <GalleryManager />}
+                        {activeTab === 'members' && <MemberManager />}
                     </div>
                 </Section>
             </div>

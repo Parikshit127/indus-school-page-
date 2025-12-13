@@ -1,8 +1,8 @@
-import { LayoutDashboard, FileEdit, LogOut, Image as ImageIcon } from "lucide-react";
+import { LayoutDashboard, FileEdit, LogOut, Image as ImageIcon, Users } from "lucide-react";
 
 interface AdminSidebarProps {
-    activeTab: 'dashboard' | 'content' | 'gallery';
-    setActiveTab: (tab: 'dashboard' | 'content' | 'gallery') => void;
+    activeTab: 'dashboard' | 'content' | 'gallery' | 'members';
+    setActiveTab: (tab: 'dashboard' | 'content' | 'gallery' | 'members') => void;
     onLogout: () => void;
 }
 
@@ -46,6 +46,17 @@ export function AdminSidebar({ activeTab, setActiveTab, onLogout }: AdminSidebar
                 >
                     <ImageIcon size={20} />
                     <span>Gallery</span>
+                </button>
+
+                <button
+                    onClick={() => setActiveTab('members')}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${activeTab === 'members'
+                            ? 'bg-gold text-royal-dark font-bold shadow-lg shadow-gold/20'
+                            : 'text-white/70 hover:bg-white/5 hover:text-white'
+                        }`}
+                >
+                    <Users size={20} />
+                    <span>Members</span>
                 </button>
             </nav>
 
