@@ -10,6 +10,8 @@ import { Gallery } from "@/components/Gallery";
 import AcademicsPage from "@/pages/AcademicsPage";
 import FacilitiesPage from "@/pages/FacilitiesPage";
 import AboutUsPage from "@/pages/AboutUsPage";
+import GalleryPage from "@/pages/GalleryPage";
+import ActivitiesPage from "@/pages/ActivitiesPage";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
 
@@ -48,6 +50,8 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/academics" element={<AcademicsPage />} />
           <Route path="/facilities" element={<FacilitiesPage />} />
+          <Route path="/activities" element={<ActivitiesPage />} />
+          <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/about" element={<AboutUsPage />} />
         </Route>
 

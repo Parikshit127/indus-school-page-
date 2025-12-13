@@ -32,6 +32,8 @@ export function Navbar() {
         { name: "Home", path: "/" },
         { name: "About Us", path: "/about" },
         { name: "Academics", path: "/academics" },
+        { name: "Activities", path: "/activities" },
+        { name: "Gallery", path: "/gallery" },
         { name: "Facilities", path: "/facilities" },
         { name: "Admissions", path: "/#admissions" }, // Scroll to form
     ];
