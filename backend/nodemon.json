@@ -1,0 +1,4 @@
+{
+  "ignore": ["tmp/*", "public/*"],
+  "ext": "js,mjs,cjs,json"
+}

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Section } from "@/components/ui/section";
@@ -6,10 +7,13 @@ import { DashboardOverview } from "@/components/admin/DashboardOverview";
 import { ContentEditor } from "@/components/admin/ContentEditor";
 import { GalleryManager } from "@/components/admin/GalleryManager";
 import { MemberManager } from "@/components/admin/MemberManager";
+import { CalendarManager } from "@/components/admin/CalendarManager";
+import { TeacherManager } from "@/components/admin/TeacherManager";
+
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery' | 'members'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers'>('dashboard');
 
     useEffect(() => {
         const token = localStorage.getItem("adminToken");
@@ -40,6 +44,8 @@ export default function AdminDashboard() {
                         {activeTab === 'content' && <ContentEditor />}
                         {activeTab === 'gallery' && <GalleryManager />}
                         {activeTab === 'members' && <MemberManager />}
+                        {activeTab === 'calendar' && <CalendarManager />}
+                        {activeTab === 'teachers' && <TeacherManager />}
                     </div>
                 </Section>
             </div>

@@ -34,8 +34,10 @@ const uploadRoutes = require('./routes/upload');
 app.use('/api/upload', uploadRoutes);
 const galleryRoutes = require('./routes/gallery');
 app.use('/api/gallery', galleryRoutes);
-const membersRoutes = require('./routes/members'); // Added import for members routes
-app.use('/api/members', membersRoutes); // Mounted /api/members route
+const membersRoutes = require('./routes/members');
+const teachersRoutes = require('./routes/teachers');
+app.use('/api/members', membersRoutes);
+app.use('/api/teachers', teachersRoutes);
 
 // Start Server
 app.listen(PORT, () => {

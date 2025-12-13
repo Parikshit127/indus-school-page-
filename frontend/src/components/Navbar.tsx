@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Navbar() {
@@ -33,7 +33,15 @@ export function Navbar() {
     const navLinks = [
         { name: "Home", path: "/" },
         { name: "About Us", path: "/about" },
-        { name: "Academics", path: "/academics" },
+        {
+            name: "Academics",
+            path: "/academics",
+            dropdown: [
+                { name: "Academics Overview", path: "/academics" },
+                { name: "Teaching Staff", path: "/academics/teaching-staff" },
+                { name: "School Calendar", path: "/calendar" }
+            ]
+        },
         {
             name: "Activities",
             path: "/activities",
