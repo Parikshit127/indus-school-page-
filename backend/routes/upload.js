@@ -33,12 +33,24 @@ router.post('/', authMiddleware, upload.single('file'), async (req, res) => {
             return res.status(400).json({ error: 'No file uploaded' });
         }
 
-        console.log('Uploading file:', req.file.path);
+        console.log('File details:', {
+            path: req.file.path,
+            mimetype: req.file.mimetype,
+            originalname: req.file.originalname
+        });
+
+        // Force 'raw' for PDFs, otherwise auto
+        const isPdf = req.file.mimetype === 'application/pdf' || req.file.originalname.toLowerCase().endsWith('.pdf');
+        const resourceType = isPdf ? 'raw' : 'auto';
+        
+        console.log('Uploading with resource_type:', resourceType);
 
         // Upload to Cloudinary
         const result = await cloudinary.uploader.upload(req.file.path, {
-            resource_type: "auto", // Automatically detect image or video
-            folder: "indus_school_hero"
+            resource_type: resourceType,
+            folder: "indus_school_hero",
+            use_filename: true,
+            unique_filename: true
         });
 
         // Clean up local file

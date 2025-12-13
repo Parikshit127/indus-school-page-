@@ -15,6 +15,8 @@ import ActivitiesPage from "@/pages/ActivitiesPage";
 import SportsActivityPage from "@/pages/activities/SportsActivityPage";
 import CulturalActivityPage from "@/pages/activities/CulturalActivityPage";
 import ClubsActivityPage from "@/pages/activities/ClubsActivityPage";
+import SchoolCalendarPage from "@/pages/SchoolCalendarPage";
+import TeachingStaffPage from "@/pages/TeachingStaffPage";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -55,7 +57,9 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/academics" element={<AcademicsPage />} />
           <Route path="/facilities" element={<FacilitiesPage />} />
+          <Route path="/academics/teaching-staff" element={<TeachingStaffPage />} />
           <Route path="/activities" element={<ActivitiesPage />} />
+          <Route path="/calendar" element={<SchoolCalendarPage />} />
           <Route path="/activities/sports" element={<SportsActivityPage />} />
           <Route path="/activities/cultural" element={<CulturalActivityPage />} />
           <Route path="/activities/clubs" element={<ClubsActivityPage />} />

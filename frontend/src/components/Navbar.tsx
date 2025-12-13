@@ -33,7 +33,15 @@ export function Navbar() {
     const navLinks = [
         { name: "Home", path: "/" },
         { name: "About Us", path: "/about" },
-        { name: "Academics", path: "/academics" },
+        {
+            name: "Academics",
+            path: "/academics",
+            dropdown: [
+                { name: "Academics Overview", path: "/academics" },
+                { name: "Teaching Staff", path: "/academics/teaching-staff" },
+                { name: "School Calendar", path: "/calendar" }
+            ]
+        },
         {
             name: "Activities",
             path: "/activities",
