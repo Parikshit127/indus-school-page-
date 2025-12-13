@@ -60,7 +60,7 @@ export function HeroSection() {
             // Default fallback
             return [{ type: 'image', url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070' }];
         }
-        
+
         if (content.slides && content.slides.length > 0) {
             return content.slides;
         }
@@ -106,11 +106,11 @@ export function HeroSection() {
     }
 
     return (
-        <section className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center overflow-hidden pt-20 pb-12 md:py-0">
+        <section id="admissions" className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center overflow-hidden pt-20 pb-12 md:py-0">
             {/* Background Slider */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-royal/95 via-royal/80 to-royal/40 z-10" />
-                
+
                 <AnimatePresence mode="popLayout">
                     <motion.div
                         key={currentSlide}

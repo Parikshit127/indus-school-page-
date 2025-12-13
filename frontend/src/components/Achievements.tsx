@@ -40,18 +40,18 @@ export function Achievements() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8">
                 {achievements.map((item, index) => (
                     <div
                         key={index}
-                        className="p-6 md:p-8 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-center group"
+                        className="p-4 md:p-8 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-center group"
                     >
-                        <div className="w-16 h-16 mx-auto bg-gold/10 rounded-full flex items-center justify-center text-gold mb-6 group-hover:scale-110 transition-transform">
-                            <item.icon size={32} />
+                        <div className="w-12 h-12 md:w-16 md:h-16 mx-auto bg-gold/10 rounded-full flex items-center justify-center text-gold mb-3 md:mb-6 group-hover:scale-110 transition-transform">
+                            <item.icon className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
-                        <h3 className="text-4xl font-bold text-gold mb-2">{item.value}</h3>
-                        <h4 className="text-xl font-medium text-white mb-2">{item.title}</h4>
-                        <p className="text-sm text-white/60">{item.desc}</p>
+                        <h3 className="text-2xl md:text-4xl font-bold text-gold mb-1 md:mb-2">{item.value}</h3>
+                        <h4 className="text-sm md:text-xl font-medium text-white mb-1 md:mb-2">{item.title}</h4>
+                        <p className="text-xs md:text-sm text-white/60 line-clamp-2">{item.desc}</p>
                     </div>
                 ))}
             </div>
