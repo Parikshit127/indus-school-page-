@@ -5,6 +5,61 @@ const PageContent = require('../models/PageContent');
 const authMiddleware = require('../middleware/auth');
 
 // GET: Get content for a specific section
+const CalendarFile = require('../models/CalendarFile');
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Serve Calendar PDF from DB
+router.get('/calendar/pdf', async (req, res) => {
+    try {
+        const fileDoc = await CalendarFile.findOne().sort({ uploadedAt: -1 });
+        if (!fileDoc) return res.status(404).send('No calendar found');
+        
+        res.set('Content-Type', fileDoc.contentType);
+        res.set('Content-Disposition', `inline; filename="${fileDoc.filename}"`);
+        res.send(fileDoc.data);
+    } catch (err) {
+        console.error('Error serving PDF:', err);
+        res.status(500).send('Error retrieving file');
+    }
+});
+
+// Upload Calendar PDF to DB
+router.post('/calendar/upload', authMiddleware, upload.single('file'), async (req, res) => {
+    try {
+        if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+
+        // Save file to MongoDB
+        const newFile = new CalendarFile({
+            filename: req.file.originalname,
+            contentType: req.file.mimetype,
+            data: req.file.buffer
+        });
+        await newFile.save();
+
+        // Update generic content metadata
+        const apiUrl = process.env.API_URL || 'http://localhost:4000';
+        const pdfUrl = `${apiUrl}/api/content/calendar/pdf`;
+
+        await PageContent.findOneAndUpdate(
+            { section: 'calendar' },
+            { 
+                $set: { 
+                    'data.calendar.pdfUrl': pdfUrl,
+                    'data.calendar.lastUpdated': Date.now() 
+                } 
+            },
+            { upsert: true }
+        );
+
+        res.json({ url: pdfUrl });
+    } catch (err) {
+        console.error('Upload error:', err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
 router.get('/:section', async (req, res) => {
     try {
         let content = await PageContent.findOne({ section: req.params.section });

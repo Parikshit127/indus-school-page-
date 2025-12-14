@@ -39,9 +39,8 @@ router.post('/', authMiddleware, upload.single('file'), async (req, res) => {
             originalname: req.file.originalname
         });
 
-        // Force 'raw' for PDFs, otherwise auto
-        const isPdf = req.file.mimetype === 'application/pdf' || req.file.originalname.toLowerCase().endsWith('.pdf');
-        const resourceType = isPdf ? 'raw' : 'auto';
+        // Use 'auto' to let Cloudinary handle PDFs as images/documents for better viewing compatibility
+        const resourceType = 'auto';
         
         console.log('Uploading with resource_type:', resourceType);
 
