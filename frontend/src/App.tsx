@@ -66,7 +66,7 @@ function App() {
           <Route path="/facilities" element={<FacilitiesPage />} />
           <Route path="/academics/teaching-staff" element={<TeachingStaffPage />} />
           <Route path="/activities" element={<ActivitiesPage />} />
-          <Route path="/calendar" element={<SchoolCalendarPage />} />
+          <Route path="/academics/calendar" element={<SchoolCalendarPage />} />
           <Route path="/activities/sports" element={<SportsActivityPage />} />
           <Route path="/activities/cultural" element={<CulturalActivityPage />} />
           <Route path="/activities/clubs" element={<ClubsActivityPage />} />

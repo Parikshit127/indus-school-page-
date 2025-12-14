@@ -60,11 +60,6 @@ export default function SchoolCalendarPage() {
                             </div>
                         ) : pdfUrl ? (
                             (() => {
-                                // Fix Cloudinary URL for PDFs to ensure they are treated as raw files
-                                const viewerUrl = pdfUrl.includes('/image/upload/') 
-                                    ? pdfUrl.replace('/image/upload/', '/raw/upload/')
-                                    : pdfUrl;
-                                
                                 return (
                                 <div className="space-y-8">
                                     <motion.div 
@@ -73,7 +68,7 @@ export default function SchoolCalendarPage() {
                                         className="flex justify-center"
                                     >
                                         <a
-                                            href={viewerUrl}
+                                            href={pdfUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="inline-flex items-center gap-3 px-8 py-4 bg-royal text-gold rounded-full font-bold text-lg hover:bg-royal-dark transition-all shadow-lg hover:shadow-royal/20 hover:-translate-y-1"
@@ -84,26 +79,24 @@ export default function SchoolCalendarPage() {
                                     </motion.div>
     
                                     <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50 p-4">
-                                        <object
-                                            data={`${viewerUrl}#toolbar=0`}
-                                            type="application/pdf"
-                                            className="w-full h-[600px] rounded-lg border-0"
-                                        >
-                                            <div className="flex flex-col items-center justify-center h-full bg-slate-100 text-slate-500 gap-4">
-                                                <p>Unable to display PDF directly.</p>
-                                                <a 
-                                                    href={viewerUrl} 
-                                                    className="text-royal underline font-medium"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    Click here to download/view
-                                                </a>
-                                            </div>
-                                        </object>
-                                        <p className="text-xs text-slate-400 mt-2">
-                                            Note: PDF viewing depends on your browser settings.
-                                        </p>
+                                        <iframe
+                                            src={`${pdfUrl}#toolbar=0`}
+                                            className="w-full h-[600px] rounded-lg border-0 bg-white"
+                                            title="School Calendar"
+                                        />
+                                        <div className="text-center mt-4 md:hidden">
+                                            <p className="text-slate-500 text-sm mb-2">
+                                                Having trouble viewing the PDF?
+                                            </p>
+                                            <a 
+                                                href={pdfUrl} 
+                                                className="text-royal underline font-medium text-sm"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Open in new tab
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                                 );

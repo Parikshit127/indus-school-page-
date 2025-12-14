@@ -40,7 +40,8 @@ export function Navbar() {
                 { name: "Academic Overview", path: "/academics" },
                 { name: "Teaching Methodology", path: "/academics/methodology" },
                 { name: "Curriculum", path: "/academics/curriculum" },
-                { name: "Teaching Staff", path: "/academics/teaching-staff" }
+                { name: "Teaching Staff", path: "/academics/teaching-staff" },
+                { name: "School Calendar", path: "/academics/calendar" }
             ]
         },
         {
@@ -57,7 +58,6 @@ export function Navbar() {
         { name: "Gallery", path: "/gallery" },
         { name: "Facilities", path: "/facilities" },
         { name: "Contact Us", path: "/contact" },
-        { name: "Calendar", path: "/calendar" },
     ];
 
     return (

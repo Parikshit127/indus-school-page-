@@ -51,7 +51,7 @@ export function CalendarManager() {
             const token = localStorage.getItem("adminToken");
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
-            const response = await fetch(`${apiUrl}/api/upload`, {
+            const response = await fetch(`${apiUrl}/api/content/calendar/upload`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: formData
