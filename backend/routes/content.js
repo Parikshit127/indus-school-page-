@@ -94,6 +94,13 @@ router.get('/:section', async (req, res) => {
             await content.save();
         }
 
+        // Dynamic URL fix for deployed environments
+        if (req.params.section === 'calendar' && content && content.data && content.data.calendar) {
+            const baseUrl = process.env.API_URL || `${req.protocol}://${req.get('host')}`;
+            // Always return the computed path to the PDF endpoint to ensure it matches the current environment
+            content.data.calendar.pdfUrl = `${baseUrl}/api/content/calendar/pdf`;
+        }
+
         res.json(content ? content.data[req.params.section] : {});
     } catch (err) {
         res.status(500).json({ error: err.message });
