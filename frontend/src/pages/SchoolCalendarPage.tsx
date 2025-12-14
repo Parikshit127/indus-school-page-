@@ -78,25 +78,8 @@ export default function SchoolCalendarPage() {
                                         </a>
                                     </motion.div>
     
-                                    <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50 p-4">
-                                        <iframe
-                                            src={`${pdfUrl}#toolbar=0`}
-                                            className="w-full h-[600px] rounded-lg border-0 bg-white"
-                                            title="School Calendar"
-                                        />
-                                        <div className="text-center mt-4 md:hidden">
-                                            <p className="text-slate-500 text-sm mb-2">
-                                                Having trouble viewing the PDF?
-                                            </p>
-                                            <a 
-                                                href={pdfUrl} 
-                                                className="text-royal underline font-medium text-sm"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                Open in new tab
-                                            </a>
-                                        </div>
+                                    <div className="text-center text-slate-500 max-w-lg mx-auto mt-8">
+                                        <p>Click the button above to view and download the official academic calendar for this session.</p>
                                     </div>
                                 </div>
                                 );
