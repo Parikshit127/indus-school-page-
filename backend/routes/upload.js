@@ -6,12 +6,25 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-// Configure Cloudinary
-cloudinary.config({
+// Validate Cloudinary environment variables
+const cloudinaryEnvVars = {
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
-});
+};
+
+// Check for missing Cloudinary credentials
+const missingVars = Object.entries(cloudinaryEnvVars)
+    .filter(([key, value]) => !value)
+    .map(([key]) => `CLOUDINARY_${key.toUpperCase()}`);
+
+if (missingVars.length > 0) {
+    console.error('⚠️  WARNING: Missing Cloudinary environment variables:', missingVars.join(', '));
+    console.error('⚠️  Image uploads will fail until these are configured.');
+}
+
+// Configure Cloudinary
+cloudinary.config(cloudinaryEnvVars);
 
 // Configure Multer
 const storage = multer.diskStorage({
@@ -41,7 +54,7 @@ router.post('/', authMiddleware, upload.single('file'), async (req, res) => {
 
         // Use 'auto' to let Cloudinary handle PDFs as images/documents for better viewing compatibility
         const resourceType = 'auto';
-        
+
         console.log('Uploading with resource_type:', resourceType);
 
         // Upload to Cloudinary
@@ -55,16 +68,16 @@ router.post('/', authMiddleware, upload.single('file'), async (req, res) => {
         // Clean up local file
         fs.unlinkSync(req.file.path);
 
-        res.json({ 
-            url: result.secure_url, 
-            public_id: result.public_id, 
-            resource_type: result.resource_type 
+        res.json({
+            url: result.secure_url,
+            public_id: result.public_id,
+            resource_type: result.resource_type
         });
     } catch (err) {
         console.error('Upload Error Details:', err);
         if (err.message) console.error('Error Message:', err.message);
         if (err.http_code) console.error('HTTP Code:', err.http_code);
-        
+
         // Try to cleanup file even on error
         if (req.file && fs.existsSync(req.file.path)) {
             try {
