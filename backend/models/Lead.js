@@ -10,7 +10,11 @@ const LeadSchema = new mongoose.Schema({
     class: { type: String, required: true },
     message: { type: String },
     date: { type: Date, default: Date.now },
-    status: { type: String, default: 'New' } // New, Contacted, Enrolled, Closed
+    status: { type: String, default: 'New' }, // New, Contacted, Enrolled, Closed
+    adminNotes: [{
+        content: String,
+        date: { type: Date, default: Date.now }
+    }] // Notes private to admin
 });
 
 module.exports = mongoose.model('Lead', LeadSchema);

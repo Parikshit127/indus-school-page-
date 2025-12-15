@@ -39,8 +39,9 @@ router.post('/calendar/upload', authMiddleware, upload.single('file'), async (re
         await newFile.save();
 
         // Update generic content metadata
-        const apiUrl = process.env.API_URL || 'http://localhost:4000';
-        const pdfUrl = `${apiUrl}/api/content/calendar/pdf`;
+        // Update generic content metadata
+        const baseUrl = process.env.API_URL || `${req.protocol}://${req.get('host')}`;
+        const pdfUrl = `${baseUrl}/api/content/calendar/pdf`;
 
         await PageContent.findOneAndUpdate(
             { section: 'calendar' },

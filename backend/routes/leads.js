@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+console.log("Loading leads.js route module...");
 const nodemailer = require('nodemailer');
 const Lead = require('../models/Lead');
 
@@ -156,6 +157,68 @@ router.put('/:id', authMiddleware, async (req, res) => {
             return res.status(404).json({ error: 'Lead not found' });
         }
         res.json(lead);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// POST: Add a note to a lead
+router.post('/:id/notes', authMiddleware, async (req, res) => {
+    console.log('Received add note request (v2 lean) for lead:', req.params.id);
+    try {
+        const { content } = req.body;
+        if (!content) return res.status(400).json({ error: 'Note content is required' });
+
+        // Use lean() to get raw JSON, avoiding casting errors if DB schema mismatches
+        const leadRaw = await Lead.findById(req.params.id).lean();
+        if (!leadRaw) return res.status(404).json({ error: 'Lead not found' });
+
+        let notesArray = [];
+        
+        // Handle existing array or legacy string
+        if (Array.isArray(leadRaw.adminNotes)) {
+            notesArray = leadRaw.adminNotes;
+        } else if (typeof leadRaw.adminNotes === 'string' && leadRaw.adminNotes.trim()) {
+            notesArray.push({ content: leadRaw.adminNotes, date: new Date() });
+        }
+        
+        // Add new note
+        notesArray.push({ content, date: new Date() });
+
+        // Direct update to overwrite any schema inconsistencies
+        await Lead.updateOne(
+            { _id: req.params.id },
+            { $set: { adminNotes: notesArray } }
+        );
+
+        // Fetch updated doc to return
+        const updatedLead = await Lead.findById(req.params.id);
+        
+        console.log('Note added successfully (migrated if needed)');
+        res.json(updatedLead);
+    } catch (err) {
+        console.error('Error adding note:', err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// DELETE: Remove a note from a lead
+router.delete('/:id/notes/:noteId', authMiddleware, async (req, res) => {
+    try {
+        const leadRaw = await Lead.findById(req.params.id).lean();
+        if (!leadRaw) return res.status(404).json({ error: 'Lead not found' });
+
+        if (Array.isArray(leadRaw.adminNotes)) {
+            const newNotes = leadRaw.adminNotes.filter(n => n._id.toString() !== req.params.noteId);
+            await Lead.updateOne(
+                { _id: req.params.id },
+                { $set: { adminNotes: newNotes } }
+            );
+        }
+        
+        // Return updated document
+        const updatedLead = await Lead.findById(req.params.id);
+        res.json(updatedLead);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
