@@ -32,18 +32,24 @@ export default function AdminDashboard() {
 
     return (
         <div className="flex bg-slate-50/50 min-h-screen relative">
-            {/* Mobile Sidebar Toggle */}
-            <button
-                className="md:hidden fixed top-4 right-4 z-40 p-2 bg-royal-dark text-white rounded-lg shadow-lg"
-                onClick={() => setIsSidebarOpen(true)}
-            >
-                <Menu size={24} />
-            </button>
+            {/* Mobile Header Bar */}
+            <div className="md:hidden fixed top-0 left-0 right-0 z-30 bg-royal-dark text-white px-4 py-3 flex items-center justify-between shadow-lg">
+                <div>
+                    <h1 className="text-lg font-serif font-bold text-gold">Indus Admin</h1>
+                    <p className="text-[10px] text-white/60">Management Console</p>
+                </div>
+                <button
+                    className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
+                    onClick={() => setIsSidebarOpen(true)}
+                >
+                    <Menu size={22} />
+                </button>
+            </div>
 
             {/* Sidebar Overlay */}
             {isSidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                    className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
                     onClick={() => setIsSidebarOpen(false)}
                 />
             )}
@@ -58,9 +64,9 @@ export default function AdminDashboard() {
             />
 
             {/* Main Content Area */}
-            <div className={`flex-1 min-w-0 transition-all duration-300 md:ml-64`}>
-                <Section className="min-h-screen pt-8 pb-12">
-                    <div className="max-w-7xl mx-auto px-4">
+            <div className={`flex-1 min-w-0 transition-all duration-300 md:ml-64 pt-16 md:pt-0`}>
+                <Section className="min-h-screen pt-4 md:pt-8 pb-12">
+                    <div className="max-w-7xl mx-auto px-3 md:px-4">
                         {activeTab === 'dashboard' && <DashboardOverview />}
                         {activeTab === 'content' && <ContentEditor />}
                         {activeTab === 'gallery' && <GalleryManager />}

@@ -148,7 +148,7 @@ export function TeacherManager() {
         }
     };
 
-    const filteredTeachers = teachers.filter(t => 
+    const filteredTeachers = teachers.filter(t =>
         t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         t.teacherCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
         t.teacherType.toLowerCase().includes(searchTerm.toLowerCase())
@@ -250,7 +250,7 @@ export function TeacherManager() {
                                 required
                             />
                         </div>
-                        
+
                         <div className="md:col-span-2 flex justify-end gap-4 mt-4">
                             <button
                                 type="button"
@@ -272,20 +272,73 @@ export function TeacherManager() {
             )}
 
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div className="p-4 border-b border-slate-100 flex gap-4">
-                     <div className="relative flex-1 max-w-md">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                <div className="p-3 md:p-4 border-b border-slate-100">
+                    <div className="relative w-full">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                         <input
                             type="text"
                             placeholder="Search teachers..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-royal/20 outline-none"
+                            className="w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-royal/20 outline-none text-sm"
                         />
-                     </div>
+                    </div>
                 </div>
 
-                <div className="overflow-x-auto">
+                {/* Mobile Card View */}
+                <div className="md:hidden">
+                    {filteredTeachers.length === 0 ? (
+                        <div className="p-8 text-center text-slate-500 text-sm">
+                            No teachers found.
+                        </div>
+                    ) : (
+                        <div className="divide-y divide-slate-100">
+                            {filteredTeachers.map((teacher, index) => (
+                                <div key={teacher._id} className="p-4">
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                                                <span className="text-xs text-slate-400">#{index + 1}</span>
+                                                <span className="px-2 py-0.5 bg-royal/10 text-royal text-xs rounded-full font-bold">
+                                                    {teacher.teacherType}
+                                                </span>
+                                                <span className="text-xs text-slate-500">{teacher.gender}</span>
+                                            </div>
+                                            <h4 className="font-bold text-royal truncate">{teacher.name}</h4>
+                                            <p className="text-xs text-slate-500 font-mono">{teacher.teacherCode}</p>
+                                            <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-600">
+                                                <span className="flex items-center gap-1">
+                                                    <GraduationCap size={12} className="text-slate-400" />
+                                                    {teacher.qualification}
+                                                </span>
+                                                <span>• Classes: {teacher.classesTaught}</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-1">
+                                            <button
+                                                onClick={() => handleEditClick(teacher)}
+                                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                                                title="Edit"
+                                            >
+                                                <Edit2 size={16} />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(teacher._id)}
+                                                className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
+                                                title="Delete"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Desktop Table View */}
+                <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-slate-50 text-slate-600 text-sm uppercase tracking-wider">

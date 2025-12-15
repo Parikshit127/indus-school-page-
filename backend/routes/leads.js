@@ -104,7 +104,14 @@ const authMiddleware = (req, res, next) => {
 
 // POST: Admin Login
 router.post('/auth/login', (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, securityCode } = req.body;
+
+    // Check security code first
+    const envSecurityCode = process.env.ADMIN_SECURITY_CODE;
+    if (envSecurityCode && securityCode !== envSecurityCode) {
+        return res.status(401).json({ error: 'Invalid security code' });
+    }
+
     // Simple auth for demo (use proper auth in production)
     if (email === 'admin@indusrohtak.com' && password === 'admin123') {
         return res.json({ success: true, token: ADMIN_TOKEN });
@@ -174,14 +181,14 @@ router.post('/:id/notes', authMiddleware, async (req, res) => {
         if (!leadRaw) return res.status(404).json({ error: 'Lead not found' });
 
         let notesArray = [];
-        
+
         // Handle existing array or legacy string
         if (Array.isArray(leadRaw.adminNotes)) {
             notesArray = leadRaw.adminNotes;
         } else if (typeof leadRaw.adminNotes === 'string' && leadRaw.adminNotes.trim()) {
             notesArray.push({ content: leadRaw.adminNotes, date: new Date() });
         }
-        
+
         // Add new note
         notesArray.push({ content, date: new Date() });
 
@@ -193,7 +200,7 @@ router.post('/:id/notes', authMiddleware, async (req, res) => {
 
         // Fetch updated doc to return
         const updatedLead = await Lead.findById(req.params.id);
-        
+
         console.log('Note added successfully (migrated if needed)');
         res.json(updatedLead);
     } catch (err) {
@@ -215,7 +222,7 @@ router.delete('/:id/notes/:noteId', authMiddleware, async (req, res) => {
                 { $set: { adminNotes: newNotes } }
             );
         }
-        
+
         // Return updated document
         const updatedLead = await Lead.findById(req.params.id);
         res.json(updatedLead);

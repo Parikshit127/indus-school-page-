@@ -28,15 +28,16 @@ const StatsCard = ({ title, value, icon: Icon, color }: { title: string; value: 
     <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow"
+        className="bg-white rounded-xl p-4 md:p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow"
     >
         <div className="flex items-center justify-between">
-            <div>
-                <p className="text-sm text-slate-500 font-medium mb-1">{title}</p>
-                <p className="text-3xl font-bold text-slate-800">{value}</p>
+            <div className="min-w-0 flex-1">
+                <p className="text-xs md:text-sm text-slate-500 font-medium mb-1 truncate">{title}</p>
+                <p className="text-2xl md:text-3xl font-bold text-slate-800">{value}</p>
             </div>
-            <div className="p-3 rounded-lg" style={{ backgroundColor: `${color}20` }}>
-                <Icon size={28} style={{ color }} />
+            <div className="p-2 md:p-3 rounded-lg flex-shrink-0 ml-2" style={{ backgroundColor: `${color}20` }}>
+                <Icon size={22} className="md:hidden" style={{ color }} />
+                <Icon size={28} className="hidden md:block" style={{ color }} />
             </div>
         </div>
     </motion.div>
@@ -172,75 +173,70 @@ export default function Analytics() {
     const totalLeads = stats.New + stats.Contacted + stats.Admitted + stats.Closed;
 
     return (
-        <div className="p-6 max-w-7xl mx-auto">
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-royal mb-2">Analytics Dashboard</h1>
-                <p className="text-slate-600">Track inquiry status and conversion metrics</p>
+        <div className="p-4 md:p-6 max-w-7xl mx-auto">
+            <div className="mb-6 md:mb-8">
+                <h1 className="text-2xl md:text-3xl font-bold text-royal mb-2">Analytics Dashboard</h1>
+                <p className="text-sm md:text-base text-slate-600">Track inquiry status and conversion metrics</p>
             </div>
 
             {/* Date Range Filters */}
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-100 mb-8">
+            <div className="bg-white rounded-xl p-4 md:p-6 shadow-sm border border-slate-100 mb-6 md:mb-8">
                 <div className="flex items-center gap-2 mb-4">
-                    <Calendar className="text-royal" size={20} />
-                    <h3 className="font-bold text-royal">Date Range</h3>
+                    <Calendar className="text-royal" size={18} />
+                    <h3 className="font-bold text-royal text-sm md:text-base">Date Range</h3>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex flex-col gap-4">
                     <div className="flex flex-wrap gap-2">
                         <button
                             onClick={() => setDateRange('today')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                dateRange === 'today'
+                            className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${dateRange === 'today'
                                     ? 'bg-royal text-white shadow-md'
                                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                            }`}
+                                }`}
                         >
                             Today
                         </button>
                         <button
                             onClick={() => setDateRange('week')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                dateRange === 'week'
+                            className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${dateRange === 'week'
                                     ? 'bg-royal text-white shadow-md'
                                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                            }`}
+                                }`}
                         >
-                            Last 7 Days
+                            7 Days
                         </button>
                         <button
                             onClick={() => setDateRange('month')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                dateRange === 'month'
+                            className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${dateRange === 'month'
                                     ? 'bg-royal text-white shadow-md'
                                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                            }`}
+                                }`}
                         >
-                            Last Month
+                            Month
                         </button>
                         <button
                             onClick={() => setDateRange('year')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                dateRange === 'year'
+                            className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${dateRange === 'year'
                                     ? 'bg-royal text-white shadow-md'
                                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                            }`}
+                                }`}
                         >
-                            Last Year
+                            Year
                         </button>
                         <button
                             onClick={() => setDateRange('custom')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                dateRange === 'custom'
+                            className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${dateRange === 'custom'
                                     ? 'bg-royal text-white shadow-md'
                                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                            }`}
+                                }`}
                         >
-                            Custom Range
+                            Custom
                         </button>
                     </div>
 
                     {dateRange === 'custom' && (
-                        <div className="flex flex-col md:flex-row gap-3 flex-1">
+                        <div className="flex flex-col md:flex-row gap-3">
                             <div className="flex-1">
                                 <label className="block text-xs text-slate-500 mb-1 font-medium">Start Date</label>
                                 <input
@@ -265,76 +261,76 @@ export default function Analytics() {
             </div>
 
             {loading ? (
-                <div className="flex items-center justify-center h-64">
-                    <div className="text-slate-400">Loading analytics...</div>
+                <div className="flex items-center justify-center h-48 md:h-64">
+                    <div className="text-slate-400 text-sm">Loading analytics...</div>
                 </div>
             ) : (
                 <>
                     {/* Stats Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        <StatsCard 
-                            title="New Inquiries" 
-                            value={stats.New} 
+                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
+                        <StatsCard
+                            title="New Inquiries"
+                            value={stats.New}
                             icon={STATUS_ICONS.New}
                             color={STATUS_COLORS.New}
                         />
-                        <StatsCard 
-                            title="Contacted" 
-                            value={stats.Contacted} 
+                        <StatsCard
+                            title="Contacted"
+                            value={stats.Contacted}
                             icon={STATUS_ICONS.Contacted}
                             color={STATUS_COLORS.Contacted}
                         />
-                        <StatsCard 
-                            title="Admitted" 
-                            value={stats.Admitted} 
+                        <StatsCard
+                            title="Admitted"
+                            value={stats.Admitted}
                             icon={STATUS_ICONS.Admitted}
                             color={STATUS_COLORS.Admitted}
                         />
-                        <StatsCard 
-                            title="Closed" 
-                            value={stats.Closed} 
+                        <StatsCard
+                            title="Closed"
+                            value={stats.Closed}
                             icon={STATUS_ICONS.Closed}
                             color={STATUS_COLORS.Closed}
                         />
                     </div>
 
                     {/* Bar Chart */}
-                    <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-100">
-                        <div className="flex items-center justify-between mb-6">
+                    <div className="bg-white rounded-xl p-4 md:p-6 shadow-sm border border-slate-100">
+                        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 md:mb-6 gap-2">
                             <div>
-                                <h2 className="text-xl font-bold text-royal mb-1">Status Distribution</h2>
-                                <p className="text-sm text-slate-500">Total Inquiries: {totalLeads}</p>
+                                <h2 className="text-lg md:text-xl font-bold text-royal mb-1">Status Distribution</h2>
+                                <p className="text-xs md:text-sm text-slate-500">Total Inquiries: {totalLeads}</p>
                             </div>
                             <div className="p-2 bg-royal/10 rounded-lg">
-                                <TrendingUp className="text-royal" size={24} />
+                                <TrendingUp className="text-royal" size={20} />
                             </div>
                         </div>
 
-                        <div style={{ width: '100%', height: 400 }}>
+                        <div style={{ width: '100%', height: 280 }} className="md:h-96">
                             {totalLeads > 0 ? (
                                 <ResponsiveContainer width="100%" height="100%">
                                     <BarChart data={chartData}>
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-                                        <XAxis 
-                                            dataKey="name" 
-                                            tick={{ fontSize: 14, fill: '#64748b' }}
+                                        <XAxis
+                                            dataKey="name"
+                                            tick={{ fontSize: 11 }}
                                             axisLine={{ stroke: '#E2E8F0' }}
                                         />
-                                        <YAxis 
+                                        <YAxis
                                             allowDecimals={false}
-                                            tick={{ fontSize: 14, fill: '#64748b' }}
+                                            tick={{ fontSize: 11 }}
                                             axisLine={{ stroke: '#E2E8F0' }}
                                         />
-                                        <Tooltip 
+                                        <Tooltip
                                             cursor={{ fill: 'transparent' }}
-                                            contentStyle={{ 
-                                                borderRadius: '8px', 
-                                                border: 'none', 
+                                            contentStyle={{
+                                                borderRadius: '8px',
+                                                border: 'none',
                                                 boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
-                                                padding: '12px'
+                                                padding: '10px'
                                             }}
                                         />
-                                        <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={60}>
+                                        <Bar dataKey="value" radius={[6, 6, 0, 0]} barSize={50}>
                                             {chartData.map((entry, index) => (
                                                 <Cell key={`cell-${index}`} fill={entry.color} />
                                             ))}
@@ -342,21 +338,21 @@ export default function Analytics() {
                                     </BarChart>
                                 </ResponsiveContainer>
                             ) : (
-                                <div className="flex items-center justify-center h-full text-slate-400">
+                                <div className="flex items-center justify-center h-full text-slate-400 text-sm">
                                     No data available for selected date range
                                 </div>
                             )}
                         </div>
 
                         {/* Legend */}
-                        <div className="flex flex-wrap justify-center gap-6 mt-6 pt-6 border-t border-slate-100">
+                        <div className="flex flex-wrap justify-center gap-3 md:gap-6 mt-4 md:mt-6 pt-4 md:pt-6 border-t border-slate-100">
                             {chartData.map((item) => (
-                                <div key={item.name} className="flex items-center gap-2">
-                                    <div 
-                                        className="w-4 h-4 rounded" 
+                                <div key={item.name} className="flex items-center gap-1.5 md:gap-2">
+                                    <div
+                                        className="w-3 h-3 md:w-4 md:h-4 rounded"
                                         style={{ backgroundColor: item.color }}
                                     />
-                                    <span className="text-sm text-slate-600 font-medium">
+                                    <span className="text-xs md:text-sm text-slate-600 font-medium">
                                         {item.name}: {item.value}
                                     </span>
                                 </div>

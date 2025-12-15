@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function AdminLogin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [securityCode, setSecurityCode] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -18,7 +19,7 @@ export default function AdminLogin() {
             const response = await fetch(`${apiUrl}/api/leads/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email, password, securityCode })
             });
 
             const data = await response.json();
@@ -71,6 +72,23 @@ export default function AdminLogin() {
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent"
                             placeholder="••••••••"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-white/80 text-sm font-medium mb-2">Security Code</label>
+                        <input
+                            type="password"
+                            value={securityCode}
+                            onChange={(e) => {
+                                const val = e.target.value.replace(/\D/g, '').slice(0, 8);
+                                setSecurityCode(val);
+                            }}
+                            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent tracking-widest text-center"
+                            placeholder="12345678"
+                            pattern="\d{8}"
+                            title="Please enter the 8-digit security code"
                             required
                         />
                     </div>

@@ -159,16 +159,16 @@ export function ContentEditor() {
     if (!content) return <div className="p-8 text-center text-red-500">Error loading content.</div>;
 
     return (
-        <div className="max-w-4xl mx-auto pb-12">
-            <div className="flex justify-between items-center mb-8">
+        <div className="max-w-4xl mx-auto pb-8 md:pb-12">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
                 <div>
-                    <h2 className="text-2xl font-serif font-bold text-royal">Hero Section Manager</h2>
-                    <p className="text-slate-500">Customize the first impression of your website</p>
+                    <h2 className="text-xl md:text-2xl font-serif font-bold text-royal">Hero Section Manager</h2>
+                    <p className="text-sm md:text-base text-slate-500">Customize the first impression of your website</p>
                 </div>
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="flex items-center gap-2 px-6 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
+                    className="w-full md:w-auto flex items-center justify-center gap-2 px-4 md:px-6 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
                 >
                     {saving ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
                     <span>{saving ? 'Saving...' : 'Save Changes'}</span>
@@ -185,18 +185,19 @@ export function ContentEditor() {
                 </motion.div>
             )}
 
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
                 {/* Media Slider Section */}
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-slate-200">
                     <div className="flex items-center gap-2 mb-4 text-royal font-bold border-b border-slate-100 pb-2">
-                        <ImageIcon size={20} />
-                        <h3>Hero Slider Images/Videos</h3>
+                        <ImageIcon size={18} className="md:hidden" />
+                        <ImageIcon size={20} className="hidden md:block" />
+                        <h3 className="text-sm md:text-base">Hero Slider Images/Videos</h3>
                     </div>
 
-                    <div className="space-y-6">
+                    <div className="space-y-4 md:space-y-6">
                         {/* Current Slides */}
                         {content.slides.length > 0 ? (
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-4 md:mb-6">
                                 {content.slides.map((slide, index) => (
                                     <div key={index} className="group flex flex-col bg-white rounded-lg overflow-hidden border border-slate-200 shadow-sm transition-shadow hover:shadow-md">
                                         <div className="relative aspect-video bg-slate-100">
@@ -205,37 +206,37 @@ export function ContentEditor() {
                                             ) : (
                                                 <img src={slide.url} alt={`Slide ${index}`} className="w-full h-full object-cover" />
                                             )}
-                                            <div className="absolute top-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded backdrop-blur-sm">
+                                            <div className="absolute top-1 left-1 md:top-2 md:left-2 bg-black/60 text-white text-[8px] md:text-[10px] px-1.5 md:px-2 py-0.5 md:py-1 rounded backdrop-blur-sm">
                                                 Slide {index + 1}
                                             </div>
                                         </div>
-                                        <div className="p-2 border-t border-slate-100 flex justify-between items-center bg-white">
-                                            <span className="text-xs font-semibold text-slate-500 uppercase">{slide.type}</span>
+                                        <div className="p-1.5 md:p-2 border-t border-slate-100 flex justify-between items-center bg-white">
+                                            <span className="text-[10px] md:text-xs font-semibold text-slate-500 uppercase">{slide.type}</span>
                                             <button
                                                 onClick={() => handleRemoveSlide(index)}
-                                                className="flex items-center gap-1.5 px-2 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded transition-colors text-xs font-medium"
+                                                className="flex items-center gap-1 px-1.5 md:px-2 py-1 md:py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded transition-colors text-[10px] md:text-xs font-medium"
                                                 title="Remove Slide"
                                             >
-                                                <Trash2 size={14} />
-                                                <span>Remove</span>
+                                                <Trash2 size={12} className="md:w-3.5 md:h-3.5" />
+                                                <span className="hidden sm:inline">Remove</span>
                                             </button>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         ) : (
-                            <div className="text-center py-8 bg-slate-50 border border-dashed border-slate-300 rounded-lg text-slate-500 mb-6">
+                            <div className="text-center py-6 md:py-8 bg-slate-50 border border-dashed border-slate-300 rounded-lg text-slate-500 mb-4 md:mb-6 text-sm">
                                 No slides added. Add some images or videos below!
                             </div>
                         )}
 
                         {/* Add New Slide */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-slate-100">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 pt-4 md:pt-6 border-t border-slate-100">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-2">Upload File</label>
-                                <label className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-slate-50 text-slate-700 rounded-lg cursor-pointer border border-dashed border-slate-300 hover:bg-white hover:border-royal transition-all">
+                                <label className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-slate-50 text-slate-700 rounded-lg cursor-pointer border border-dashed border-slate-300 hover:bg-white hover:border-royal transition-all text-sm">
                                     {uploading ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
-                                    <span className="text-sm">{uploading ? 'Uploading...' : 'Upload Image/Video'}</span>
+                                    <span>{uploading ? 'Uploading...' : 'Upload Image/Video'}</span>
                                     <input
                                         type="file"
                                         className="hidden"
@@ -254,7 +255,7 @@ export function ContentEditor() {
                                         value={newSlideUrl}
                                         onChange={(e) => setNewSlideUrl(e.target.value)}
                                         placeholder="https://example.com/image.jpg"
-                                        className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-1 focus:ring-royal outline-none"
+                                        className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-1 focus:ring-royal outline-none text-sm"
                                     />
                                     <button
                                         onClick={handleAddLink}
@@ -270,10 +271,11 @@ export function ContentEditor() {
                 </div>
 
                 {/* Announcement Section */}
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-slate-200">
                     <div className="flex items-center gap-2 mb-4 text-royal font-bold border-b border-slate-100 pb-2">
-                        <Megaphone size={20} />
-                        <h3>Announcement Bar</h3>
+                        <Megaphone size={18} className="md:hidden" />
+                        <Megaphone size={20} className="hidden md:block" />
+                        <h3 className="text-sm md:text-base">Announcement Bar</h3>
                     </div>
 
                     <div className="space-y-4">
@@ -291,7 +293,7 @@ export function ContentEditor() {
                             <label htmlFor="announce-active" className="text-sm font-medium text-slate-700">Show Announcement Bar</label>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-2">Announcement Text</label>
                                 <input
@@ -301,7 +303,7 @@ export function ContentEditor() {
                                         ...content,
                                         announcement: { ...content.announcement, text: e.target.value }
                                     })}
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none"
+                                    className="w-full px-3 md:px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none text-sm"
                                 />
                             </div>
                             <div>
@@ -313,7 +315,7 @@ export function ContentEditor() {
                                         ...content,
                                         announcement: { ...content.announcement, link: e.target.value }
                                     })}
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none"
+                                    className="w-full px-3 md:px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none text-sm"
                                 />
                             </div>
                         </div>
@@ -321,13 +323,14 @@ export function ContentEditor() {
                 </div>
 
                 {/* Admission Check Section */}
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-slate-200">
                     <div className="flex items-center gap-2 mb-4 text-royal font-bold border-b border-slate-100 pb-2">
-                        <Calendar size={20} />
-                        <h3>Admission CTA</h3>
+                        <Calendar size={18} className="md:hidden" />
+                        <Calendar size={20} className="hidden md:block" />
+                        <h3 className="text-sm md:text-base">Admission CTA</h3>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-2">Deadline Text</label>
                             <input
@@ -337,7 +340,7 @@ export function ContentEditor() {
                                     ...content,
                                     admission: { ...content.admission, deadline: e.target.value }
                                 })}
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none"
+                                className="w-full px-3 md:px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none text-sm"
                             />
                         </div>
                         <div>
@@ -349,7 +352,7 @@ export function ContentEditor() {
                                     ...content,
                                     admission: { ...content.admission, gradesOpen: e.target.value }
                                 })}
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none"
+                                className="w-full px-3 md:px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none text-sm"
                             />
                         </div>
                         <div>
@@ -361,22 +364,25 @@ export function ContentEditor() {
                                     ...content,
                                     admission: { ...content.admission, ctaText: e.target.value }
                                 })}
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none"
+                                className="w-full px-3 md:px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none text-sm"
                             />
                         </div>
                     </div>
                 </div>
 
                 {/* Live Stats Section */}
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-slate-200">
                     <div className="flex items-center gap-2 mb-4 text-royal font-bold border-b border-slate-100 pb-2">
-                        <Trophy size={20} />
-                        <h3>Live Counters</h3>
+                        <Trophy size={18} className="md:hidden" />
+                        <Trophy size={20} className="hidden md:block" />
+                        <h3 className="text-sm md:text-base">Live Counters</h3>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-2"><Trophy size={16} className="inline mr-1" /> Years</label>
+                            <label className="block text-xs md:text-sm font-medium text-slate-700 mb-2 flex items-center gap-1">
+                                <Trophy size={14} className="hidden md:inline" /> Years
+                            </label>
                             <input
                                 type="number"
                                 value={content.stats.years}
@@ -384,11 +390,13 @@ export function ContentEditor() {
                                     ...content,
                                     stats: { ...content.stats, years: parseInt(e.target.value) || 0 }
                                 })}
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none"
+                                className="w-full px-3 md:px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none text-sm"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-2"><Users size={16} className="inline mr-1" /> Students</label>
+                            <label className="block text-xs md:text-sm font-medium text-slate-700 mb-2 flex items-center gap-1">
+                                <Users size={14} className="hidden md:inline" /> Students
+                            </label>
                             <input
                                 type="number"
                                 value={content.stats.students}
@@ -396,11 +404,13 @@ export function ContentEditor() {
                                     ...content,
                                     stats: { ...content.stats, students: parseInt(e.target.value) || 0 }
                                 })}
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none"
+                                className="w-full px-3 md:px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none text-sm"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-2"><GraduationCap size={16} className="inline mr-1" /> Teachers</label>
+                            <label className="block text-xs md:text-sm font-medium text-slate-700 mb-2 flex items-center gap-1">
+                                <GraduationCap size={14} className="hidden md:inline" /> Teachers
+                            </label>
                             <input
                                 type="number"
                                 value={content.stats.teachers}
@@ -408,11 +418,13 @@ export function ContentEditor() {
                                     ...content,
                                     stats: { ...content.stats, teachers: parseInt(e.target.value) || 0 }
                                 })}
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none"
+                                className="w-full px-3 md:px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none text-sm"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-2"><Trophy size={16} className="inline mr-1" /> Results</label>
+                            <label className="block text-xs md:text-sm font-medium text-slate-700 mb-2 flex items-center gap-1">
+                                <Trophy size={14} className="hidden md:inline" /> Results
+                            </label>
                             <input
                                 type="text"
                                 value={content.stats.boardResults}
@@ -420,7 +432,7 @@ export function ContentEditor() {
                                     ...content,
                                     stats: { ...content.stats, boardResults: e.target.value }
                                 })}
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none"
+                                className="w-full px-3 md:px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 focus:border-royal outline-none text-sm"
                             />
                         </div>
                     </div>

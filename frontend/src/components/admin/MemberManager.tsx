@@ -50,7 +50,7 @@ export function MemberManager() {
         try {
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
             const token = localStorage.getItem("adminToken");
-            
+
             const response = await fetch(`${apiUrl}/api/members`, {
                 method: "POST",
                 headers: {
@@ -117,7 +117,7 @@ export function MemberManager() {
 
     const handleDelete = async (id: string) => {
         if (!confirm("Are you sure you want to delete this member?")) return;
-        
+
         try {
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
             const token = localStorage.getItem("adminToken");
@@ -140,15 +140,15 @@ export function MemberManager() {
     if (loading) return <div className="p-8 text-center text-slate-500">Loading members...</div>;
 
     return (
-        <div className="max-w-6xl mx-auto pb-12">
-            <div className="flex justify-between items-center mb-8">
+        <div className="max-w-6xl mx-auto pb-8 md:pb-12">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
                 <div>
-                    <h2 className="text-2xl font-serif font-bold text-royal">Member Management</h2>
-                    <p className="text-slate-500">Manage the committee members list</p>
+                    <h2 className="text-xl md:text-2xl font-serif font-bold text-royal">Member Management</h2>
+                    <p className="text-sm md:text-base text-slate-500">Manage the committee members list</p>
                 </div>
                 <button
                     onClick={() => { setIsAdding(!isAdding); setEditingId(null); }}
-                    className="flex items-center gap-2 px-6 py-2.5 bg-royal text-white rounded-lg font-medium hover:bg-royal-dark transition-colors"
+                    className="w-full md:w-auto flex items-center justify-center gap-2 px-4 md:px-6 py-2.5 bg-royal text-white rounded-lg font-medium hover:bg-royal-dark transition-colors"
                 >
                     {isAdding ? <X size={20} /> : <Plus size={20} />}
                     <span>{isAdding ? "Cancel" : "Add Member"}</span>
@@ -157,15 +157,15 @@ export function MemberManager() {
 
             {/* Add Member Form */}
             {isAdding && (
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-8 animate-in fade-in slide-in-from-top-4">
-                    <h3 className="font-bold text-lg mb-4 text-royal">Add New Member</h3>
-                    <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-slate-200 mb-6 md:mb-8 animate-in fade-in slide-in-from-top-4">
+                    <h3 className="font-bold text-base md:text-lg mb-4 text-royal">Add New Member</h3>
+                    <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                         <input
                             type="number"
                             placeholder="Order"
                             value={newOrder}
                             onChange={(e) => setNewOrder(parseInt(e.target.value))}
-                            className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 outline-none"
+                            className="px-3 md:px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 outline-none text-sm md:text-base"
                             required
                         />
                         <input
@@ -173,7 +173,7 @@ export function MemberManager() {
                             placeholder="Member Name"
                             value={newName}
                             onChange={(e) => setNewName(e.target.value)}
-                            className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 outline-none"
+                            className="px-3 md:px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 outline-none text-sm md:text-base"
                             required
                         />
                         <input
@@ -181,7 +181,7 @@ export function MemberManager() {
                             placeholder="Father/Spouse Name"
                             value={newRelation}
                             onChange={(e) => setNewRelation(e.target.value)}
-                            className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 outline-none"
+                            className="px-3 md:px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 outline-none text-sm md:text-base"
                             required
                         />
                         <input
@@ -189,13 +189,13 @@ export function MemberManager() {
                             placeholder="Designation"
                             value={newDesignation}
                             onChange={(e) => setNewDesignation(e.target.value)}
-                            className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 outline-none"
+                            className="px-3 md:px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-royal/20 outline-none text-sm md:text-base"
                             required
                         />
                         <div className="md:col-span-2 lg:col-span-4 flex justify-end">
                             <button
                                 type="submit"
-                                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
+                                className="w-full md:w-auto px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium text-sm md:text-base"
                             >
                                 Save Member
                             </button>
@@ -204,8 +204,101 @@ export function MemberManager() {
                 </div>
             )}
 
-            {/* Members List */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            {/* Members List - Mobile Card View */}
+            <div className="md:hidden space-y-3">
+                {members.length === 0 ? (
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 px-4 py-12 text-center text-slate-500">
+                        No members found. Add some from the button above.
+                    </div>
+                ) : (
+                    members.map((member) => (
+                        <div key={member._id} className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                            {editingId === member._id ? (
+                                <div className="space-y-3">
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <input
+                                            type="number"
+                                            value={editOrder}
+                                            onChange={(e) => setEditOrder(parseInt(e.target.value))}
+                                            className="w-full px-2 py-1.5 border rounded text-sm"
+                                            placeholder="Order"
+                                        />
+                                        <input
+                                            type="text"
+                                            value={editName}
+                                            onChange={(e) => setEditName(e.target.value)}
+                                            className="w-full px-2 py-1.5 border rounded text-sm"
+                                            placeholder="Name"
+                                        />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={editRelation}
+                                        onChange={(e) => setEditRelation(e.target.value)}
+                                        className="w-full px-2 py-1.5 border rounded text-sm"
+                                        placeholder="Father/Spouse Name"
+                                    />
+                                    <input
+                                        type="text"
+                                        value={editDesignation}
+                                        onChange={(e) => setEditDesignation(e.target.value)}
+                                        className="w-full px-2 py-1.5 border rounded text-sm"
+                                        placeholder="Designation"
+                                    />
+                                    <div className="flex gap-2 pt-2">
+                                        <button
+                                            onClick={() => handleUpdate(member._id)}
+                                            className="flex-1 flex items-center justify-center gap-1.5 p-2 bg-green-600 text-white rounded-lg text-sm"
+                                        >
+                                            <Save size={16} /> Save
+                                        </button>
+                                        <button
+                                            onClick={() => setEditingId(null)}
+                                            className="flex-1 flex items-center justify-center gap-1.5 p-2 bg-slate-100 text-slate-600 rounded-lg text-sm"
+                                        >
+                                            <X size={16} /> Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className="text-xs text-slate-400">#{member.order}</span>
+                                                <span className="px-2 py-0.5 text-xs font-medium bg-slate-100 text-slate-600 rounded-full truncate max-w-[120px]">
+                                                    {member.designation}
+                                                </span>
+                                            </div>
+                                            <h4 className="font-bold text-royal truncate">{member.name}</h4>
+                                            <p className="text-sm text-slate-500 truncate">{member.relation}</p>
+                                        </div>
+                                        <div className="flex gap-1">
+                                            <button
+                                                onClick={() => handleEditStart(member)}
+                                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                                                title="Edit"
+                                            >
+                                                <Edit2 size={16} />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(member._id)}
+                                                className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
+                                                title="Delete"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    ))
+                )}
+            </div>
+
+            {/* Members List - Desktop Table View */}
+            <div className="hidden md:block bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                 <table className="w-full text-left">
                     <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-200">
                         <tr>
