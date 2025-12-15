@@ -14,7 +14,7 @@ export default function TestPage() {
     return (
         <div className="min-h-screen bg-gray-100 p-8">
             <h1 className="text-3xl font-bold mb-8">Image Loading Test</h1>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {testImages.map((src, index) => (
                     <div key={index} className="bg-white p-4 rounded-lg shadow">
@@ -54,7 +54,7 @@ export default function TestPage() {
                             alert(`API returned ${data.length} items`);
                         } catch (error) {
                             console.error('API Error:', error);
-                            alert('API call failed: ' + error.message);
+                            alert('API call failed: ' + (error instanceof Error ? error.message : 'Unknown error'));
                         }
                     }}
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"

@@ -46,7 +46,7 @@ export default function GalleryPage() {
                 }
             } catch (error) {
                 console.error("Failed to fetch gallery", error);
-                setError(`Network Error: ${error.message}`);
+                setError(`Network Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
             } finally {
                 setLoading(false);
             }
