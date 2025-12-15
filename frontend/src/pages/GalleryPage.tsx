@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, PlayCircle, ExternalLink } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
+import { getOptimizedImageUrl, handleImageError } from "@/utils/imageUtils";
 
 interface GalleryItem {
     _id: string;
@@ -16,19 +17,36 @@ export default function GalleryPage() {
     const [playingVideo, setPlayingVideo] = useState<string | null>(null);
     const [items, setItems] = useState<GalleryItem[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchGallery = async () => {
             setLoading(true);
+            setError(null);
             try {
                 const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
-                const response = await fetch(`${apiUrl}/api/gallery?type=${activeTab === 'photos' ? 'photo' : 'video'}`);
+                const url = `${apiUrl}/api/gallery?type=${activeTab === 'photos' ? 'photo' : 'video'}`;
+                console.log('Fetching from:', url);
+                console.log('Environment VITE_API_URL:', import.meta.env.VITE_API_URL);
+                
+                const response = await fetch(url);
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('Gallery data received:', data);
+                    console.log('Number of items:', data.length);
                     setItems(data);
+                    setError(null);
+                } else {
+                    const errorText = await response.text();
+                    console.error('API response not ok:', response.status, response.statusText, errorText);
+                    setError(`API Error: ${response.status} ${response.statusText}`);
                 }
             } catch (error) {
                 console.error("Failed to fetch gallery", error);
+                setError(`Network Error: ${error.message}`);
             } finally {
                 setLoading(false);
             }
@@ -59,11 +77,10 @@ export default function GalleryPage() {
             <PageHero
                 title="Photo & Video Gallery"
                 subtitle="Capturing Moments, Creating Memories"
-                image="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2132&auto=format&fit=crop"
+                image="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=2070&auto=format&fit=crop"
             />
 
             <section className="container mx-auto px-4 py-16">
-
                 {/* Tabs */}
                 <div className="flex justify-center mb-12">
                     <div className="bg-white p-1 rounded-full shadow-md border border-gray-200 inline-flex">
@@ -92,6 +109,18 @@ export default function GalleryPage() {
                     <div className="min-h-[400px] flex items-center justify-center">
                         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-royal"></div>
                     </div>
+                ) : error ? (
+                    <div className="min-h-[400px] flex items-center justify-center">
+                        <div className="text-center">
+                            <p className="text-red-600 text-lg mb-4">{error}</p>
+                            <button 
+                                onClick={() => window.location.reload()} 
+                                className="bg-royal text-white px-4 py-2 rounded"
+                            >
+                                Retry
+                            </button>
+                        </div>
+                    </div>
                 ) : (
                     <AnimatePresence mode="wait">
                         {activeTab === 'photos' ? (
@@ -114,9 +143,11 @@ export default function GalleryPage() {
                                     >
                                         <div className="relative h-64 overflow-hidden">
                                             <img
-                                                src={item.url}
+                                                src={getOptimizedImageUrl(item.url, 400, 300)}
                                                 alt={item.title}
                                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                onError={(e) => handleImageError(e, 'gallery')}
+                                                loading="lazy"
                                             />
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
 
@@ -179,6 +210,8 @@ export default function GalleryPage() {
                                                         src={getYoutubeThumbnail(video.url)}
                                                         alt={video.title}
                                                         className="w-full h-full object-cover opacity-80 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700"
+                                                        onError={(e) => handleImageError(e, 'video')}
+                                                        loading="lazy"
                                                     />
                                                     <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors" />
 

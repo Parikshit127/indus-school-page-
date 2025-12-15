@@ -36,7 +36,7 @@ export default function SchoolCalendarPage() {
             <PageHero
                 title="School Calendar"
                 subtitle="Stay updated with our yearly academic schedule and events."
-                image="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=2068&auto=format&fit=crop"
+                image="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=2070&auto=format&fit=crop"
             />
 
             <Section className="py-20">

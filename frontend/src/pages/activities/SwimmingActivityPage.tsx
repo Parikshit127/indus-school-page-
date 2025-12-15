@@ -37,9 +37,13 @@ export default function SwimmingActivityPage() {
                         className="relative h-[400px] rounded-3xl overflow-hidden shadow-2xl"
                     >
                         <img
-                            src="https://images.unsplash.com/photo-1559869274-124618e8d5cc?q=80&w=2072&auto=format&fit=crop"
-                            alt="Swimming Pool"
+                            src="https://images.unsplash.com/photo-1576610616656-d3aa5d1f4534?q=80&w=2070&auto=format&fit=crop"
+                            alt="School Swimming Pool"
                             className="w-full h-full object-cover"
+                            onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = 'https://via.placeholder.com/800x400/e2e8f0/64748b?text=School+Swimming+Pool';
+                            }}
                         />
                     </motion.div>
                 </div>

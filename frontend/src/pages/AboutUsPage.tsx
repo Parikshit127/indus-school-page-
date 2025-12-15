@@ -53,7 +53,7 @@ export default function AboutUsPage() {
             <PageHero
                 title="Our Legacy"
                 subtitle="Dedicated to liberating human beings from the shackles of ignorance. Rooted in Indian reality."
-                image="https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=1974"
+                image="https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2070&auto=format&fit=crop"
             />
 
             <Section className="py-20 space-y-24">

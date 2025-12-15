@@ -9,16 +9,18 @@ interface PageHeroProps {
 export function PageHero({ title, subtitle, image }: PageHeroProps) {
     return (
         <div className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-            {/* Background Image with Parallax-like fixed position or absolute */}
-            <div
-                className="absolute inset-0 bg-cover bg-center z-0 scale-105"
-                style={{
-                    backgroundImage: `url('${image}')`,
-                    filter: "brightness(0.4)"
+            {/* Background Image */}
+            <img
+                src={image}
+                alt={title}
+                className="absolute inset-0 w-full h-full object-cover z-0 scale-105"
+                style={{ filter: "brightness(0.4)" }}
+                onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'https://via.placeholder.com/1920x600/1e293b/f1f5f9?text=Hero+Image';
                 }}
-            >
-                <div className="absolute inset-0 bg-gradient-to-b from-royal-dark/80 via-royal/50 to-slate-50/10" />
-            </div>
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-royal-dark/80 via-royal/50 to-slate-50/10 z-1" />
 
             {/* Content */}
             <div className="container mx-auto px-4 relative z-10 text-center">

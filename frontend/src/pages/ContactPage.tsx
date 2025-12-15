@@ -11,7 +11,7 @@ export default function ContactPage() {
             <PageHero
                 title="Contact Us"
                 subtitle="We'd love to hear from you"
-                image="https://images.unsplash.com/photo-1577896334614-5d85d79788f4?q=80&w=2070&auto=format&fit=crop"
+                image="https://images.unsplash.com/photo-1525921429624-479b6a26d84d?q=80&w=2070&auto=format&fit=crop"
             />
 
             <Section className="bg-white relative">

@@ -17,6 +17,7 @@ import ActivitiesPage from "@/pages/ActivitiesPage";
 import SportsActivityPage from "@/pages/activities/SportsActivityPage";
 import CulturalActivityPage from "@/pages/activities/CulturalActivityPage";
 import ClubsActivityPage from "@/pages/activities/ClubsActivityPage";
+import TestPage from "@/pages/TestPage";
 import SchoolCalendarPage from "@/pages/SchoolCalendarPage";
 import TeachingStaffPage from "@/pages/TeachingStaffPage";
 import SwimmingActivityPage from "@/pages/activities/SwimmingActivityPage";
@@ -75,6 +76,7 @@ function App() {
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/test" element={<TestPage />} />
         </Route>
 
         {/* Admin Routes (No Navbar/Footer) */}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Loading Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .image-container { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+        img { max-width: 400px; height: 200px; object-fit: cover; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Image Loading Test</h1>
+    
+    <div class="image-container">
+        <h3>Test 1: Unsplash Image (from API)</h3>
+        <img 
+            src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format&fit=crop" 
+            alt="Sports Day"
+            onload="document.getElementById('status1').innerHTML = 'SUCCESS: Image loaded'"
+            onerror="document.getElementById('status1').innerHTML = 'ERROR: Image failed to load'"
+        />
+        <p id="status1">Loading...</p>
+    </div>
+
+    <div class="image-container">
+        <h3>Test 2: Placeholder Image</h3>
+        <img 
+            src="https://via.placeholder.com/400x200/e2e8f0/64748b?text=Fallback+Image" 
+            alt="Placeholder"
+            onload="document.getElementById('status2').innerHTML = 'SUCCESS: Placeholder loaded'"
+            onerror="document.getElementById('status2').innerHTML = 'ERROR: Placeholder failed'"
+        />
+        <p id="status2">Loading...</p>
+    </div>
+
+    <div class="image-container">
+        <h3>Test 3: API Call Test</h3>
+        <button onclick="testAPI()">Test Gallery API</button>
+        <div id="api-result"></div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('api-result');
+            try {
+                resultDiv.innerHTML = 'Calling API...';
+                const response = await fetch('http://localhost:4000/api/gallery?type=photo');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `<div class="success">SUCCESS: Got ${data.length} photos</div>
+                                         <pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">ERROR: ${response.status} ${response.statusText}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">ERROR: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

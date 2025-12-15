@@ -81,7 +81,7 @@ export default function FacilitiesPage() {
             <PageHero
                 title="World Class Facilities"
                 subtitle="A vast lush green campus on National Highway-10. We provide an environment that nurtures growth."
-                image="https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1986" // Modern architecture
+                image="https://images.unsplash.com/photo-1525921429624-479b6a26d84d?q=80&w=2070&auto=format&fit=crop"
             />
 
             <Section className="py-20">

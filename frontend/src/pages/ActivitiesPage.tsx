@@ -39,7 +39,7 @@ export default function ActivitiesPage() {
                     <CategoryRow
                         title="Sports & Athletics"
                         desc="Champions aren't born; they are made here. Our world-class facilities for Cricket, Football, Skating, and Martial Arts reshape potential into performance."
-                        image="https://images.unsplash.com/photo-1519766304800-c9519d080c48?q=80&w=2070&auto=format&fit=crop"
+                        image="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format&fit=crop"
                         icon={<Trophy size={32} />}
                         link="/activities/sports"
                         align="left"
@@ -47,7 +47,7 @@ export default function ActivitiesPage() {
                     <CategoryRow
                         title="Arts & Culture"
                         desc="From the grace of Kathak to the rhythm of drums, we celebrate expression. Our students find their voice in Theatre, Music, Dance, and Fine Arts."
-                        image="https://images.unsplash.com/photo-1543946207-395069171836?q=80&w=1968&auto=format&fit=crop"
+                        image="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=2070&auto=format&fit=crop"
                         icon={<Palette size={32} />}
                         link="/activities/cultural"
                         align="right"
@@ -55,7 +55,7 @@ export default function ActivitiesPage() {
                     <CategoryRow
                         title="Academic Clubs"
                         desc="Where intellect meets innovation. MUNs, Science Clubs, and Literary Debates challenge students to think critically and lead globally."
-                        image="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2022&auto=format&fit=crop"
+                        image="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2070&auto=format&fit=crop"
                         icon={<BookOpen size={32} />}
                         link="/activities/clubs"
                         align="left"
@@ -63,7 +63,7 @@ export default function ActivitiesPage() {
                     <CategoryRow
                         title="Swimming Pool"
                         desc="Dive into our world-class half-Olympic size pool. Whether for fitness, competition, or leisure, our aquatic facilities foster health and confidence."
-                        image="https://images.unsplash.com/photo-1576610616656-d3aa5d1f4534?q=80&w=1974&auto=format&fit=crop"
+                        image="https://images.unsplash.com/photo-1576610616656-d3aa5d1f4534?q=80&w=2070&auto=format&fit=crop"
                         icon={<Waves size={32} />}
                         link="/activities/swimming"
                         align="right"
@@ -71,7 +71,7 @@ export default function ActivitiesPage() {
                     <CategoryRow
                         title="Horse Riding"
                         desc="Experience the unique bond between rider and horse. Our equestrian program teaches discipline, balance, and respect for nature."
-                        image="https://images.unsplash.com/photo-1534017688538-2a2ba012a4df?q=80&w=2066&auto=format&fit=crop"
+                        image="https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=2070&auto=format&fit=crop"
                         icon={<Bird size={32} />} // Using Bird as placeholder for Horse
                         link="/activities/horse-riding"
                         align="left"
@@ -96,9 +96,17 @@ export default function ActivitiesPage() {
                     <div className="bg-slate-50 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
                         <div className="md:w-1/2 relative min-h-[400px]">
                             <img
-                                src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?q=80&w=2000&auto=format&fit=crop"
-                                alt="MUN Conference"
+                                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2000&auto=format&fit=crop"
+                                alt="MUN Conference - Students in Discussion"
                                 className="absolute inset-0 w-full h-full object-cover"
+                                onError={(e) => {
+                                    console.log('MUN Conference image failed to load');
+                                    const target = e.target as HTMLImageElement;
+                                    target.src = 'https://via.placeholder.com/800x400/1e293b/f1f5f9?text=MUN+Conference';
+                                }}
+                                onLoad={() => {
+                                    console.log('MUN Conference image loaded successfully');
+                                }}
                             />
                             <div className="absolute inset-0 bg-royal/20" />
                             <div className="absolute top-6 left-6 bg-white/90 backdrop-blur px-4 py-2 rounded-lg text-royal font-bold text-sm shadow-md">
@@ -159,11 +167,19 @@ function CategoryRow({ title, desc, icon, image, link, align }: { title: string,
             transition={{ duration: 0.7 }}
             className={`flex flex-col ${isLeft ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12 group`}
         >
-            <div className="w-full lg:w-1/2 relative h-[400px] rounded-3xl overflow-hidden shadow-2xl">
+            <div className="w-full lg:w-1/2 relative h-[400px] rounded-3xl overflow-hidden shadow-2xl bg-gray-200">
                 <img
                     src={image}
                     alt={title}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    onError={(e) => {
+                        console.log(`Failed to load image for ${title}:`, image);
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'https://via.placeholder.com/800x400/e2e8f0/64748b?text=Activity+Image';
+                    }}
+                    onLoad={() => {
+                        console.log(`Successfully loaded image for ${title}`);
+                    }}
                 />
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
             </div>

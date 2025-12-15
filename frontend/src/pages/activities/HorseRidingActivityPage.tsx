@@ -10,7 +10,7 @@ export default function HorseRidingActivityPage() {
             <PageHero
                 title="Horse Riding"
                 subtitle="Grace, Power, and Harmony"
-                image="https://images.unsplash.com/photo-1534320399878-384358d7c181?q=80&w=2070&auto=format&fit=crop"
+                image="https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=2070&auto=format&fit=crop"
             />
 
             <Section>
@@ -23,9 +23,13 @@ export default function HorseRidingActivityPage() {
                         className="order-2 md:order-1 relative h-[450px] rounded-3xl overflow-hidden shadow-2xl"
                     >
                         <img
-                            src="https://images.unsplash.com/photo-1598556776374-2c6c3df4263d?q=80&w=2070&auto=format&fit=crop"
+                            src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?q=80&w=2070&auto=format&fit=crop"
                             alt="Student Horse Riding"
                             className="w-full h-full object-cover"
+                            onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = 'https://via.placeholder.com/800x450/e2e8f0/64748b?text=Horse+Riding+Program';
+                            }}
                         />
                     </motion.div>
 

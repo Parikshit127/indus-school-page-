@@ -9,7 +9,7 @@ export default function SportsActivityPage() {
             <PageHero
                 title="Sports & Athletics"
                 subtitle="Champions are made when no one is watching"
-                image="https://images.unsplash.com/photo-1526676037777-05a232554f77?q=80&w=2070&auto=format&fit=crop"
+                image="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070&auto=format&fit=crop"
             />
 
             <Section className="bg-white">
@@ -55,9 +55,13 @@ export default function SportsActivityPage() {
                     </div>
                     <div className="relative h-[600px] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
                         <img
-                            src="https://images.unsplash.com/photo-1565992441121-4367c2967103?q=80&w=2127&auto=format&fit=crop"
+                            src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=800&auto=format&fit=crop"
                             alt="Sports Facilities"
                             className="absolute inset-0 w-full h-full object-cover"
+                            onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = 'https://via.placeholder.com/800x600/e2e8f0/64748b?text=Sports+Facilities';
+                            }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                         <div className="absolute bottom-6 left-6">

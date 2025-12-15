@@ -9,7 +9,7 @@ export default function CulturalActivityPage() {
             <PageHero
                 title="Arts & Culture"
                 subtitle="Expressing the soul through creativity"
-                image="https://images.unsplash.com/photo-1514525253440-b393452e3383?q=80&w=2070&auto=format&fit=crop"
+                image="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=2070&auto=format&fit=crop"
             />
 
             <Section className="bg-white">
@@ -30,14 +30,22 @@ export default function CulturalActivityPage() {
                     </div>
                     <div className="flex-1 grid grid-cols-2 gap-4">
                         <img
-                            src="https://images.unsplash.com/photo-1543946207-395069171836?q=80&w=1968&auto=format&fit=crop"
+                            src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=400&auto=format&fit=crop"
                             className="rounded-2xl shadow-lg transform translate-y-8"
                             alt="Dance"
+                            onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = 'https://via.placeholder.com/400x300/e2e8f0/64748b?text=Dance+Activity';
+                            }}
                         />
                         <img
-                            src="https://images.unsplash.com/photo-1516280440614-6697288d5d38?q=80&w=2070&auto=format&fit=crop"
+                            src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?q=80&w=400&auto=format&fit=crop"
                             className="rounded-2xl shadow-lg"
                             alt="Celebration"
+                            onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = 'https://via.placeholder.com/400x300/e2e8f0/64748b?text=Cultural+Event';
+                            }}
                         />
                     </div>
                 </div>
