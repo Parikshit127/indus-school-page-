@@ -324,42 +324,47 @@ export function GalleryManager() {
                 ) : (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {items.map((item) => (
-                            <div key={item._id} className="group relative bg-slate-100 rounded-lg overflow-hidden border border-slate-200 shadow-sm aspect-video">
-                                {item.type === 'photo' ? (
-                                    <img src={item.url} alt={item.title} className="w-full h-full object-cover" />
-                                ) : (
-                                    <div className="w-full h-full bg-black flex items-center justify-center relative">
-                                        <img
-                                            src={`https://img.youtube.com/vi/${item.url.split('/embed/')[1]?.split('?')[0]}/0.jpg`}
-                                            alt={item.title}
-                                            className="w-full h-full object-cover opacity-80"
-                                            onError={(e) => {
-                                                // Fallback if regex fails (e.g. for short URLs not handled perfectly)
-                                                (e.target as HTMLImageElement).src = 'https://via.placeholder.com/320x180?text=Video';
-                                            }}
-                                        />
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <Youtube size={32} className="text-white drop-shadow-lg" />
+                            <div key={item._id} className="group flex flex-col bg-white rounded-lg overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                                <div className="relative aspect-video bg-slate-100">
+                                    {item.type === 'photo' ? (
+                                        <img src={item.url} alt={item.title} className="w-full h-full object-cover" />
+                                    ) : (
+                                        <div className="w-full h-full bg-black flex items-center justify-center relative">
+                                            <img
+                                                src={`https://img.youtube.com/vi/${item.url.split('/embed/')[1]?.split('?')[0]}/0.jpg`}
+                                                alt={item.title}
+                                                className="w-full h-full object-cover opacity-80"
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/320x180?text=Video';
+                                                }}
+                                            />
+                                            <div className="absolute inset-0 flex items-center justify-center">
+                                                <Youtube size={32} className="text-white drop-shadow-lg" />
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
+                                </div>
 
-                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                                    <p className="text-white text-sm font-medium truncate mb-2">{item.title}</p>
+                                <div className="p-3 border-t border-slate-100">
+                                    <p className="text-sm font-medium text-slate-700 truncate mb-3" title={item.title}>
+                                        {item.title || (item.type === 'photo' ? 'Untitled Photo' : 'Untitled Video')}
+                                    </p>
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => handleEditStart(item)}
-                                            className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                                            className="flex-1 flex items-center justify-center gap-1.5 p-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors text-xs font-medium"
                                             title="Edit"
                                         >
-                                            <Edit2 size={16} />
+                                            <Edit2 size={14} />
+                                            <span>Edit</span>
                                         </button>
                                         <button
                                             onClick={() => handleDelete(item._id)}
-                                            className="p-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                                            className="flex-1 flex items-center justify-center gap-1.5 p-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors text-xs font-medium"
                                             title="Delete"
                                         >
-                                            <Trash2 size={16} />
+                                            <Trash2 size={14} />
+                                            <span>Delete</span>
                                         </button>
                                     </div>
                                 </div>

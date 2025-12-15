@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Save, Upload, FileText, Loader2, Download } from "lucide-react";
+import { Save, Upload, FileText, Loader2, Download, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function CalendarManager() {
@@ -101,19 +101,26 @@ export function CalendarManager() {
         }
     };
 
+    const handleDeletePdf = () => {
+        if (confirm("Are you sure you want to remove the PDF?")) {
+            setPdfUrl("");
+            setMessage({ type: 'success', text: 'PDF removed from view. Click Save Changes to confirm.' });
+        }
+    };
+
     if (loading) return <div className="p-8 text-center text-slate-500">Loading...</div>;
 
     return (
         <div className="max-w-4xl mx-auto pb-12">
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
-                    <h2 className="text-2xl font-serif font-bold text-royal">School Calendar Manager</h2>
-                    <p className="text-slate-500">Manage the academic calendar PDF and title</p>
+                    <h2 className="text-xl md:text-2xl font-serif font-bold text-royal">School Calendar Manager</h2>
+                    <p className="text-sm md:text-base text-slate-500">Manage the academic calendar PDF and title</p>
                 </div>
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="flex items-center gap-2 px-6 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
+                    className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
                 >
                     {saving ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
                     <span>{saving ? 'Saving...' : 'Save Changes'}</span>
@@ -150,31 +157,40 @@ export function CalendarManager() {
 
                 <div className="space-y-6">
                     {pdfUrl ? (
-                        <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200">
+                        <div className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200 gap-4">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 bg-red-100 text-red-600 rounded">
                                     <FileText size={24} />
                                 </div>
-                                <div>
+                                <div className="overflow-hidden">
                                     <p className="font-medium text-slate-700">Current Calendar PDF</p>
                                     <a 
                                         href={pdfUrl} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="text-sm text-blue-600 hover:underline"
+                                        className="text-sm text-blue-600 hover:underline truncate block max-w-[200px] md:max-w-md"
                                     >
                                         View File
                                     </a>
                                 </div>
                             </div>
-                            <a 
-                                href={pdfUrl} 
-                                download
-                                className="p-2 text-slate-500 hover:text-royal hover:bg-slate-200 rounded-full transition-colors"
-                                title="Download"
-                            >
-                                <Download size={20} />
-                            </a>
+                            <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+                                <a 
+                                    href={pdfUrl} 
+                                    download
+                                    className="p-2 text-slate-500 hover:text-royal hover:bg-slate-200 rounded-full transition-colors"
+                                    title="Download"
+                                >
+                                    <Download size={20} />
+                                </a>
+                                <button
+                                    onClick={handleDeletePdf}
+                                    className="p-2 text-red-500 hover:bg-red-100 rounded-full transition-colors"
+                                    title="Delete PDF"
+                                >
+                                    <Trash2 size={20} />
+                                </button>
+                            </div>
                         </div>
                     ) : (
                         <div className="text-center py-8 text-slate-500 bg-slate-50 rounded-lg border border-dashed border-slate-300">

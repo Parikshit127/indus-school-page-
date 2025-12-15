@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Save, Loader2, Image as ImageIcon, Megaphone, Calendar, Users, Trophy, GraduationCap, Upload, X, Plus } from "lucide-react";
+import { Save, Loader2, Image as ImageIcon, Megaphone, Calendar, Users, Trophy, GraduationCap, Upload, Plus, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface Slide {
@@ -198,23 +198,27 @@ export function ContentEditor() {
                         {content.slides.length > 0 ? (
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                                 {content.slides.map((slide, index) => (
-                                    <div key={index} className="relative group rounded-lg overflow-hidden border border-slate-200 aspect-video bg-slate-100">
-                                        {slide.type === 'video' ? (
-                                            <div className="w-full h-full flex items-center justify-center bg-black text-white text-xs">Video</div>
-                                        ) : (
-                                            <img src={slide.url} alt={`Slide ${index}`} className="w-full h-full object-cover" />
-                                        )}
-                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <div key={index} className="group flex flex-col bg-white rounded-lg overflow-hidden border border-slate-200 shadow-sm transition-shadow hover:shadow-md">
+                                        <div className="relative aspect-video bg-slate-100">
+                                            {slide.type === 'video' ? (
+                                                <div className="w-full h-full flex items-center justify-center bg-black text-white text-xs">Video</div>
+                                            ) : (
+                                                <img src={slide.url} alt={`Slide ${index}`} className="w-full h-full object-cover" />
+                                            )}
+                                            <div className="absolute top-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded backdrop-blur-sm">
+                                                Slide {index + 1}
+                                            </div>
+                                        </div>
+                                        <div className="p-2 border-t border-slate-100 flex justify-between items-center bg-white">
+                                            <span className="text-xs font-semibold text-slate-500 uppercase">{slide.type}</span>
                                             <button
                                                 onClick={() => handleRemoveSlide(index)}
-                                                className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                                                className="flex items-center gap-1.5 px-2 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded transition-colors text-xs font-medium"
                                                 title="Remove Slide"
                                             >
-                                                <X size={16} />
+                                                <Trash2 size={14} />
+                                                <span>Remove</span>
                                             </button>
-                                        </div>
-                                        <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-1 truncate px-2">
-                                            {index + 1}. {slide.type}
                                         </div>
                                     </div>
                                 ))}

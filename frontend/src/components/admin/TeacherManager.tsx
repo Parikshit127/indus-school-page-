@@ -156,15 +156,15 @@ export function TeacherManager() {
 
     return (
         <div className="max-w-6xl mx-auto pb-12">
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
-                    <h2 className="text-2xl font-serif font-bold text-royal">Teaching Staff Manager</h2>
-                    <p className="text-slate-500">Manage teacher profiles and details</p>
+                    <h2 className="text-xl md:text-2xl font-serif font-bold text-royal">Teaching Staff Manager</h2>
+                    <p className="text-sm md:text-base text-slate-500">Manage teacher profiles and details</p>
                 </div>
                 {!isAdding && (
                     <button
                         onClick={() => setIsAdding(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-royal text-gold rounded-lg font-medium hover:bg-royal-dark transition-colors"
+                        className="w-full md:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-royal text-gold rounded-lg font-medium hover:bg-royal-dark transition-colors"
                     >
                         <Plus size={20} />
                         <span>Add Teacher</span>

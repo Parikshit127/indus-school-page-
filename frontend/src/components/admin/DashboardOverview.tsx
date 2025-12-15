@@ -4,7 +4,7 @@ import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
     PieChart, Pie, Cell, LineChart, Line
 } from "recharts";
-import { Calendar, Search, Filter, TrendingUp, Users, BookOpen, Download } from "lucide-react";
+import { Calendar, Search, Filter, TrendingUp, Users, BookOpen, Download, ChevronDown, ChevronUp, Save, FileText, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 import * as XLSX from 'xlsx';
 
@@ -32,6 +32,7 @@ interface Lead {
     status?: string;
     date?: string;
     createdAt?: string;
+    adminNotes?: { _id: string; content: string; date: string }[];
 }
 
 interface Analytics {
@@ -57,6 +58,80 @@ export function DashboardOverview() {
     const [dateRange, setDateRange] = useState("30d");
     const [customStart, setCustomStart] = useState("");
     const [customEnd, setCustomEnd] = useState("");
+
+    const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+    const [noteDrafts, setNoteDrafts] = useState<Record<string, string>>({});
+
+    const toggleRow = (id: string) => {
+        const newExpanded = new Set(expandedRows);
+        if (newExpanded.has(id)) {
+            newExpanded.delete(id);
+        } else {
+            newExpanded.add(id);
+            setNoteDrafts(prev => ({ ...prev, [id]: '' }));
+        }
+        setExpandedRows(newExpanded);
+    };
+
+    const handleAddNote = async (id: string) => {
+        const token = localStorage.getItem("adminToken");
+        if (!token) {
+            alert("Session expired. Please log in again.");
+            return;
+        }
+
+        const content = noteDrafts[id];
+        if (!content?.trim()) {
+            alert("Please enter some text for the note.");
+            return;
+        }
+
+        try {
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+            const response = await fetch(`${apiUrl}/api/leads/${id}/notes`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ content })
+            });
+
+            if (response.ok) {
+                const updatedLead = await response.json();
+                setLeads(leads.map(l => l._id === id ? updatedLead : l));
+                setNoteDrafts(prev => ({ ...prev, [id]: '' }));
+            } else {
+                const err = await response.json();
+                alert(`Failed to add note: ${err.error || 'Unknown error'}`);
+            }
+        } catch (error) {
+            console.error("Failed to add note", error);
+            alert("Network error while adding note.");
+        }
+    };
+
+    const handleDeleteNote = async (leadId: string, noteId: string) => {
+        const token = localStorage.getItem("adminToken");
+        if (!token) return;
+
+        try {
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+            const response = await fetch(`${apiUrl}/api/leads/${leadId}/notes/${noteId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const updatedLead = await response.json();
+                setLeads(leads.map(l => l._id === leadId ? updatedLead : l));
+            }
+        } catch (error) {
+            console.error("Failed to delete note", error);
+        }
+    };
 
     useEffect(() => {
         const token = localStorage.getItem("adminToken");
@@ -162,8 +237,48 @@ export function DashboardOverview() {
         const ws = XLSX.utils.json_to_sheet(exportData);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Leads');
-        const fileName = `Indus_School_Leads_${new Date().toISOString().split('T')[0]}.xlsx`;
+        
+        // Generate filename based on date range
+        let dateLabel = '';
+        if (dateRange === 'custom' && customStart && customEnd) {
+            dateLabel = `${customStart}_to_${customEnd}`;
+        } else if (dateRange === '7d') {
+            dateLabel = 'Last_7_Days';
+        } else if (dateRange === '30d') {
+            dateLabel = 'Last_30_Days';
+        } else if (dateRange === 'month') {
+            dateLabel = 'This_Month';
+        }
+        
+        const fileName = `Indus_Leads_${dateLabel}_${new Date().toISOString().split('T')[0]}.xlsx`;
         XLSX.writeFile(wb, fileName);
+    };
+
+    const getDateRangeForFilter = () => {
+        const now = new Date();
+        let start = new Date();
+
+        switch (dateRange) {
+            case '7d':
+                start.setDate(now.getDate() - 7);
+                break;
+            case '30d':
+                start.setDate(now.getDate() - 30);
+                break;
+            case 'month':
+                start = new Date(now.getFullYear(), now.getMonth(), 1);
+                break;
+            case 'custom':
+                if (customStart && customEnd) {
+                    return {
+                        start: new Date(customStart),
+                        end: new Date(customEnd)
+                    };
+                }
+                return null;
+        }
+
+        return { start, end: now };
     };
 
     const filteredLeads = leads.filter((lead) => {
@@ -176,7 +291,15 @@ export function DashboardOverview() {
         const matchesClass = classFilter === "All" || lead.class === classFilter;
         const matchesStatus = statusFilter === "All" || lead.status === statusFilter || (!lead.status && statusFilter === "New");
 
-        return matchesSearch && matchesClass && matchesStatus;
+        // Date filtering
+        const dateRangeFilter = getDateRangeForFilter();
+        let matchesDate = true;
+        if (dateRangeFilter) {
+            const leadDate = new Date(lead.createdAt || lead.date || '');
+            matchesDate = leadDate >= dateRangeFilter.start && leadDate <= dateRangeFilter.end;
+        }
+
+        return matchesSearch && matchesClass && matchesStatus && matchesDate;
     });
 
     const StatsCard = ({ title, value, icon: Icon, trend }: { title: string; value: number; icon: React.ElementType; trend?: string }) => (
@@ -261,6 +384,187 @@ export function DashboardOverview() {
                 <StatsCard title="Pending Actions" value={(analytics?.periodLeads || 0) - (analytics?.conversionStats?.admitted || 0)} icon={Filter} trend="Follow-up needed" />
             </div>
 
+            {/* Detailed Table */}
+            <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-8">
+                <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <h3 className="font-bold text-royal text-lg">Detailed Inquiries</h3>
+
+                    <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+                        <div className="relative flex-1 md:w-64">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                            <input
+                                type="text"
+                                placeholder="Search details..."
+                                className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-royal/20"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+
+                        <select
+                            className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-royal/20"
+                            value={classFilter}
+                            onChange={(e) => setClassFilter(e.target.value)}
+                        >
+                            <option value="All">All Classes</option>
+                            <option value="XI Medical">XI Medical</option>
+                            <option value="XI Non-Medical">XI Non-Medical</option>
+                            <option value="XI Commerce">XI Commerce</option>
+                            <option value="XI Humanities">XI Humanities</option>
+                        </select>
+
+                        <select
+                            className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-royal/20"
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                        >
+                            <option value="All">All Status</option>
+                            {STATUS_OPTIONS.map(status => (
+                                <option key={status} value={status}>{status}</option>
+                            ))}
+                        </select>
+
+                        <button
+                            onClick={exportToExcel}
+                            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-royal to-royal-light text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-200 hover:scale-105"
+                        >
+                            <Download size={16} />
+                            <span>Export Excel</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div className="overflow-x-auto">
+                    <table className="w-full text-sm text-left text-slate-600">
+                        <thead className="text-xs text-royal uppercase bg-slate-50/50">
+                            <tr>
+                                <th className="px-6 py-4 font-bold">Date</th>
+                                <th className="px-6 py-4 font-bold">Student</th>
+                                <th className="px-6 py-4 font-bold">Father</th>
+                                <th className="px-6 py-4 font-bold">City</th>
+                                <th className="px-6 py-4 font-bold">Contact</th>
+                                <th className="px-6 py-4 font-bold">Class</th>
+                                <th className="px-6 py-4 font-bold">Status</th>
+                                <th className="px-6 py-4 font-bold">Details</th>
+                                <th className="px-6 py-4 font-bold text-center">Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {loading ? (
+                                <tr><td colSpan={9} className="px-6 py-8 text-center">Loading...</td></tr>
+                            ) : filteredLeads.length === 0 ? (
+                                <tr><td colSpan={9} className="px-6 py-8 text-center text-slate-400">No leads found.</td></tr>
+                            ) : (
+                                filteredLeads.map((lead) => (
+                                    <>
+                                        <tr key={lead._id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                                            <td className="px-6 py-4 font-medium whitespace-nowrap">
+                                                {new Date(lead.createdAt || lead.date || '').toLocaleDateString()}
+                                            </td>
+                                            <td className="px-6 py-4 font-bold text-royal">{lead.studentName}</td>
+                                            <td className="px-6 py-4">{lead.fatherName || '-'}</td>
+                                            <td className="px-6 py-4">{lead.city || '-'}</td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex flex-col">
+                                                    <span>{lead.phone}</span>
+                                                    <span className="text-xs text-slate-400">{lead.email}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700">
+                                                    {lead.class}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <select
+                                                    value={lead.status || 'New'}
+                                                    onChange={(e) => handleStatusChange(lead._id, e.target.value)}
+                                                    className={`text-xs font-semibold px-2 py-1 rounded-full border-none focus:ring-2 focus:ring-royal/20 cursor-pointer ${STATUS_COLORS[lead.status || 'New']}`}
+                                                >
+                                                    {STATUS_OPTIONS.map(opt => (
+                                                        <option key={opt} value={opt}>{opt}</option>
+                                                    ))}
+                                                </select>
+                                            </td>
+                                            <td className="px-6 py-4 max-w-xs truncate" title={lead.message}>
+                                                {lead.message || "-"}
+                                            </td>
+                                            <td className="px-6 py-4 text-center">
+                                                <button 
+                                                    onClick={() => toggleRow(lead._id)} 
+                                                    className="p-1 text-slate-400 hover:text-royal hover:bg-royal/5 rounded transition-colors"
+                                                >
+                                                    {expandedRows.has(lead._id) ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {expandedRows.has(lead._id) && (
+                                            <tr className="bg-slate-50/50">
+                                                <td colSpan={9} className="px-6 py-4 border-b border-slate-50">
+                                                    <div className="space-y-3">
+                                                        {/* Existing Notes List */}
+                                                        {lead.adminNotes && Array.isArray(lead.adminNotes) && lead.adminNotes.length > 0 && (
+                                                            <div className="space-y-2 mb-3">
+                                                                {lead.adminNotes.map((note) => (
+                                                                    <div key={note._id} className="flex gap-3 p-3 bg-white rounded-lg border border-slate-200 shadow-sm relative group">
+                                                                        <div className="mt-0.5 text-royal/60"><FileText size={14} /></div>
+                                                                        <div className="flex-1">
+                                                                            <p className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">{note.content}</p>
+                                                                            <p className="text-[10px] text-slate-400 mt-1">{new Date(note.date).toLocaleString()}</p>
+                                                                        </div>
+                                                                        <button 
+                                                                            onClick={() => handleDeleteNote(lead._id, note._id)}
+                                                                            className="absolute top-2 right-2 p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded opacity-0 group-hover:opacity-100 transition-all"
+                                                                            title="Delete Note"
+                                                                        >
+                                                                            <Trash2 size={14} />
+                                                                        </button>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        )}
+
+                                                        {/* Add New Note Form */}
+                                                        <div className="flex gap-4 p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+                                                            <div className="mt-2 text-royal"><FileText size={18} /></div>
+                                                            <div className="flex-1">
+                                                                <div className="flex justify-between items-center mb-2">
+                                                                    <label className="text-xs font-bold text-slate-500 uppercase">Add New Note</label>
+                                                                    <span className="text-[10px] text-slate-400">Internal use only</span>
+                                                                </div>
+                                                                <textarea 
+                                                                    className="w-full text-sm p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal/20 resize-none h-20 font-medium text-slate-600"
+                                                                    placeholder="Type note content here..."
+                                                                    value={noteDrafts[lead._id] || ''}
+                                                                    onChange={(e) => setNoteDrafts({...noteDrafts, [lead._id]: e.target.value})}
+                                                                />
+                                                                <div className="mt-2 flex justify-end">
+                                                                    <button 
+                                                                        onClick={() => handleAddNote(lead._id)}
+                                                                        className="flex items-center gap-2 px-4 py-2 bg-royal text-white text-xs font-medium rounded-lg hover:bg-royal-light transition-colors hover:shadow-md"
+                                                                    >
+                                                                        <Save size={14} />
+                                                                        Add Note
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="p-4 border-t border-slate-100 text-center text-xs text-slate-400">
+                    Data Source: MongoDB (Atlas)
+                </div>
+            </div>
+
             {/* Charts Row */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
                 <div className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm lg:col-span-1">
@@ -342,121 +646,6 @@ export function DashboardOverview() {
                             </div>
                         ))}
                     </div>
-                </div>
-            </div>
-
-            {/* Detailed Table */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-                <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <h3 className="font-bold text-royal text-lg">Detailed Inquiries</h3>
-
-                    <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
-                        <div className="relative flex-1 md:w-64">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                            <input
-                                type="text"
-                                placeholder="Search details..."
-                                className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-royal/20"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
-
-                        <select
-                            className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-royal/20"
-                            value={classFilter}
-                            onChange={(e) => setClassFilter(e.target.value)}
-                        >
-                            <option value="All">All Classes</option>
-                            <option value="XI Medical">XI Medical</option>
-                            <option value="XI Non-Medical">XI Non-Medical</option>
-                            <option value="XI Commerce">XI Commerce</option>
-                            <option value="XI Humanities">XI Humanities</option>
-                        </select>
-
-                        <select
-                            className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-royal/20"
-                            value={statusFilter}
-                            onChange={(e) => setStatusFilter(e.target.value)}
-                        >
-                            <option value="All">All Status</option>
-                            {STATUS_OPTIONS.map(status => (
-                                <option key={status} value={status}>{status}</option>
-                            ))}
-                        </select>
-
-                        <button
-                            onClick={exportToExcel}
-                            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-royal to-royal-light text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-200 hover:scale-105"
-                        >
-                            <Download size={16} />
-                            <span>Export Excel</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left text-slate-600">
-                        <thead className="text-xs text-royal uppercase bg-slate-50/50">
-                            <tr>
-                                <th className="px-6 py-4 font-bold">Date</th>
-                                <th className="px-6 py-4 font-bold">Student</th>
-                                <th className="px-6 py-4 font-bold">Father</th>
-                                <th className="px-6 py-4 font-bold">City</th>
-                                <th className="px-6 py-4 font-bold">Contact</th>
-                                <th className="px-6 py-4 font-bold">Class</th>
-                                <th className="px-6 py-4 font-bold">Status</th>
-                                <th className="px-6 py-4 font-bold">Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {loading ? (
-                                <tr><td colSpan={8} className="px-6 py-8 text-center">Loading...</td></tr>
-                            ) : filteredLeads.length === 0 ? (
-                                <tr><td colSpan={8} className="px-6 py-8 text-center text-slate-400">No leads found.</td></tr>
-                            ) : (
-                                filteredLeads.map((lead) => (
-                                    <tr key={lead._id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                                        <td className="px-6 py-4 font-medium whitespace-nowrap">
-                                            {new Date(lead.createdAt || lead.date || '').toLocaleDateString()}
-                                        </td>
-                                        <td className="px-6 py-4 font-bold text-royal">{lead.studentName}</td>
-                                        <td className="px-6 py-4">{lead.fatherName || '-'}</td>
-                                        <td className="px-6 py-4">{lead.city || '-'}</td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex flex-col">
-                                                <span>{lead.phone}</span>
-                                                <span className="text-xs text-slate-400">{lead.email}</span>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700">
-                                                {lead.class}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <select
-                                                value={lead.status || 'New'}
-                                                onChange={(e) => handleStatusChange(lead._id, e.target.value)}
-                                                className={`text-xs font-semibold px-2 py-1 rounded-full border-none focus:ring-2 focus:ring-royal/20 cursor-pointer ${STATUS_COLORS[lead.status || 'New']}`}
-                                            >
-                                                {STATUS_OPTIONS.map(opt => (
-                                                    <option key={opt} value={opt}>{opt}</option>
-                                                ))}
-                                            </select>
-                                        </td>
-                                        <td className="px-6 py-4 max-w-xs truncate" title={lead.message}>
-                                            {lead.message || "-"}
-                                        </td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div className="p-4 border-t border-slate-100 text-center text-xs text-slate-400">
-                    Data Source: MongoDB (Atlas)
                 </div>
             </div>
         </div>
