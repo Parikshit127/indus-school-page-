@@ -3,23 +3,26 @@ const router = express.Router();
 console.log("Loading leads.js route module...");
 const nodemailer = require('nodemailer');
 const Lead = require('../models/Lead');
+const AdminOtp = require('../models/AdminOtp');
+const LoginAttempt = require('../models/LoginAttempt');
 
 // Simple JWT-like auth (for demo - use proper JWT in production)
 const ADMIN_TOKEN = 'indus-admin-secret-2024';
 
 // Email configuration
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.sendgrid.net',
+    port: 587,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: 'apikey', // This is the literal string 'apikey', not a placeholder
+        pass: process.env.SENDGRID_API_KEY
     }
 });
 
 // Function to send email notification
 const sendEmailNotification = async (lead) => {
     const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: 'scrapshera01@gmail.com',
         to: process.env.EMAIL_TO,
         subject: `🎓 New Lead: ${lead.studentName} - Class ${lead.class}`,
         html: `
@@ -102,21 +105,121 @@ const authMiddleware = (req, res, next) => {
     next();
 };
 
-// POST: Admin Login
-router.post('/auth/login', (req, res) => {
-    const { email, password, securityCode } = req.body;
+// POST: Admin Login - Request OTP
+// POST: Admin Login - Request OTP
+router.post('/auth/login', async (req, res) => {
+    try {
+        const { email, password, securityCode } = req.body;
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-    // Check security code first
-    const envSecurityCode = process.env.ADMIN_SECURITY_CODE;
-    if (envSecurityCode && securityCode !== envSecurityCode) {
-        return res.status(401).json({ error: 'Invalid security code' });
+        // Check for existing block
+        const attemptRecord = await LoginAttempt.findOne({ ip });
+        if (attemptRecord && attemptRecord.lockUntil && attemptRecord.lockUntil > Date.now()) {
+            return res.status(403).json({ 
+                error: `Too many failed attempts. Please try again in ${Math.ceil((attemptRecord.lockUntil - Date.now()) / 60000)} minutes.` 
+            });
+        }
+
+        // Check security code first
+        const envSecurityCode = process.env.ADMIN_SECURITY_CODE;
+        if (envSecurityCode && securityCode !== envSecurityCode) {
+            return res.status(401).json({ error: 'Invalid security code' });
+        }
+        
+        if (password === 'admin123') { 
+            // Reset attempts on success
+            if (attemptRecord) {
+                await LoginAttempt.deleteOne({ ip });
+            }
+
+             // Generate OTP
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            // Remove any existing OTPs for this email to prevent clutter
+            await AdminOtp.deleteMany({ email });
+            
+            // Save OTP
+            await AdminOtp.create({ email, otp });
+
+            // Send OTP via Email
+            const mailOptions = {
+                from: 'scrapshera01@gmail.com',
+                to: email, // Send to the trying-to-login email
+                subject: '🔐 Admin Login OTP - Indus Public School',
+                html: `
+                    <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                        <h2 style="color: #1e3a5f;">Admin Login Verification</h2>
+                        <p>Your OTP for Indus Public School Admin Dashboard is:</p>
+                        <h1 style="color: #c9a227; letter-spacing: 5px;">${otp}</h1>
+                        <p>This OTP is valid for 5 minutes.</p>
+                        <p style="font-size: 12px; color: #888;">If you didn't request this, please ignore this email.</p>
+                    </div>
+                `
+            };
+
+            await transporter.sendMail(mailOptions);
+            return res.json({ success: true, message: 'OTP sent to email', otpSent: true });
+        } else {
+            // Track failed attempts
+            const attempts = attemptRecord ? attemptRecord.attempts + 1 : 1;
+            let lockUntil = undefined;
+            
+            if (attempts >= 5) {
+                lockUntil = Date.now() + 5 * 60 * 1000; // Lock for 5 minutes
+                
+                // Send Security Alert Email
+                 const alertOptions = {
+                    from: 'scrapshera01@gmail.com',
+                    to: process.env.ADMIN_EMAIL || 'vishesh.singal.contact@gmail.com',
+                    subject: '🚨 SECURITY ALERT: Failed Admin Login Attempts',
+                    html: `
+                        <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 10px; border-left: 5px solid #d9534f;">
+                            <h2 style="color: #d9534f;">Excessive Failed Login Attempts</h2>
+                            <p>The IP Address <strong>${ip}</strong> has failed to log in 5 times continuously.</p>
+                            <p><strong>Action Taken:</strong> Login blocked for 5 minutes.</p>
+                            <p><strong>Time:</strong> ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</p>
+                            <p style="margin-top:20px; font-size: 12px; color: #666;">If this was you, please wait 5 minutes and try again.</p>
+                        </div>
+                    `
+                };
+                transporter.sendMail(alertOptions).catch(console.error);
+            }
+
+            if (attemptRecord) {
+                await LoginAttempt.updateOne({ ip }, { attempts, lockUntil });
+            } else {
+                await LoginAttempt.create({ ip, attempts, lockUntil });
+            }
+            
+            return res.status(401).json({ 
+                error: 'Invalid credentials', 
+                attemptsRemaining: Math.max(0, 5 - attempts) 
+            });
+        }
+    } catch (err) {
+        console.error('Login Error:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
+});
 
-    // Simple auth for demo (use proper auth in production)
-    if (email === 'admin@indusrohtak.com' && password === 'admin123') {
+// POST: Verify OTP
+router.post('/auth/verify-otp', async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+        
+        const record = await AdminOtp.findOne({ email, otp });
+        if (!record) {
+            return res.status(400).json({ error: 'Invalid or expired OTP' });
+        }
+        
+        // Clear Used OTP
+        await AdminOtp.deleteOne({ _id: record._id });
+        
         return res.json({ success: true, token: ADMIN_TOKEN });
+    } catch (err) {
+        console.error('OTP Verify Error:', err);
+        res.status(500).json({ error: 'Verification failed' });
     }
-    return res.status(401).json({ error: 'Invalid credentials' });
 });
 
 // POST: Create a new lead
