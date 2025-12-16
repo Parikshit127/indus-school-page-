@@ -41,6 +41,15 @@ if (process.env.SENDGRID_API_KEY) {
     });
 }
 
+// Verify connection configuration
+transporter.verify(function (error, success) {
+    if (error) {
+        console.error('❌ EMAIL CONNECTION ERROR:', error);
+    } else {
+        console.log('✅ Email Server is ready to take our messages');
+    }
+});
+
 // Function to send email notification
 const sendEmailNotification = async (lead) => {
     const mailOptions = {
