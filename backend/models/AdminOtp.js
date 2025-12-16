@@ -9,6 +9,14 @@ const AdminOtpSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    isPasswordReset: {
+        type: Boolean,
+        default: false
+    },
+    verified: {
+        type: Boolean,
+        default: false
+    },
     createdAt: {
         type: Date,
         default: Date.now,

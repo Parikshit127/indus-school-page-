@@ -35,3 +35,4 @@ frontend/.env.local
 
 # Vercel
 .vercel
+backend/.env.bak

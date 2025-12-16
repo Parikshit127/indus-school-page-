@@ -3,6 +3,7 @@ const router = express.Router();
 console.log("Loading leads.js route module...");
 const nodemailer = require('nodemailer');
 const Lead = require('../models/Lead');
+const Admin = require('../models/Admin');
 const AdminOtp = require('../models/AdminOtp');
 const LoginAttempt = require('../models/LoginAttempt');
 
@@ -115,8 +116,8 @@ router.post('/auth/login', async (req, res) => {
         // Check for existing block
         const attemptRecord = await LoginAttempt.findOne({ ip });
         if (attemptRecord && attemptRecord.lockUntil && attemptRecord.lockUntil > Date.now()) {
-            return res.status(403).json({ 
-                error: `Too many failed attempts. Please try again in ${Math.ceil((attemptRecord.lockUntil - Date.now()) / 60000)} minutes.` 
+            return res.status(403).json({
+                error: `Too many failed attempts. Please try again in ${Math.ceil((attemptRecord.lockUntil - Date.now()) / 60000)} minutes.`
             });
         }
 
@@ -125,19 +126,19 @@ router.post('/auth/login', async (req, res) => {
         if (envSecurityCode && securityCode !== envSecurityCode) {
             return res.status(401).json({ error: 'Invalid security code' });
         }
-        
-        if (password === 'admin123') { 
+
+        if (password === 'admin123') {
             // Reset attempts on success
             if (attemptRecord) {
                 await LoginAttempt.deleteOne({ ip });
             }
 
-             // Generate OTP
+            // Generate OTP
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
-            
+
             // Remove any existing OTPs for this email to prevent clutter
             await AdminOtp.deleteMany({ email });
-            
+
             // Save OTP
             await AdminOtp.create({ email, otp });
 
@@ -163,12 +164,12 @@ router.post('/auth/login', async (req, res) => {
             // Track failed attempts
             const attempts = attemptRecord ? attemptRecord.attempts + 1 : 1;
             let lockUntil = undefined;
-            
+
             if (attempts >= 5) {
                 lockUntil = Date.now() + 5 * 60 * 1000; // Lock for 5 minutes
-                
+
                 // Send Security Alert Email
-                 const alertOptions = {
+                const alertOptions = {
                     from: 'scrapshera01@gmail.com',
                     to: process.env.ADMIN_EMAIL || 'vishesh.singal.contact@gmail.com',
                     subject: '🚨 SECURITY ALERT: Failed Admin Login Attempts',
@@ -190,10 +191,10 @@ router.post('/auth/login', async (req, res) => {
             } else {
                 await LoginAttempt.create({ ip, attempts, lockUntil });
             }
-            
-            return res.status(401).json({ 
-                error: 'Invalid credentials', 
-                attemptsRemaining: Math.max(0, 5 - attempts) 
+
+            return res.status(401).json({
+                error: 'Invalid credentials',
+                attemptsRemaining: Math.max(0, 5 - attempts)
             });
         }
     } catch (err) {
@@ -206,19 +207,162 @@ router.post('/auth/login', async (req, res) => {
 router.post('/auth/verify-otp', async (req, res) => {
     try {
         const { email, otp } = req.body;
-        
+
         const record = await AdminOtp.findOne({ email, otp });
         if (!record) {
             return res.status(400).json({ error: 'Invalid or expired OTP' });
         }
-        
+
         // Clear Used OTP
         await AdminOtp.deleteOne({ _id: record._id });
-        
+
         return res.json({ success: true, token: ADMIN_TOKEN });
     } catch (err) {
         console.error('OTP Verify Error:', err);
         res.status(500).json({ error: 'Verification failed' });
+    }
+});
+
+// POST: Forgot Password - Request OTP
+router.post('/auth/forgot-password', async (req, res) => {
+    try {
+        const { email } = req.body;
+        console.log('Forgot password request for:', email);
+
+        if (!email) {
+            return res.status(400).json({ error: 'Email is required' });
+        }
+
+        // Check if admin exists
+        const admin = await Admin.findOne({ email });
+        if (!admin) {
+            console.log('Admin not found for email:', email);
+            // Don't reveal if email exists or not for security
+            return res.json({ success: true, message: 'If this email exists, an OTP has been sent' });
+        }
+
+        // Generate OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        console.log('Generated OTP for password reset:', otp);
+
+        // Remove any existing OTPs for this email
+        await AdminOtp.deleteMany({ email });
+
+        // Save OTP with reset flag
+        await AdminOtp.create({ email, otp, isPasswordReset: true });
+        console.log('OTP saved to database');
+
+        // Send OTP via Email
+        const mailOptions = {
+            from: 'scrapshera01@gmail.com',
+            to: email,
+            subject: '🔐 Password Reset OTP - Indus Public School',
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                    <h2 style="color: #1e3a5f;">Password Reset Request</h2>
+                    <p>You have requested to reset your password for Indus Public School Admin Dashboard.</p>
+                    <p>Your OTP for password reset is:</p>
+                    <h1 style="color: #c9a227; letter-spacing: 5px;">${otp}</h1>
+                    <p>This OTP is valid for 5 minutes.</p>
+                    <p style="font-size: 12px; color: #888;">If you didn't request this, please ignore this email and your password will remain unchanged.</p>
+                </div>
+            `
+        };
+
+        console.log('Attempting to send email to:', email);
+        await transporter.sendMail(mailOptions);
+        console.log('Password reset OTP email sent successfully');
+        return res.json({ success: true, message: 'OTP sent to email' });
+    } catch (err) {
+        console.error('Forgot Password Error:', err);
+        console.error('Error details:', err.message);
+        if (err.response) {
+            console.error('Email service response:', err.response);
+        }
+        return res.status(500).json({ error: 'Failed to process request' });
+    }
+});
+
+// POST: Verify Reset OTP
+router.post('/auth/verify-reset-otp', async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+
+        if (!email || !otp) {
+            return res.status(400).json({ error: 'Email and OTP are required' });
+        }
+
+        const record = await AdminOtp.findOne({ email, otp, isPasswordReset: true });
+        if (!record) {
+            return res.status(400).json({ error: 'Invalid or expired OTP' });
+        }
+
+        // Don't delete OTP yet - keep it for password reset verification
+        // Mark it as verified
+        record.verified = true;
+        await record.save();
+
+        return res.json({ success: true, message: 'OTP verified successfully' });
+    } catch (err) {
+        console.error('Verify Reset OTP Error:', err);
+        res.status(500).json({ error: 'Verification failed' });
+    }
+});
+
+// POST: Reset Password
+router.post('/auth/reset-password', async (req, res) => {
+    try {
+        const { email, otp, newPassword } = req.body;
+
+        if (!email || !otp || !newPassword) {
+            return res.status(400).json({ error: 'Email, OTP, and new password are required' });
+        }
+
+        // Validate password strength
+        if (newPassword.length < 6) {
+            return res.status(400).json({ error: 'Password must be at least 6 characters long' });
+        }
+
+        // Verify OTP one more time
+        const record = await AdminOtp.findOne({ email, otp, isPasswordReset: true });
+        if (!record) {
+            return res.status(400).json({ error: 'Invalid or expired OTP' });
+        }
+
+        // Find admin and update password
+        const admin = await Admin.findOne({ email });
+        if (!admin) {
+            return res.status(404).json({ error: 'Admin not found' });
+        }
+
+        // Update password (will be hashed by pre-save hook)
+        admin.password = newPassword;
+        await admin.save();
+
+        // Clear the OTP
+        await AdminOtp.deleteOne({ _id: record._id });
+
+        // Send confirmation email
+        const mailOptions = {
+            from: 'scrapshera01@gmail.com',
+            to: email,
+            subject: '✅ Password Reset Successful - Indus Public School',
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                    <h2 style="color: #1e3a5f;">Password Reset Successful</h2>
+                    <p>Your password for Indus Public School Admin Dashboard has been successfully reset.</p>
+                    <p>You can now log in with your new password.</p>
+                    <p style="font-size: 12px; color: #888; margin-top: 20px;">If you didn't make this change, please contact support immediately.</p>
+                </div>
+            `
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        return res.json({ success: true, message: 'Password reset successfully' });
+    } catch (err) {
+        console.error('Reset Password Error:', err);
+        res.status(500).json({ error: 'Failed to reset password' });
     }
 });
 
