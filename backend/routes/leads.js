@@ -128,6 +128,48 @@ const authMiddleware = (req, res, next) => {
 };
 
 // POST: Admin Login - Request OTP
+// GET: Debug Email Configuration
+router.get('/auth/debug-email', async (req, res) => {
+    try {
+        const { email } = req.query;
+        if (!email) return res.status(400).json({ error: 'Please provide email query param: ?email=your@email.com' });
+        
+        const configStatus = {
+            hasSendGrid: !!process.env.SENDGRID_API_KEY,
+            hasGmailUser: !!process.env.EMAIL_USER,
+            hasGmailPass: !!process.env.EMAIL_PASS,
+            activeTransporter: process.env.SENDGRID_API_KEY ? 'SendGrid' : (process.env.EMAIL_USER ? 'Gmail' : 'Dummy/None')
+        };
+
+        console.log('Debug Email Request:', { email, config: configStatus });
+
+        const info = await transporter.sendMail({
+            from: process.env.EMAIL_USER || 'scrapshera01@gmail.com',
+            to: email,
+            subject: 'Debug Email Test - Indus Public School',
+            text: `This is a test email from your deployed server.\n\nConfiguration Status:\n${JSON.stringify(configStatus, null, 2)}`
+        });
+
+        res.json({ 
+            success: true, 
+            message: 'Email sent successfully (check inbox & spam)', 
+            messageId: info.messageId, 
+            config: configStatus,
+            note: configStatus.activeTransporter === 'Dummy/None' ? 'WARNING: No email config found, using dummy transport (no real email sent)' : 'Real transport used'
+        });
+    } catch (error) {
+        console.error('Debug Email Failed:', error);
+        res.status(500).json({ 
+            error: 'Email Sending Failed', 
+            details: error.message, 
+            config: {
+                hasSendGrid: !!process.env.SENDGRID_API_KEY,
+                hasGmailUser: !!process.env.EMAIL_USER
+            }
+        });
+    }
+});
+
 // POST: Admin Login - Request OTP
 router.post('/auth/login', async (req, res) => {
     try {
