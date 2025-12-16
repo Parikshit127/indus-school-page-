@@ -127,7 +127,14 @@ router.post('/auth/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid security code' });
         }
 
-        if (password === 'admin123') {
+        // Check admin credentials in database
+        const admin = await Admin.findOne({ email });
+        let isMatch = false;
+        if (admin) {
+            isMatch = await admin.comparePassword(password);
+        }
+
+        if (isMatch) {
             // Reset attempts on success
             if (attemptRecord) {
                 await LoginAttempt.deleteOne({ ip });
