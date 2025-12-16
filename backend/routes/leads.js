@@ -12,49 +12,25 @@ const ADMIN_TOKEN = 'indus-admin-secret-2024';
 
 // Email configuration
 // Email configuration
-let transporter;
-
+// Email configuration
+let sgMail = require('@sendgrid/mail');
 if (process.env.SENDGRID_API_KEY) {
-    console.log('Using SendGrid for emails');
-    transporter = nodemailer.createTransport({
-        host: 'smtp.sendgrid.net',
-        port: 587,
-        auth: {
-            user: 'apikey',
-            pass: process.env.SENDGRID_API_KEY
-        }
-    });
-} else if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-    console.log('Using Gmail SMTP for emails');
-    transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        }
-    });
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    console.log('✅ SendGrid API Key configured');
 } else {
-    console.warn('⚠️ NO EMAIL CONFIGURATION FOUND! Emails will not be sent.');
-    // Create a dummy transporter to prevent crashes
-    transporter = nodemailer.createTransport({
-        jsonTransport: true
-    });
+    console.warn('⚠️ NO SENDGRID API KEY FOUND! Emails will not be sent.');
+    // Mock send function to prevent crashes
+    sgMail = {
+        send: async () => { console.warn('Mock Email Sent (No API Key)'); return [{}]; },
+        setApiKey: () => {}
+    };
 }
-
-// Verify connection configuration
-transporter.verify(function (error, success) {
-    if (error) {
-        console.error('❌ EMAIL CONNECTION ERROR:', error);
-    } else {
-        console.log('✅ Email Server is ready to take our messages');
-    }
-});
 
 // Function to send email notification
 const sendEmailNotification = async (lead) => {
-    const mailOptions = {
-        from: 'scrapshera01@gmail.com',
+    const msg = {
         to: process.env.EMAIL_TO,
+        from: process.env.SENDGRID_FROM_EMAIL || process.env.EMAIL_USER || 'scrapshera01@gmail.com', // Verified sender
         subject: `🎓 New Lead: ${lead.studentName} - Class ${lead.class}`,
         html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; border-radius: 10px; overflow: hidden;">
@@ -114,11 +90,14 @@ const sendEmailNotification = async (lead) => {
     };
 
     try {
-        await transporter.sendMail(mailOptions);
-        console.log('Email notification sent successfully');
+        await sgMail.send(msg);
+        console.log('Email notification sent successfully via SendGrid API');
         return true;
     } catch (error) {
-        console.error('Error sending email:', error);
+        console.error('Error sending email via SendGrid:', error);
+        if (error.response) {
+            console.error(error.response.body);
+        }
         return false;
     }
 };
@@ -152,8 +131,8 @@ router.get('/auth/debug-email', async (req, res) => {
 
         console.log('Debug Email Request:', { email, config: configStatus });
 
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL_USER || 'scrapshera01@gmail.com',
+        const info = await sgMail.send({
+            from: process.env.SENDGRID_FROM_EMAIL || process.env.EMAIL_USER || 'scrapshera01@gmail.com',
             to: email,
             subject: 'Debug Email Test - Indus Public School',
             text: `This is a test email from your deployed server.\n\nConfiguration Status:\n${JSON.stringify(configStatus, null, 2)}`
@@ -237,7 +216,7 @@ router.post('/auth/login', async (req, res) => {
                 `
             };
 
-            transporter.sendMail(mailOptions).catch(err => console.error('Error sending login OTP:', err));
+            sgMail.send(mailOptions).then(() => console.log('Login OTP sent via SendGrid')).catch(err => console.error('Error sending login OTP:', err));
             return res.json({ success: true, message: 'OTP sent to email', otpSent: true });
         } else {
             // Track failed attempts
@@ -262,7 +241,7 @@ router.post('/auth/login', async (req, res) => {
                         </div>
                     `
                 };
-                transporter.sendMail(alertOptions).catch(console.error);
+                sgMail.send(alertOptions).catch(console.error);
             }
 
             if (attemptRecord) {
@@ -349,7 +328,7 @@ router.post('/auth/forgot-password', async (req, res) => {
         };
 
         console.log('Attempting to send email to:', email);
-        transporter.sendMail(mailOptions).catch(err => console.error('Error sending reset OTP:', err));
+        sgMail.send(mailOptions).then(() => console.log('Reset OTP sent via SendGrid')).catch(err => console.error('Error sending reset OTP:', err));
         console.log('Password reset OTP email process initiated');
         return res.json({ success: true, message: 'OTP sent to email' });
     } catch (err) {
@@ -436,7 +415,7 @@ router.post('/auth/reset-password', async (req, res) => {
             `
         };
 
-        transporter.sendMail(mailOptions).catch(err => console.error('Error sending reset confirmation:', err));
+        sgMail.send(mailOptions).catch(err => console.error('Error sending reset confirmation:', err));
 
         return res.json({ success: true, message: 'Password reset successfully' });
     } catch (err) {
