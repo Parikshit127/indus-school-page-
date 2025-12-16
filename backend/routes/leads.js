@@ -214,7 +214,7 @@ router.post('/auth/login', async (req, res) => {
 
             // Send OTP via Email
             const mailOptions = {
-                from: 'scrapshera01@gmail.com',
+                from: process.env.EMAIL_USER || 'scrapshera01@gmail.com',
                 to: email, // Send to the trying-to-login email
                 subject: '🔐 Admin Login OTP - Indus Public School',
                 html: `
@@ -240,7 +240,7 @@ router.post('/auth/login', async (req, res) => {
 
                 // Send Security Alert Email
                 const alertOptions = {
-                    from: 'scrapshera01@gmail.com',
+                    from: process.env.EMAIL_USER || 'scrapshera01@gmail.com',
                     to: process.env.ADMIN_EMAIL || 'vishesh.singal.contact@gmail.com',
                     subject: '🚨 SECURITY ALERT: Failed Admin Login Attempts',
                     html: `
@@ -324,7 +324,7 @@ router.post('/auth/forgot-password', async (req, res) => {
 
         // Send OTP via Email
         const mailOptions = {
-            from: 'scrapshera01@gmail.com',
+            from: process.env.EMAIL_USER || 'scrapshera01@gmail.com',
             to: email,
             subject: '🔐 Password Reset OTP - Indus Public School',
             html: `
