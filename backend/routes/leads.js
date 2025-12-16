@@ -11,14 +11,35 @@ const LoginAttempt = require('../models/LoginAttempt');
 const ADMIN_TOKEN = 'indus-admin-secret-2024';
 
 // Email configuration
-const transporter = nodemailer.createTransport({
-    host: 'smtp.sendgrid.net',
-    port: 587,
-    auth: {
-        user: 'apikey', // This is the literal string 'apikey', not a placeholder
-        pass: process.env.SENDGRID_API_KEY
-    }
-});
+// Email configuration
+let transporter;
+
+if (process.env.SENDGRID_API_KEY) {
+    console.log('Using SendGrid for emails');
+    transporter = nodemailer.createTransport({
+        host: 'smtp.sendgrid.net',
+        port: 587,
+        auth: {
+            user: 'apikey',
+            pass: process.env.SENDGRID_API_KEY
+        }
+    });
+} else if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+    console.log('Using Gmail SMTP for emails');
+    transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
+} else {
+    console.warn('⚠️ NO EMAIL CONFIGURATION FOUND! Emails will not be sent.');
+    // Create a dummy transporter to prevent crashes
+    transporter = nodemailer.createTransport({
+        jsonTransport: true
+    });
+}
 
 // Function to send email notification
 const sendEmailNotification = async (lead) => {
