@@ -165,7 +165,7 @@ router.post('/auth/login', async (req, res) => {
                 `
             };
 
-            await transporter.sendMail(mailOptions);
+            transporter.sendMail(mailOptions).catch(err => console.error('Error sending login OTP:', err));
             return res.json({ success: true, message: 'OTP sent to email', otpSent: true });
         } else {
             // Track failed attempts
@@ -277,8 +277,8 @@ router.post('/auth/forgot-password', async (req, res) => {
         };
 
         console.log('Attempting to send email to:', email);
-        await transporter.sendMail(mailOptions);
-        console.log('Password reset OTP email sent successfully');
+        transporter.sendMail(mailOptions).catch(err => console.error('Error sending reset OTP:', err));
+        console.log('Password reset OTP email process initiated');
         return res.json({ success: true, message: 'OTP sent to email' });
     } catch (err) {
         console.error('Forgot Password Error:', err);
@@ -364,7 +364,7 @@ router.post('/auth/reset-password', async (req, res) => {
             `
         };
 
-        await transporter.sendMail(mailOptions);
+        transporter.sendMail(mailOptions).catch(err => console.error('Error sending reset confirmation:', err));
 
         return res.json({ success: true, message: 'Password reset successfully' });
     } catch (err) {
