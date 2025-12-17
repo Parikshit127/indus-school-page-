@@ -23,6 +23,8 @@ import TeachingStaffPage from "@/pages/TeachingStaffPage";
 import SwimmingActivityPage from "@/pages/activities/SwimmingActivityPage";
 import HorseRidingActivityPage from "@/pages/activities/HorseRidingActivityPage";
 import ContactPage from "@/pages/ContactPage";
+import AdmissionLandingPage from "@/pages/AdmissionLandingPage";
+import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -76,12 +78,16 @@ function App() {
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="/test" element={<TestPage />} />
         </Route>
 
         {/* Admin Routes (No Navbar/Footer) */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
+        {/* Standalone Pages (No Navbar) */}
+        <Route path="/admission" element={<AdmissionLandingPage />} />
       </Routes>
     </Router>
   );

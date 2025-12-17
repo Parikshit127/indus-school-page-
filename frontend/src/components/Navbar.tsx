@@ -57,6 +57,7 @@ export function Navbar() {
         },
         { name: "Gallery", path: "/gallery" },
         { name: "Facilities", path: "/facilities" },
+        { name: "Admissions", path: "/admission" },
         { name: "Contact Us", path: "/contact" },
     ];
 

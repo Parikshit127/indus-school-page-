@@ -30,7 +30,7 @@ interface HeroContent {
     };
 }
 
-export function HeroSection() {
+export function HeroSection({ staticImage, hideStats }: { staticImage?: string; hideStats?: boolean }) {
     const [content, setContent] = useState<HeroContent | null>(null);
     const [loading, setLoading] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -56,6 +56,10 @@ export function HeroSection() {
 
     // Construct display content with fallback and migration logic
     const getSlides = (): Slide[] => {
+        if (staticImage) {
+            return [{ type: 'image', url: staticImage }];
+        }
+
         if (!content) {
             // Default fallback
             return [{ type: 'image', url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070' }];
@@ -109,7 +113,7 @@ export function HeroSection() {
         <section id="admissions" className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center overflow-hidden pt-20 pb-12 md:py-0">
             {/* Background Slider */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-royal/95 via-royal/80 to-royal/40 z-10" />
+                <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-royal/60 via-royal/40 to-royal/10 z-10" />
 
                 <AnimatePresence mode="popLayout">
                     <motion.div
@@ -188,41 +192,43 @@ export function HeroSection() {
                     </motion.div>
 
                     {/* Stats Grid */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4 }}
-                        className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-white/10"
-                    >
-                        <div className="text-center md:text-left">
-                            <h4 className="text-2xl md:text-3xl font-bold text-gold flex items-center justify-center md:justify-start gap-2">
-                                <Medal size={24} className="text-gold" />
-                                {displayContent.stats?.years}+
-                            </h4>
-                            <p className="text-xs text-white/60 uppercase tracking-wider">Years of Excellence</p>
-                        </div>
-                        <div className="text-center md:text-left">
-                            <h4 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
-                                <Users size={24} className="text-white" />
-                                {displayContent.stats?.students}+
-                            </h4>
-                            <p className="text-xs text-white/60 uppercase tracking-wider">Students Enrolled</p>
-                        </div>
-                        <div className="text-center md:text-left">
-                            <h4 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
-                                <GraduationCap size={24} className="text-white" />
-                                {displayContent.stats?.teachers}+
-                            </h4>
-                            <p className="text-xs text-white/60 uppercase tracking-wider">Expert Teachers</p>
-                        </div>
-                        <div className="text-center md:text-left">
-                            <h4 className="text-2xl md:text-3xl font-bold text-gold flex items-center justify-center md:justify-start gap-2">
-                                <Trophy size={24} className="text-gold" />
-                                {displayContent.stats?.boardResults}
-                            </h4>
-                            <p className="text-xs text-white/60 uppercase tracking-wider">Board Results</p>
-                        </div>
-                    </motion.div>
+                    {!hideStats && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 }}
+                            className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-white/10"
+                        >
+                            <div className="text-center md:text-left">
+                                <h4 className="text-2xl md:text-3xl font-bold text-gold flex items-center justify-center md:justify-start gap-2">
+                                    <Medal size={24} className="text-gold" />
+                                    {displayContent.stats?.years}+
+                                </h4>
+                                <p className="text-xs text-white/60 uppercase tracking-wider">Years of Excellence</p>
+                            </div>
+                            <div className="text-center md:text-left">
+                                <h4 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
+                                    <Users size={24} className="text-white" />
+                                    {displayContent.stats?.students}+
+                                </h4>
+                                <p className="text-xs text-white/60 uppercase tracking-wider">Students Enrolled</p>
+                            </div>
+                            <div className="text-center md:text-left">
+                                <h4 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
+                                    <GraduationCap size={24} className="text-white" />
+                                    {displayContent.stats?.teachers}+
+                                </h4>
+                                <p className="text-xs text-white/60 uppercase tracking-wider">Expert Teachers</p>
+                            </div>
+                            <div className="text-center md:text-left">
+                                <h4 className="text-2xl md:text-3xl font-bold text-gold flex items-center justify-center md:justify-start gap-2">
+                                    <Trophy size={24} className="text-gold" />
+                                    {displayContent.stats?.boardResults}
+                                </h4>
+                                <p className="text-xs text-white/60 uppercase tracking-wider">Board Results</p>
+                            </div>
+                        </motion.div>
+                    )}
                 </div>
 
                 {/* Right Form */}

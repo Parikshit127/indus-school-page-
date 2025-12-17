@@ -1,6 +1,6 @@
 import { Section } from "@/components/ui/section";
 import { Facebook, Instagram, Linkedin, MapPin, Phone, Mail } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Custom X (Twitter) icon component
 const XIcon = ({ size = 20 }: { size?: number }) => (
@@ -16,6 +16,7 @@ const XIcon = ({ size = 20 }: { size?: number }) => (
 );
 
 export function Footer() {
+    const navigate = useNavigate();
     const quickLinks = [
         { name: "About Us", path: "/about" },
         { name: "Academics", path: "/academics" },
@@ -25,8 +26,7 @@ export function Footer() {
     ];
 
     const handleApplyNow = () => {
-        // Navigate to home page and scroll to admissions section
-        window.location.href = "/#admissions";
+        navigate("/admission");
     };
 
     return (
@@ -88,7 +88,7 @@ export function Footer() {
                             ))}
                             <li>
                                 <Link
-                                    to="/#admissions"
+                                    to="/admission"
                                     className="text-white/70 hover:text-gold transition-colors flex items-center gap-2"
                                 >
                                     <span className="w-1.5 h-1.5 bg-gold/50 rounded-full"></span>
@@ -116,7 +116,7 @@ export function Footer() {
                 <div className="border-t border-white/10 mt-16 pt-8 text-center text-white/40 text-sm flex flex-col md:flex-row justify-between items-center gap-4">
                     <p>© 2025 Indus Public School, Rohtak. All rights reserved.</p>
                     <div className="flex gap-6">
-                        <a href="#" className="hover:text-gold">Privacy Policy</a>
+                        <Link to="/privacy-policy" className="hover:text-gold">Privacy Policy</Link>
                         <a href="#" className="hover:text-gold">Terms of Use</a>
                     </div>
                 </div>
