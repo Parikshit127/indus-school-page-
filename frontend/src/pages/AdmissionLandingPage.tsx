@@ -9,7 +9,7 @@ import { Footer } from "@/components/Footer";
 export default function AdmissionLandingPage() {
     return (
         <>
-            <HeroSection staticImage="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop" hideStats={true} />
+            <HeroSection staticImage="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop" hideStats={true} removeMobilePadding={true} />
             <SchoolOverview />
             <Infrastructure />
             <Achievements />

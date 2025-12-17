@@ -24,8 +24,11 @@ export function Navbar() {
         setActiveDropdown(null);
     }, [location]);
 
+    // Check if navbar should always be blue (for privacy policy page)
+    const forceBlue = document.body.classList.contains('force-navbar-blue');
+
     // Navbar background style based on scroll only (transparent at top for all pages)
-    const navbarClass = `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+    const navbarClass = `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || forceBlue
         ? "bg-royal-dark/95 backdrop-blur-md shadow-lg py-3"
         : "bg-transparent py-6"
         }`;

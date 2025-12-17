@@ -30,7 +30,7 @@ interface HeroContent {
     };
 }
 
-export function HeroSection({ staticImage, hideStats }: { staticImage?: string; hideStats?: boolean }) {
+export function HeroSection({ staticImage, hideStats, removeMobilePadding }: { staticImage?: string; hideStats?: boolean; removeMobilePadding?: boolean }) {
     const [content, setContent] = useState<HeroContent | null>(null);
     const [loading, setLoading] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -110,7 +110,7 @@ export function HeroSection({ staticImage, hideStats }: { staticImage?: string; 
     }
 
     return (
-        <section id="admissions" className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center overflow-hidden pt-20 pb-12 md:py-0">
+        <section id="admissions" className={`relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center overflow-hidden ${removeMobilePadding ? 'pt-0 pb-0' : 'pt-20 pb-12'} md:py-0`}>
             {/* Background Slider */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-royal/60 via-royal/40 to-royal/10 z-10" />
