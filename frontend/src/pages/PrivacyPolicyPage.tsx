@@ -1,13 +1,7 @@
-import { useEffect } from "react";
+
 
 export default function PrivacyPolicyPage() {
-    useEffect(() => {
-        // Add a class to body to signal navbar to stay blue
-        document.body.classList.add('force-navbar-blue');
-        return () => {
-            document.body.classList.remove('force-navbar-blue');
-        };
-    }, []);
+
 
     return (
         <div className="min-h-screen bg-white pt-32 pb-16">

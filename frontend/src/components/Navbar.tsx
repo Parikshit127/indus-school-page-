@@ -25,7 +25,7 @@ export function Navbar() {
     }, [location]);
 
     // Check if navbar should always be blue (for privacy policy page)
-    const forceBlue = document.body.classList.contains('force-navbar-blue');
+    const forceBlue = document.body.classList.contains('force-navbar-blue') || location.pathname === '/privacy-policy';
 
     // Navbar background style based on scroll only (transparent at top for all pages)
     const navbarClass = `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || forceBlue
