@@ -13,6 +13,7 @@ import CurriculumPage from "@/pages/academics/CurriculumPage";
 import FacilitiesPage from "@/pages/FacilitiesPage";
 import AboutUsPage from "@/pages/AboutUsPage";
 import GalleryPage from "@/pages/GalleryPage";
+import AchievementsPage from "@/pages/AchievementsPage";
 import ActivitiesPage from "@/pages/ActivitiesPage";
 import SportsActivityPage from "@/pages/activities/SportsActivityPage";
 import CulturalActivityPage from "@/pages/activities/CulturalActivityPage";
@@ -76,6 +77,7 @@ function App() {
           <Route path="/activities/swimming" element={<SwimmingActivityPage />} />
           <Route path="/activities/horse-riding" element={<HorseRidingActivityPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/achievements" element={<AchievementsPage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
