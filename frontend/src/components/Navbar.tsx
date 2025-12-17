@@ -59,7 +59,14 @@ export function Navbar() {
             ]
         },
         { name: "Gallery", path: "/gallery" },
-        { name: "Achievements", path: "/achievements" },
+        {
+            name: "Achievements",
+            path: "/achievements",
+            dropdown: [
+                { name: "Achievements Overview", path: "/achievements" },
+                { name: "Academic Results", path: "/achievements/results" }
+            ]
+        },
         { name: "Facilities", path: "/facilities" },
         { name: "Contact Us", path: "/contact" },
     ];
