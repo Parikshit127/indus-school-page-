@@ -48,7 +48,7 @@ export function SchoolOverview() {
                     <div className="aspect-[4/5] rounded-lg overflow-hidden relative shadow-2xl">
                         {/* Placeholder Image */}
                         <img
-                            src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?q=80&w=2070&auto=format&fit=crop"
+                            src="https://www.ipsrohtak.edu.in/downloads/photos/images/n62416c2116451.jpg"
                             alt="Student in library"
                             className="w-full h-full object-cover"
                         />

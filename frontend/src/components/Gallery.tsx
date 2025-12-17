@@ -5,7 +5,7 @@ export function Gallery() {
         "https://content3.jdmagicbox.com/v2/comp/rohtak/dc/9999p1262.1262.1239634669u5i3c7.dc/catalogue/indus-public-school-rohtak-ho-rohtak-cbse-schools-cbq9kft3pk.jpg", // Campus
         "https://content3.jdmagicbox.com/v2/comp/rohtak/dc/9999p1262.1262.1239634669u5i3c7.dc/catalogue/indus-public-school-rohtak-ho-rohtak-cbse-schools-bpfwwzqkt4.jpg", // Students
         "https://content.jdmagicbox.com/comp/rohtak/dc/9999p1262.1262.1239634669u5i3c7.dc/catalogue/indus-public-school-rohtak-ho-rohtak-cbse-schools-08c4a863u0.jpg", // Library
-        "https://content3.jdmagicbox.com/v2/comp/rohtak/dc/9999p1262.1262.1239634669u5i3c7.dc/catalogue/indus-public-school-rohtak-ho-rohtak-cbse-schools-9u4315q9gp.jpg", // Sports
+        "https://content3.jdmagicbox.com/comp/rohtak/dc/9999p1262.1262.1239634669u5i3c7.dc/catalogue/indus-public-school-rohtak-ho-rohtak-cbse-schools-se2hoiaqcn.jpg", // Sports
     ];
 
     return (
