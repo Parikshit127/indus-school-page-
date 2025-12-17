@@ -32,10 +32,16 @@ interface HeroContent {
 
 export function HeroSection({ staticImage, hideStats, removeMobilePadding }: { staticImage?: string; hideStats?: boolean; removeMobilePadding?: boolean }) {
     const [content, setContent] = useState<HeroContent | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(!staticImage); // Skip loading if staticImage is provided
     const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(() => {
+        // Skip API fetch if staticImage is provided
+        if (staticImage) {
+            setLoading(false);
+            return;
+        }
+
         const fetchContent = async () => {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
@@ -52,7 +58,7 @@ export function HeroSection({ staticImage, hideStats, removeMobilePadding }: { s
         };
 
         fetchContent();
-    }, []);
+    }, [staticImage]);
 
     // Construct display content with fallback and migration logic
     const getSlides = (): Slide[] => {
