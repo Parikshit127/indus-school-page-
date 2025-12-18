@@ -1,0 +1,7 @@
+export { TrustAuthority } from './TrustAuthority';
+export { AcademicExcellence } from './AcademicExcellence';
+export { InfrastructureFacilities } from './InfrastructureFacilities';
+export { FacultyStudentCare } from './FacultyStudentCare';
+export { HolisticDevelopment } from './HolisticDevelopment';
+export { Testimonials } from './Testimonials';
+export { AdmissionCTA } from './AdmissionCTA';

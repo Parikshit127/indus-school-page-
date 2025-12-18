@@ -3,9 +3,18 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { HeroSection } from "@/components/HeroSection";
 import { SchoolOverview } from "@/components/SchoolOverview";
-import { Infrastructure } from "@/components/Infrastructure";
-import { Achievements } from "@/components/Achievements";
 import { Gallery } from "@/components/Gallery";
+
+// Import new home page sections
+import {
+  TrustAuthority,
+  AcademicExcellence,
+  InfrastructureFacilities,
+  FacultyStudentCare,
+  HolisticDevelopment,
+  Testimonials,
+  AdmissionCTA
+} from "@/components/home";
 
 import AcademicsPage from "@/pages/AcademicsPage";
 import TeachingMethodologyPage from "@/pages/academics/TeachingMethodologyPage";
@@ -44,15 +53,39 @@ function PublicLayout() {
   );
 }
 
-// Home Page Component
+// Redesigned Home Page Component with all new sections
 function LandingPage() {
   return (
     <>
+      {/* 1. HERO / ABOVE-THE-FOLD SECTION */}
       <HeroSection />
+
+      {/* 2. TRUST & AUTHORITY SECTION */}
+      <TrustAuthority />
+
+      {/* 3. SCHOOL OVERVIEW / LEGACY */}
       <SchoolOverview />
-      <Infrastructure />
-      <Achievements />
+
+      {/* 4. ACADEMIC EXCELLENCE */}
+      <AcademicExcellence />
+
+      {/* 5. INFRASTRUCTURE & FACILITIES */}
+      <InfrastructureFacilities />
+
+      {/* 6. FACULTY & STUDENT CARE */}
+      <FacultyStudentCare />
+
+      {/* 7. HOLISTIC DEVELOPMENT */}
+      <HolisticDevelopment />
+
+      {/* 8. SOCIAL PROOF - TESTIMONIALS */}
+      <Testimonials />
+
+      {/* 9. LIFE AT INDUS - GALLERY */}
       <Gallery />
+
+      {/* 10. ADMISSION & LEAD GENERATION */}
+      <AdmissionCTA />
     </>
   );
 }
