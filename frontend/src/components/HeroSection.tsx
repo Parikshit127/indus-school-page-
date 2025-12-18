@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { LeadForm } from "@/components/LeadForm";
-import { Trophy, Users, GraduationCap, Medal, ChevronLeft, ChevronRight, Calendar, MapPin, Shield, Star } from "lucide-react";
+import { Trophy, Users, GraduationCap, Medal, ChevronLeft, ChevronRight, Calendar, MapPin, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Slide {
