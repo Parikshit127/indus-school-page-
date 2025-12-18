@@ -5,3 +5,5 @@ export { FacultyStudentCare } from './FacultyStudentCare';
 export { HolisticDevelopment } from './HolisticDevelopment';
 export { Testimonials } from './Testimonials';
 export { AdmissionCTA } from './AdmissionCTA';
+export { Highlights } from './Highlights';
+export { HomeInfoSection } from './HomeInfoSection';

@@ -2,18 +2,15 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { HeroSection } from "@/components/HeroSection";
-import { SchoolOverview } from "@/components/SchoolOverview";
-import { Gallery } from "@/components/Gallery";
 
-// Import new home page sections
+// Import home page sections
 import {
-  TrustAuthority,
   AcademicExcellence,
   InfrastructureFacilities,
-  FacultyStudentCare,
-  HolisticDevelopment,
   Testimonials,
-  AdmissionCTA
+  AdmissionCTA,
+  Highlights,
+  HomeInfoSection
 } from "@/components/home";
 
 import AcademicsPage from "@/pages/AcademicsPage";
@@ -34,6 +31,7 @@ import TeachingStaffPage from "@/pages/TeachingStaffPage";
 import SwimmingActivityPage from "@/pages/activities/SwimmingActivityPage";
 import HorseRidingActivityPage from "@/pages/activities/HorseRidingActivityPage";
 import ContactPage from "@/pages/ContactPage";
+import NewsEventsPage from "@/pages/NewsEventsPage";
 import AdmissionLandingPage from "@/pages/AdmissionLandingPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import AdminLogin from "@/pages/AdminLogin";
@@ -53,38 +51,29 @@ function PublicLayout() {
   );
 }
 
-// Redesigned Home Page Component with all new sections
+// Redesigned Home Page Component
 function LandingPage() {
   return (
     <>
       {/* 1. HERO / ABOVE-THE-FOLD SECTION */}
       <HeroSection />
 
-      {/* 2. TRUST & AUTHORITY SECTION */}
-      <TrustAuthority />
+      {/* 2. HIGHLIGHTS - LATEST HAPPENINGS */}
+      <Highlights />
 
-      {/* 3. SCHOOL OVERVIEW / LEGACY */}
-      <SchoolOverview />
+      {/* 2.5. HOME INFO SECTION (Infrastructure, Welcome, News) */}
+      <HomeInfoSection />
 
-      {/* 4. ACADEMIC EXCELLENCE */}
+      {/* 3. ACADEMIC EXCELLENCE */}
       <AcademicExcellence />
 
-      {/* 5. INFRASTRUCTURE & FACILITIES */}
+      {/* 3. INFRASTRUCTURE & FACILITIES */}
       <InfrastructureFacilities />
 
-      {/* 6. FACULTY & STUDENT CARE */}
-      <FacultyStudentCare />
-
-      {/* 7. HOLISTIC DEVELOPMENT */}
-      <HolisticDevelopment />
-
-      {/* 8. SOCIAL PROOF - TESTIMONIALS */}
+      {/* 4. SOCIAL PROOF - TESTIMONIALS */}
       <Testimonials />
 
-      {/* 9. LIFE AT INDUS - GALLERY */}
-      <Gallery />
-
-      {/* 10. ADMISSION & LEAD GENERATION */}
+      {/* 5. ADMISSION & LEAD GENERATION */}
       <AdmissionCTA />
     </>
   );
@@ -115,6 +104,7 @@ function App() {
           <Route path="/achievements/results" element={<ResultsPage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/news-events" element={<NewsEventsPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="/test" element={<TestPage />} />
         </Route>
