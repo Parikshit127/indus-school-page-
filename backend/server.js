@@ -38,6 +38,10 @@ const membersRoutes = require('./routes/members');
 const teachersRoutes = require('./routes/teachers');
 app.use('/api/members', membersRoutes);
 app.use('/api/teachers', teachersRoutes);
+const newsEventsRoutes = require('./routes/newsEvents');
+app.use('/api/news-events', newsEventsRoutes);
+const resultSessionsRoutes = require('./routes/resultSessions');
+app.use('/api/result-sessions', resultSessionsRoutes);
 
 // Start Server
 app.listen(PORT, () => {

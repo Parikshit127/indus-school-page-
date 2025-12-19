@@ -191,6 +191,12 @@ router.post('/auth/login', async (req, res) => {
                 await LoginAttempt.deleteOne({ ip });
             }
 
+            /**
+             * NOTE: OTP-based login temporarily disabled for testing.
+             * The following block generated and emailed an OTP, then required /auth/verify-otp.
+             * It has been commented out so that successful login directly returns an admin token.
+             */
+            /*
             // Generate OTP
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -218,6 +224,14 @@ router.post('/auth/login', async (req, res) => {
 
             sgMail.send(mailOptions).then(() => console.log('Login OTP sent via SendGrid')).catch(err => console.error('Error sending login OTP:', err));
             return res.json({ success: true, message: 'OTP sent to email', otpSent: true });
+            */
+
+            // Directly issue admin token (testing mode - no OTP required)
+            return res.json({
+                success: true,
+                token: ADMIN_TOKEN,
+                message: 'Logged in successfully (OTP disabled for testing)'
+            });
         } else {
             // Track failed attempts
             const attempts = attemptRecord ? attemptRecord.attempts + 1 : 1;
