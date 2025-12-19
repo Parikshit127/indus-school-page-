@@ -6,7 +6,7 @@ export default function AdminLogin() {
     const [password, setPassword] = useState("");
     const [securityCode, setSecurityCode] = useState("");
     const [otp, setOtp] = useState("");
-    const [otpSent, setOtpSent] = useState(false); // NOTE: OTP flow disabled for testing; this flag is no longer used
+    const [_otpSent, setOtpSent] = useState(false); // NOTE: OTP flow disabled for testing; this flag is no longer used
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -136,7 +136,7 @@ export default function AdminLogin() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-royal-dark via-royal to-royal-light">
             <div className="w-full max-w-md p-8 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl">
-                        <div className="text-center mb-8">
+                <div className="text-center mb-8">
                     <h1 className="text-3xl font-serif font-bold text-white mb-2">
                         {showForgotPassword ? "Reset Password" : "Admin Login"}
                     </h1>
@@ -153,56 +153,56 @@ export default function AdminLogin() {
 
                         {/* OTP-based two-step login UI disabled for testing; keeping code for future use */}
                         {/* {!otpSent ? ( */}
-                            <>
-                                <div>
-                                    <label className="block text-white/80 text-sm font-medium mb-2">Email</label>
+                        <>
+                            <div>
+                                <label className="block text-white/80 text-sm font-medium mb-2">Email</label>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent"
+                                    placeholder="contact@gmail.com"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-white/80 text-sm font-medium mb-2">Password</label>
+                                <div className="relative">
                                     <input
-                                        type="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent"
-                                        placeholder="contact@gmail.com"
+                                        type={showPassword ? "text" : "password"}
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent pr-10"
+                                        placeholder="••••••••"
                                         required
                                     />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                                    >
+                                        {showPassword ? "👁️" : "👁️‍🗨️"}
+                                    </button>
                                 </div>
+                            </div>
 
-                                <div>
-                                    <label className="block text-white/80 text-sm font-medium mb-2">Password</label>
-                                    <div className="relative">
-                                        <input
-                                            type={showPassword ? "text" : "password"}
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent pr-10"
-                                            placeholder="••••••••"
-                                            required
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
-                                        >
-                                            {showPassword ? "👁️" : "👁️‍🗨️"}
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-white/80 text-sm font-medium mb-2">Security Code</label>
-                                    <input
-                                        type="password"
-                                        value={securityCode}
-                                        onChange={(e) => {
-                                            const val = e.target.value.replace(/\D/g, '').slice(0, 8);
-                                            setSecurityCode(val);
-                                        }}
-                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent tracking-widest text-center"
-                                        pattern="\d{8}"
-                                        title="Please enter the 8-digit security code"
-                                        required
-                                    />
-                                </div>
-                            </>
+                            <div>
+                                <label className="block text-white/80 text-sm font-medium mb-2">Security Code</label>
+                                <input
+                                    type="password"
+                                    value={securityCode}
+                                    onChange={(e) => {
+                                        const val = e.target.value.replace(/\D/g, '').slice(0, 8);
+                                        setSecurityCode(val);
+                                    }}
+                                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent tracking-widest text-center"
+                                    pattern="\d{8}"
+                                    title="Please enter the 8-digit security code"
+                                    required
+                                />
+                            </div>
+                        </>
                         {/* ) : (
                             <div className="animate-in fade-in slide-in-from-right-8 duration-500">
                                 <div className="text-center mb-6">

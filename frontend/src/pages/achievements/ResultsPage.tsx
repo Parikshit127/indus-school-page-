@@ -2,7 +2,6 @@ import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/section";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 
 interface ResultBanner {
     imageUrl: string;
@@ -85,11 +84,10 @@ export default function ResultsPage() {
                                     setSelectedSessionId(session._id);
                                     setCurrentSlide(0);
                                 }}
-                                className={`px-8 py-3 rounded-full font-bold text-lg transition-all duration-300 ${
-                                    selectedSession?._id === session._id
+                                className={`px-8 py-3 rounded-full font-bold text-lg transition-all duration-300 ${selectedSession?._id === session._id
                                         ? "bg-royal text-white shadow-lg scale-105"
                                         : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:scale-105"
-                                }`}
+                                    }`}
                             >
                                 Session {session.sessionLabel}
                             </button>
@@ -108,9 +106,8 @@ export default function ResultsPage() {
                                 {bannerImages.map((banner, index) => (
                                     <div
                                         key={index}
-                                        className={`absolute inset-0 transition-opacity duration-700 ${
-                                            index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-                                        }`}
+                                        className={`absolute inset-0 transition-opacity duration-700 ${index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+                                            }`}
                                     >
                                         <img
                                             src={banner.imageUrl}
@@ -143,17 +140,16 @@ export default function ResultsPage() {
                         </div>
 
                         {/* Slide Indicators */}
-                            {bannerImages.length > 1 && (
+                        {bannerImages.length > 1 && (
                             <div className="flex justify-center gap-3 mt-6">
                                 {bannerImages.map((_, index) => (
                                     <button
                                         key={index}
                                         onClick={() => setCurrentSlide(index)}
-                                        className={`transition-all duration-300 rounded-full ${
-                                            index === currentSlide
+                                        className={`transition-all duration-300 rounded-full ${index === currentSlide
                                                 ? "bg-royal w-12 h-3"
                                                 : "bg-slate-300 hover:bg-slate-400 w-3 h-3"
-                                        }`}
+                                            }`}
                                         aria-label={`Go to slide ${index + 1}`}
                                     />
                                 ))}

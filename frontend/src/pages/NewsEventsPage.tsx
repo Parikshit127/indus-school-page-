@@ -47,7 +47,7 @@ const categoryLabels = {
 export default function NewsEventsPage() {
     const [selectedCategory, setSelectedCategory] = useState<string>("all");
     const [newsData, setNewsData] = useState<NewsItem[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [_loading, setLoading] = useState(false);
 
     const filtered = selectedCategory === "all"
         ? newsData
