@@ -1,126 +1,180 @@
-import { Section } from "@/components/ui/section";
+import { useState } from "react";
 import { PageHero } from "@/components/ui/PageHero";
-import { Monitor, FlaskConical, Library, Utensils, HeartPulse, Bus, ShoppingBag, Laptop, HeartHandshake, ArrowUpRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { Monitor, FlaskConical, Library, Utensils, HeartPulse, Bus, ShoppingBag, Laptop, HeartHandshake, Building2, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
+// Enhanced Facilities Data
 const facilities = [
     {
-        icon: Monitor,
+        id: "campus",
+        title: "Campus",
+        icon: Building2,
+        image: "/assets/home/welcome.png", // Reuse existing image for now
+        description: `Indus Public School spreads over a vast lush green campus on National Highway-10, 30 minutes drive from Delhi Border. The school is affiliated to Central Board of Secondary Education, Delhi. 
+        
+        The campus is designed to provide a serene and conducive environment for learning. With sprawling lawns, modern architecture, and state-of-the-art infrastructure, every corner of the campus inspires students to explore and excel. We prioritize safety and hygiene, ensuring a healthy atmosphere for all.`,
+    },
+    {
+        id: "smart-class",
         title: "Smart Class Rooms",
-        color: "bg-blue-50 text-blue-600",
-        description: "Interactive Smart-Class by 'Educomp'. A revolutionary teaching-learning system with mapped-to-curriculum digital lessons (animation, graphics, audio & video)."
+        icon: Monitor,
+        image: "/assets/home/infrastructure.png", // Reuse existing image
+        description: `Interactive Smart-Class is a revolutionary, teaching-learning system that comes from India's largest and most respected education company, 'Educomp'. With some 3000 progressive schools in the country that are already Smart-Class empowered, it is quickly acquiring the status of a movement for new age learning.
+        
+        We are proud to have joined this movement. With Smart Class, our teachers will be able to complement their traditional methods of teaching, on almost all school subjects with well researched, mapped-to-curriculum digital lessons (animation, graphics, audio & video) on an everyday basis during their teaching periods. We are confident that this would lead to a whole new learning experience for your wards. Aroused interest levels, sharper understanding of abstract and difficult concepts and yes, better academic performance.
+        
+        Smart-Class would also boost our teachers productivity immensely and leave them with enough time for revision and quicker assessment of your ward's comprehension and progress on every subject.
+        
+        We are proud to be among the early pioneers of this movement and the first in Rohtak.`,
     },
     {
+        id: "science-lab",
+        title: "Science Lab",
         icon: FlaskConical,
-        title: "Science Labs",
-        color: "bg-purple-50 text-purple-600",
-        description: "Well-designed Physics, Chemistry, and Life Science labs. Equipped with modern apparatus for experiments. A hub for self-discovery and innovation."
+        image: "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2086&auto=format&fit=crop",
+        description: `Our Science Laboratories are well-equipped to foster scientific temper and curiosity among students. We have separate labs for Physics, Chemistry, and Biology, each designed to meet the highest safety standards.
+        
+        The labs are spacious and provided with modern apparatus and chemicals to conduct experiments as per the CBSE curriculum. Students are encouraged to learn by doing, which helps in clarifying theoretical concepts. Regular practical classes are conducted under the guidance of experienced teachers and lab assistants.`,
     },
     {
-        icon: Library,
+        id: "library",
         title: "Library",
-        color: "bg-amber-50 text-amber-600",
-        description: "The brightest and best library housing tons of books and reference materials. Aimed at inculcating reading habits."
+        icon: Library,
+        image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2070&auto=format&fit=crop",
+        description: `The school library is a treasure trove of knowledge, housing a vast collection of books across various genres, including fiction, non-fiction, reference books, encyclopedias, and periodicals. It is a quiet sanctuary where students can immerse themselves in the world of reading.
+        
+        We also subscribe to daily newspapers and magazines to keep students updated with current affairs. The library has a comfortable seating arrangement and a digital section for research purposes. Regular library periods are scheduled to inculcate the habit of reading among students.`,
     },
     {
-        icon: Utensils,
+        id: "hostel-food",
         title: "Hostel & Food",
-        color: "bg-orange-50 text-orange-600",
-        description: "Weekday boarding available. Nutritious vegetarian food provided in a dining hall catering to 500 students, prepared in hygienic conditions."
+        icon: Utensils,
+        image: "https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=2070&auto=format&fit=crop",
+        description: `We offer excellent hostel facilities for students, providing a home away from home. The separate hostels for boys and girls are safe, secure, and comfortable, with wardens ensuring discipline and care.
+        
+        Our dining hall serves nutritious and hygienic vegetarian meals, planned by dieticians to ensure a balanced diet. We place a high emphasis on hygiene and cleanliness in the kitchen and dining area. The menu is varied to cater to the tastes of students while ensuring their health and well-being.`,
     },
     {
-        icon: HeartPulse,
+        id: "school-clinic",
         title: "School Clinic",
-        color: "bg-red-50 text-red-600",
-        description: "Regular medical check-ups with maintained records. Parents are immediately informed if special medical attention is needed."
+        icon: HeartPulse,
+        image: "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=2032&auto=format&fit=crop",
+        description: `The health and well-being of our students are of paramount importance. The school clinic is equipped to handle minor injuries and medical emergencies. a qualified nurse is present at all times during school hours.
+        
+        We conduct regular health check-ups for all students, including dental and eye check-ups. Health records are maintained for each student, and parents are kept informed about their child's health status. We also organize health awareness sessions to educate students about hygiene and healthy living.`,
     },
     {
-        icon: Bus,
+        id: "transport",
         title: "Transport",
-        color: "bg-yellow-50 text-yellow-600",
-        description: "Safe and comfortable transport with designated routes. Strict safety rules enforced with bus teachers and monitors ensuring discipline."
+        icon: Bus,
+        image: "https://images.unsplash.com/photo-1570126618953-d437136e8c03?q=80&w=2070&auto=format&fit=crop",
+        description: `The school provides safe and reliable transport facilities with a fleet of well-maintained buses covering Rohtak and surrounding areas. Each bus is equipped with GPS tracking and speed governors for safety.
+        
+        Drivers and conductors are trained and verified. A teacher or attendant is present in every bus to ensure discipline and safety of the students. We ensure that the commute to and from school is comfortable and hassle-free for our students.`,
     },
     {
+        id: "book-shop",
+        title: "School Book Shop",
         icon: ShoppingBag,
-        title: "Book & Uniform Shop",
-        color: "bg-teal-50 text-teal-600",
-        description: "One-stop shop for all school books, stationery, and uniforms to ensure uniformity and convenience."
+        image: "https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=1974&auto=format&fit=crop",
+        description: `To facilitate parents and students, the school has an in-house book and uniform shop. This one-stop shop ensures that all improved textbooks, notebooks, and stationery items are easily available.
+        
+        The uniform section provides high-quality school uniforms, shoes, and accessories, ensuring uniformity and adherence to the school's dress code. This facility saves time and effort for parents, making the start of the academic session smooth.`,
     },
     {
-        icon: Laptop,
+        id: "computer-lab",
         title: "Computer Lab",
-        color: "bg-indigo-50 text-indigo-600",
-        description: "Two modern ICT labs with latest hardware, software, and high-speed internet. Computer education surpassing CBSE stipulations."
+        icon: Laptop,
+        image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=2070&auto=format&fit=crop",
+        description: `In the digital age, computer literacy is essential. Our school boasts two modern ICT labs equipped with the latest hardware and software. High-speed internet connectivity is available to facilitate research and project work.
+        
+        The curriculum is designed to go beyond basic computer skills, introducing students to programming, graphic design, and other advanced concepts. Qualified instructors guide students in exploring the limitless possibilities of technology in a responsible manner.`,
     },
     {
-        icon: HeartHandshake,
+        id: "counselling",
         title: "Psychological Counselling",
-        color: "bg-pink-50 text-pink-600",
-        description: "Professional counselor providing one-to-one therapy for stress, anxiety, and behavioral issues."
+        icon: HeartHandshake,
+        image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?q=80&w=2070&auto=format&fit=crop",
+        description: `We understand that students may face various emotional and behavioral challenges. Our dedicated Psychological Counselling cell provides a supportive space for students to discuss their concerns.
+        
+        A professional school counselor is available to provide one-on-one therapy for stress, anxiety, peer pressure, and other issues. We also conduct workshops on mental health, study skills, and personality development to help students navigate their growing years with confidence and resilience.`,
     }
 ];
 
-const container = {
-    hidden: { opacity: 0 },
-    show: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1
-        }
-    }
-};
-
-const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
-};
-
 export default function FacilitiesPage() {
+    const [selectedId, setSelectedId] = useState(facilities[0].id);
+
+    const selectedFacility = facilities.find(f => f.id === selectedId) || facilities[0];
+
     return (
-        <div className="bg-slate-50 min-h-screen">
+        <div className="bg-white min-h-screen">
             <PageHero
                 title="World Class Facilities"
                 subtitle="A vast lush green campus on National Highway-10. We provide an environment that nurtures growth."
-                image="https://images.unsplash.com/photo-1525921429624-479b6a26d84d?q=80&w=2070&auto=format&fit=crop"
+                image="/assets/home/infrastructure.png"
             />
 
-            <Section className="py-20">
-                <motion.div
-                    variants={container}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                    className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-                >
-                    {facilities.map((facility, index) => {
-                        const Icon = facility.icon;
-                        return (
+            <div className="container mx-auto px-4 py-16">
+                <div className="flex flex-col md:flex-row gap-8">
+
+                    {/* SIDEBAR NAVIGATION */}
+                    <div className="w-full md:w-1/4 shrink-0">
+                        <div className="bg-gray-100 rounded-lg overflow-hidden sticky top-24">
+                            {facilities.map((facility) => (
+                                <button
+                                    key={facility.id}
+                                    onClick={() => setSelectedId(facility.id)}
+                                    className={`w-full text-left px-6 py-4 border-b border-gray-200 last:border-0 transition-all flex items-center justify-between group
+                                        ${selectedId === facility.id
+                                            ? 'bg-gray-200 text-royal font-bold border-l-4 border-l-royal'
+                                            : 'text-gray-600 hover:bg-gray-50 hover:text-royal'
+                                        }`}
+                                >
+                                    <span className="flex items-center gap-3">
+                                        <ChevronRight size={16} className={`transition-opacity ${selectedId === facility.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-50'}`} />
+                                        {facility.title}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* MAIN CONTENT AREA */}
+                    <div className="flex-1 min-h-[500px]">
+                        <AnimatePresence mode="wait">
                             <motion.div
-                                key={index}
-                                variants={item}
-                                className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group relative overflow-hidden"
+                                key={selectedId}
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                transition={{ duration: 0.3 }}
+                                className="bg-white"
                             >
-                                <div className={`w-14 h-14 ${facility.color} rounded-2xl flex items-center justify-center mb-6 text-current group-hover:scale-110 transition-transform duration-300`}>
-                                    <Icon size={28} />
+                                <h2 className="text-3xl font-bold text-royal mb-6 border-b pb-4">
+                                    {selectedFacility.title}
+                                </h2>
+
+                                <div className="mb-8 rounded-xl overflow-hidden shadow-sm h-64 md:h-96 w-full">
+                                    <img
+                                        src={selectedFacility.image}
+                                        alt={selectedFacility.title}
+                                        className="w-full h-full object-cover"
+                                    />
                                 </div>
 
-                                <h3 className="text-xl font-bold text-royal mb-3 group-hover:text-gold transition-colors">
-                                    {facility.title}
-                                </h3>
-
-                                <p className="text-slate-600 text-sm leading-relaxed mb-8">
-                                    {facility.description}
-                                </p>
-
-                                {/* Decorative elements */}
-                                <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-4 group-hover:translate-x-0">
-                                    <ArrowUpRight className="text-royal/20" size={32} />
+                                <div className="prose prose-lg max-w-none text-gray-600">
+                                    {selectedFacility.description.split('\n\n').map((paragraph, idx) => (
+                                        <p key={idx} className="mb-4 leading-relaxed">
+                                            {paragraph.trim()}
+                                        </p>
+                                    ))}
                                 </div>
                             </motion.div>
-                        );
-                    })}
-                </motion.div>
-            </Section>
+                        </AnimatePresence>
+                    </div>
+
+                </div>
+            </div>
         </div>
     );
 }

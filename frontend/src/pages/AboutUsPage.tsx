@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Section } from "@/components/ui/section";
 import { PageHero } from "@/components/ui/PageHero";
-import { Quote, Target, Lightbulb, Users, Award } from "lucide-react";
-import { motion } from "framer-motion";
+import { Quote, Target, Lightbulb, Users, ChevronDown, ChevronUp } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const committeeMembers = [
     { no: 1, name: "Mr. Davender singh Balain", relation: "Sh. Balbir Singh", designation: "President" },
@@ -29,6 +29,7 @@ const fadeIn = {
 
 export default function AboutUsPage() {
     const [dynamicMembers, setDynamicMembers] = useState<any[]>([]);
+    const [showAllMembers, setShowAllMembers] = useState(false);
 
     useEffect(() => {
         const fetchMembers = async () => {
@@ -47,18 +48,89 @@ export default function AboutUsPage() {
     }, []);
 
     const allMembers = [...committeeMembers, ...dynamicMembers];
+    const displayedMembers = showAllMembers ? allMembers : allMembers.slice(0, 5);
 
     return (
         <div className="bg-slate-50 min-h-screen">
             <PageHero
-                title="Our Legacy"
-                subtitle="Dedicated to liberating human beings from the shackles of ignorance. Rooted in Indian reality."
-                image="https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2070&auto=format&fit=crop"
+                title="About Us"
+                subtitle="Know more about our school, vision, mission and values."
+                image="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=1974&auto=format&fit=crop"
             />
 
-            <Section className="py-20 space-y-24">
+            <Section className="py-12 md:py-20 space-y-16 md:space-y-24">
 
-                {/* Vision Mission Cards */}
+                {/* 1. ABOUT SCHOOL */}
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    variants={fadeIn}
+                    className="max-w-4xl mx-auto text-center"
+                >
+                    <div className="flex items-center justify-center gap-4 mb-6">
+                        <div className="h-px bg-royal/20 w-16"></div>
+                        <h2 className="text-3xl font-bold text-royal uppercase tracking-widest">About School</h2>
+                        <div className="h-px bg-royal/20 w-16"></div>
+                    </div>
+
+                    <p className="text-lg md:text-xl text-slate-700 leading-relaxed font-serif text-justify md:text-center">
+                        Indus Public School is spread over a vast lush green campus on National Highway-10. 30 minutes drive from Delhi Border. The School is affiliated to Central Board of Secondary Education, Delhi up to XII level providing education in Medical, Non-Medical, Commerce Streams.
+                    </p>
+                    <p className="text-lg md:text-xl text-slate-700 leading-relaxed font-serif mt-6 text-justify md:text-center">
+                        Every initiative, effort at the upcoming institute is single-mindedly focused on these three basic values. So while the young minds go through the process of learning, it will automatically, continually and effortlessly imbibe them, to give the individual an dynamic personality.
+                    </p>
+                </motion.div>
+
+                {/* 2. FOUNDER & LEADERSHIP */}
+                <div className="grid md:grid-cols-2 gap-8">
+                    {/* Founder */}
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={fadeIn}
+                        className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 flex flex-col md:flex-row"
+                    >
+                        <div className="md:w-1/3 bg-royal-dark relative h-64 md:h-auto min-h-[300px]">
+                            <img
+                                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974" // Placeholder for Founder
+                                alt="Founder"
+                                className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay"
+                            />
+                            <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
+                                <h3 className="text-xl font-serif font-bold mb-1">Ch. Mitter Sen Sindhu Ji</h3>
+                                <p className="text-gold text-xs font-bold uppercase tracking-widest">Founder</p>
+                                <p className="text-[10px] text-white/60 mt-1">Sindhu Education Foundation</p>
+                            </div>
+                        </div>
+                        <div className="flex-1 p-8 flex items-center">
+                            <blockquote className="text-lg font-serif text-slate-600 italic leading-relaxed">
+                                "Education should liberate human being from the shackles of ignorance, deprivation and misery."
+                            </blockquote>
+                        </div>
+                    </motion.div>
+
+                    {/* Chairperson */}
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={fadeIn}
+                        className="bg-white p-8 rounded-3xl border border-slate-200 flex flex-col justify-center items-center text-center"
+                    >
+                        <div className="w-20 h-20 rounded-full overflow-hidden mb-4 border-2 border-gold p-1">
+                            <img src="https://ui-avatars.com/api/?name=Ekta+Sindhu&background=random" alt="Chairperson" className="w-full h-full rounded-full object-cover" />
+                        </div>
+                        <h3 className="text-xl font-bold text-royal mb-1">Dr. Ekta Sindhu</h3>
+                        <p className="text-xs text-slate-500 uppercase tracking-widest mb-4">Chairperson</p>
+                        <p className="text-slate-600 font-light italic">
+                            "Welcome to Indus—where education is an adventure, and every child’s potential finds its wings."
+                        </p>
+                    </motion.div>
+                </div>
+
+                {/* 3. VISION, MISSION, MOTTO */}
                 <motion.div
                     initial="hidden"
                     whileInView="visible"
@@ -67,134 +139,59 @@ export default function AboutUsPage() {
                         hidden: { opacity: 0 },
                         visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
                     }}
-                    className="grid md:grid-cols-3 gap-8 -mt-32 relative z-20"
+                    className="grid md:grid-cols-3 gap-8"
                 >
-                    {[
-                        { icon: Target, title: "Our Vision", desc: "To initiate a ceaseless process of searching qualitative improvement.", color: "text-blue-600" },
-                        { icon: Lightbulb, title: "Our Mission", desc: "To be a 'Bodhi tree' of knowledge. Providing global education systems.", color: "text-amber-500" },
-                        { icon: Quote, title: "Our Motto", desc: "'Vidya Dedati Vinayam' - Learning makes a person humble.", color: "text-emerald-600" }
-                    ].map((item, idx) => (
-                        <motion.div
-                            key={idx}
-                            variants={fadeIn}
-                            className="bg-white p-8 rounded-2xl shadow-xl border border-slate-100 flex flex-col items-center text-center hover:transform hover:-translate-y-2 transition-transform duration-300"
-                        >
-                            <div className={`w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center mb-6 ${item.color}`}>
-                                <item.icon size={32} />
-                            </div>
-                            <h3 className="text-xl font-bold text-royal mb-3">{item.title}</h3>
-                            <p className="text-slate-600 text-sm">{item.desc}</p>
-                        </motion.div>
-                    ))}
+                    <motion.div variants={fadeIn} className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-blue-600 hover:shadow-xl transition-all">
+                        <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-6">
+                            <Target size={28} />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-800 mb-4">Our Vision</h3>
+                        <p className="text-gray-600 leading-relaxed">
+                            To initiate a ceaseless process of searching qualitative improvement in the field of school education.
+                        </p>
+                    </motion.div>
+
+                    <motion.div variants={fadeIn} className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-amber-500 hover:shadow-xl transition-all">
+                        <div className="w-14 h-14 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mb-6">
+                            <Lightbulb size={28} />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-800 mb-4">Our Mission</h3>
+                        <p className="text-gray-600 leading-relaxed">
+                            To be a 'Bodhi tree' of knowledge. Providing global education systems culturally and academically.
+                        </p>
+                    </motion.div>
+
+                    <motion.div variants={fadeIn} className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-emerald-600 hover:shadow-xl transition-all">
+                        <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-6">
+                            <Quote size={28} />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-800 mb-4">Our Motto</h3>
+                        <p className="text-gray-600 leading-relaxed font-serif italic text-lg dark:text-gray-400">
+                            "Vidya Dedati Vinayam"
+                        </p>
+                        <p className="text-sm text-gray-500 mt-2">
+                            - Learning makes a person humble.
+                        </p>
+                    </motion.div>
                 </motion.div>
 
-                {/* Founder Section */}
+                {/* 4. WHY INDUS PUBLIC SCHOOL? (MANAGING COMMITTEE) */}
                 <motion.div
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true }}
                     variants={fadeIn}
-                    className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100"
                 >
-                    <div className="md:flex">
-                        <div className="md:w-1/3 bg-royal-dark relative min-h-[400px]">
-                            <img
-                                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974" // Placeholder for Founder
-                                alt="Founder"
-                                className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay"
-                            />
-                            <div className="absolute inset-0 p-10 flex flex-col justify-end text-white">
-                                <h3 className="text-2xl font-serif font-bold mb-1">Ch. Mitter Sen Sindhu Ji</h3>
-                                <p className="text-gold text-sm font-bold uppercase tracking-widest">Founder</p>
-                                <p className="text-xs text-white/60 mt-2">Sindhu Education Foundation</p>
-                            </div>
-                        </div>
-                        <div className="md:w-2/3 p-10 md:p-16 flex flex-col justify-center">
-                            <Quote size={40} className="text-gold/20 mb-6" />
-                            <blockquote className="text-xl md:text-2xl font-serif text-royal/90 leading-relaxed mb-6">
-                                "Education should liberate human being from the shackles of ignorance, deprivation and misery."
-                            </blockquote>
-                            <p className="text-slate-600 leading-relaxed">
-                                He stressed that education should be rooted in Indian reality and its composite culture.
-                                Sindhu Education Foundation has been deeply involved in the education and social transformation evolving in our motherland for decades.
-                            </p>
-                        </div>
+                    <div className="flex items-center justify-center gap-4 mb-8">
+                        <div className="h-px bg-royal/20 w-16"></div>
+                        <h2 className="text-2xl font-bold text-royal uppercase tracking-widest text-center">Why Indus Public School?</h2>
+                        <div className="h-px bg-royal/20 w-16"></div>
                     </div>
-                </motion.div>
-
-                {/* Leadership Grid */}
-                <div className="grid md:grid-cols-2 gap-8">
-                    {/* Chairman */}
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        variants={fadeIn}
-                        className="bg-slate-900 text-white rounded-3xl p-10 relative overflow-hidden"
-                    >
-                        <div className="absolute top-0 right-0 p-10 opacity-10">
-                            <Award size={100} />
-                        </div>
-                        <h3 className="text-3xl font-serif font-bold text-gold mb-2">Capt. Rudra Sen Sindhu</h3>
-                        <p className="text-white/60 text-sm uppercase tracking-widest mb-8">Chairman</p>
-                        <p className="text-white/80 leading-relaxed mb-6">
-                            "Vidya Dedati Vinayam" - learning makes a person humble.
-                        </p>
-                        <div className="h-1 w-20 bg-gold rounded-full"></div>
-                    </motion.div>
-
-                    {/* Principal */}
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        variants={fadeIn}
-                        className="bg-royal rounded-3xl p-10 text-white relative overflow-hidden"
-                    >
-                        <div className="absolute top-0 right-0 p-10 opacity-10">
-                            <Users size={100} />
-                        </div>
-                        <h3 className="text-3xl font-serif font-bold text-white mb-2">Mr. Deepak Kumar</h3>
-                        <p className="text-white/60 text-sm uppercase tracking-widest mb-8">Principal</p>
-                        <p className="text-white/80 leading-relaxed mb-6">
-                            "Education is the most powerful weapon which you can use to change the world."
-                        </p>
-                        <div className="h-1 w-20 bg-white/50 rounded-full"></div>
-                    </motion.div>
-                </div>
-
-                {/* Chairperson Note */}
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    variants={fadeIn}
-                    className="bg-white p-10 rounded-3xl border border-slate-200 text-center max-w-4xl mx-auto"
-                >
-                    <div className="w-16 h-16 mx-auto bg-gold/10 rounded-full flex items-center justify-center text-gold mb-6">
-                        <Quote size={24} />
-                    </div>
-                    <p className="text-xl md:text-2xl text-royal font-light italic mb-8">
-                        "Welcome to Indus—where education is an adventure, and every child’s potential finds its wings."
+                    <p className="text-center text-slate-500 mb-8 max-w-2xl mx-auto">
+                        Backed by a strong managing committee dedicated to educational excellence and social transformation.
                     </p>
-                    <h4 className="font-bold text-royal text-lg">Dr. Ekta Sindhu</h4>
-                    <p className="text-slate-500 text-sm">Chairperson</p>
-                </motion.div>
 
-                {/* Committee Table */}
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    variants={fadeIn}
-                >
-                    <div className="flex items-center gap-4 mb-8">
-                        <div className="h-px bg-slate-200 flex-1"></div>
-                        <h2 className="text-2xl font-bold text-royal uppercase tracking-widest">Managing Committee</h2>
-                        <div className="h-px bg-slate-200 flex-1"></div>
-                    </div>
-
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-8">
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm text-left">
                                 <thead className="text-xs text-royal uppercase bg-slate-50/50">
@@ -206,15 +203,15 @@ export default function AboutUsPage() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
-                                    {allMembers.map((member, index) => (
+                                    {displayedMembers.map((member, index) => (
                                         <tr key={index} className="hover:bg-slate-50/50 transition-colors">
                                             <td className="px-6 py-4 font-medium text-slate-400">{index + 1}</td>
                                             <td className="px-6 py-4 font-bold text-royal">{member.name}</td>
                                             <td className="px-6 py-4 text-slate-600">{member.relation}</td>
                                             <td className="px-6 py-4">
                                                 <span className={`px-3 py-1 rounded-full text-xs font-bold ${member.designation.includes("Principal") ? "bg-purple-100 text-purple-700" :
-                                                        member.designation.includes("President") ? "bg-amber-100 text-amber-700" :
-                                                            "bg-blue-50 text-blue-700"
+                                                    member.designation.includes("President") ? "bg-amber-100 text-amber-700" :
+                                                        "bg-blue-50 text-blue-700"
                                                     }`}>
                                                     {member.designation}
                                                 </span>
@@ -224,6 +221,23 @@ export default function AboutUsPage() {
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+
+                    <div className="text-center">
+                        <button
+                            onClick={() => setShowAllMembers(!showAllMembers)}
+                            className="inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-slate-200 rounded-full text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-royal hover:border-royal transition-all duration-300 shadow-sm"
+                        >
+                            {showAllMembers ? (
+                                <>
+                                    Show Less <ChevronUp size={16} />
+                                </>
+                            ) : (
+                                <>
+                                    See All Members <ChevronDown size={16} />
+                                </>
+                            )}
+                        </button>
                     </div>
                 </motion.div>
 
