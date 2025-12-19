@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Section } from "@/components/ui/section";
 import { PageHero } from "@/components/ui/PageHero";
-import { Quote, Target, Lightbulb, Users, ChevronDown, ChevronUp } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Quote, Target, Lightbulb, ChevronDown, ChevronUp } from "lucide-react";
+import { motion } from "framer-motion";
 
 const committeeMembers = [
     { no: 1, name: "Mr. Davender singh Balain", relation: "Sh. Balbir Singh", designation: "President" },

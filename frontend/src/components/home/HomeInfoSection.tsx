@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft, Calendar, Bell, ArrowRight } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Bell, ArrowRight } from 'lucide-react';
 
 const newsItems = [
     { text: "MUN DAY2 02.11.2025", date: "02 Nov", isNew: true },
@@ -184,7 +184,7 @@ export function HomeInfoSection() {
                         {/* Footer styling for news box (optional viewing more) */}
                         <div className="p-3 bg-slate-50 border-t border-slate-100 text-center">
                             <Link to="/news-events" className="text-xs font-bold text-slate-400 hover:text-royal uppercase tracking-wider transition-colors">
-                                View Archive
+                                View All
                             </Link>
                         </div>
                     </motion.div>
