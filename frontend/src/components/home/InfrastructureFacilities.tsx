@@ -69,7 +69,7 @@ export function InfrastructureFacilities() {
     };
 
     return (
-        <section className="py-16 md:py-24 bg-gradient-to-b from-cream via-white to-cream relative overflow-hidden">
+        <section className="py-16 md:py-24 bg-slate-50 relative overflow-hidden">
             <div className="container mx-auto px-4 md:px-8">
                 {/* Section Header */}
                 <motion.div
@@ -145,17 +145,17 @@ export function InfrastructureFacilities() {
                                 key={facility.id}
                                 onClick={() => setActiveIndex(index)}
                                 className={`group p-4 md:p-5 rounded-xl text-left transition-all duration-300 border ${activeIndex === index
-                                        ? 'bg-royal text-white border-royal shadow-lg'
-                                        : 'bg-white border-royal/10 hover:border-gold/30 hover:shadow-md'
+                                    ? 'bg-royal text-white border-royal shadow-lg'
+                                    : 'bg-white border-royal/10 hover:border-gold/30 hover:shadow-md'
                                     }`}
                             >
                                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 transition-colors ${activeIndex === index
-                                        ? 'bg-gold/20'
-                                        : 'bg-royal/5 group-hover:bg-gold/10'
+                                    ? 'bg-gold/20'
+                                    : 'bg-royal/5 group-hover:bg-gold/10'
                                     }`}>
                                     <facility.icon className={`w-5 h-5 ${activeIndex === index
-                                            ? 'text-gold'
-                                            : 'text-royal group-hover:text-gold'
+                                        ? 'text-gold'
+                                        : 'text-royal group-hover:text-gold'
                                         }`} />
                                 </div>
                                 <h4 className={`font-bold mb-1 text-sm md:text-base ${activeIndex === index ? '' : 'text-royal'

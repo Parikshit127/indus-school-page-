@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { CalendarDays, ArrowLeft } from "lucide-react";
+import { CalendarDays, ArrowLeft, Share2, Printer, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface NewsItem {
@@ -54,91 +54,127 @@ export default function NewsEventDetailPage() {
         return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
     };
 
+    if (loading) return (
+        <div className="min-h-screen bg-slate-50">
+            <div className="bg-royal py-16"></div>
+            <div className="flex items-center justify-center py-20"><p className="text-royal/60 font-medium">Loading article...</p></div>
+        </div>
+    );
+    if (error) return (
+        <div className="min-h-screen bg-slate-50">
+            <div className="bg-royal py-16"></div>
+            <div className="flex items-center justify-center py-20"><p className="text-red-500">{error}</p></div>
+        </div>
+    );
+    if (!item) return (
+        <div className="min-h-screen bg-slate-50">
+            <div className="bg-royal py-16"></div>
+            <div className="flex items-center justify-center py-20"><p className="text-royal/60">Article not found.</p></div>
+        </div>
+    );
+
     return (
-        <div className="min-h-screen bg-gradient-to-b from-cream to-white">
-            <section className="bg-royal py-16 md:py-20 relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-10 left-10 w-32 h-32 border-2 border-white rounded-full" />
-                    <div className="absolute bottom-10 right-20 w-40 h-40 border-2 border-white rounded-full" />
-                </div>
-
-                <div className="container mx-auto px-4 md:px-8 relative z-10">
-                    <Link
-                        to="/news-events"
-                        className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-gold mb-6"
+        <div className="min-h-screen bg-slate-50">
+            {/* Header Section - Royal Blue for Navbar Visibility */}
+            <section className="bg-royal py-12 md:py-16">
+                <div className="container mx-auto px-4 md:px-8">
+                    {/* Title & Meta in Header */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="max-w-4xl"
                     >
-                        <ArrowLeft className="w-4 h-4" />
-                        Back to News & Events
-                    </Link>
-
-                    {loading ? (
-                        <p className="text-white/80">Loading...</p>
-                    ) : error ? (
-                        <p className="text-red-100 bg-red-500/20 border border-red-500/40 px-4 py-3 rounded-lg inline-block text-sm">
-                            {error}
-                        </p>
-                    ) : item ? (
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="max-w-4xl"
-                        >
-                            <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-gold/20 text-gold rounded-full text-xs font-bold tracking-widest uppercase mb-4 border border-gold/30">
-                                {categoryLabels[item.category]}
-                            </span>
-                            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-white mb-4">
-                                {item.title}
-                            </h1>
-                            <div className="flex items-center gap-3 text-white/70 text-sm">
+                        <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-gold/20 text-gold rounded-full text-xs font-bold tracking-widest uppercase mb-4 border border-gold/30">
+                            {categoryLabels[item.category]}
+                        </span>
+                        <h1 className="text-2xl md:text-4xl lg:text-5xl font-serif font-bold text-white mb-4 leading-tight">
+                            {item.title}
+                        </h1>
+                        <div className="flex flex-wrap items-center gap-4 text-white/70 text-sm mb-6">
+                            <div className="flex items-center gap-2">
                                 <CalendarDays className="w-4 h-4" />
                                 <span>{formatDate(item.date)}</span>
                             </div>
-                        </motion.div>
-                    ) : (
-                        <p className="text-white/80">Article not found.</p>
-                    )}
+                            <div className="flex items-center gap-2">
+                                <Clock className="w-4 h-4" />
+                                <span>2 min read</span>
+                            </div>
+                        </div>
+
+                        {/* Back Button - Below the heading */}
+                        <Link
+                            to="/news-events"
+                            className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-gold font-medium transition-colors"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            Back to News & Events
+                        </Link>
+                    </motion.div>
                 </div>
             </section>
 
-            {item && (
-                <section className="py-10 md:py-16">
-                    <div className="container mx-auto px-4 md:px-8">
-                        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 max-w-4xl mx-auto">
-                            {item.imageUrl && (
-                                <div className="h-64 md:h-80 overflow-hidden">
-                                    <img
-                                        src={item.imageUrl}
-                                        alt={item.title}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            )}
-                            <div className="p-6 md:p-8">
-                                {item.excerpt && (
-                                    <p className="text-lg text-royal/80 font-medium mb-6 border-l-4 border-gold/60 pl-4">
-                                        {item.excerpt}
-                                    </p>
-                                )}
-                                <div className="prose max-w-none prose-royal">
-                                    {item.content
-                                        ? item.content.split(/\n{2,}/).map((para, idx) => (
-                                            <p key={idx} className="text-slate-700 leading-relaxed mb-4">
-                                                {para}
-                                            </p>
-                                        ))
-                                        : (
-                                            <p className="text-slate-600">
-                                                Detailed content will be updated soon.
-                                            </p>
-                                        )}
-                                </div>
+            {/* Article Content - Side by Side Layout */}
+            <article className="container mx-auto px-4 md:px-8 py-8 md:py-12">
+                <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden -mt-8 relative z-20">
+                    <div className="flex flex-col lg:flex-row">
+                        {/* Left - Image */}
+                        {item.imageUrl && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="lg:w-2/5 shrink-0"
+                            >
+                                <img
+                                    src={item.imageUrl}
+                                    alt={item.title}
+                                    className="w-full h-64 lg:h-full object-cover"
+                                />
+                            </motion.div>
+                        )}
+
+                        {/* Right - Content */}
+                        <div className={`flex-1 p-6 md:p-8 ${!item.imageUrl ? 'lg:p-10' : ''}`}>
+                            {/* Action Buttons */}
+                            <div className="flex justify-end gap-2 mb-4">
+                                <button className="p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-royal transition-colors" title="Share">
+                                    <Share2 className="w-4 h-4" />
+                                </button>
+                                <button className="p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-royal transition-colors" title="Print">
+                                    <Printer className="w-4 h-4" />
+                                </button>
                             </div>
+
+                            {/* Excerpt / Summary */}
+                            {item.excerpt && (
+                                <motion.p
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.2 }}
+                                    className="text-base md:text-lg text-slate-600 bg-slate-50 p-4 rounded-xl mb-6 border-l-4 border-gold font-medium"
+                                >
+                                    {item.excerpt}
+                                </motion.p>
+                            )}
+
+                            {/* Main Content */}
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.3 }}
+                                className="prose prose-slate max-w-none text-slate-700 leading-relaxed"
+                            >
+                                {item.content ? (
+                                    item.content.split(/\n{2,}/).map((para, idx) => (
+                                        <p key={idx} className="mb-4">{para}</p>
+                                    ))
+                                ) : (
+                                    <p className="italic text-slate-400">Content will be updated soon.</p>
+                                )}
+                            </motion.div>
                         </div>
                     </div>
-                </section>
-            )}
+                </div>
+            </article>
         </div>
     );
 }
-
-

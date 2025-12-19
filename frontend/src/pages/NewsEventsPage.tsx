@@ -81,15 +81,10 @@ export default function NewsEventsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-cream to-white">
+        <div className="min-h-screen bg-slate-50">
             {/* Page Header */}
-            <section className="bg-royal py-16 md:py-24 relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-10 left-10 w-32 h-32 border-2 border-white rounded-full" />
-                    <div className="absolute bottom-10 right-20 w-40 h-40 border-2 border-white rounded-full" />
-                </div>
-
-                <div className="container mx-auto px-4 md:px-8 relative z-10">
+            <section className="bg-royal py-16 md:py-24">
+                <div className="container mx-auto px-4 md:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -148,96 +143,96 @@ export default function NewsEventsPage() {
             {/* Content Area */}
             <div className="container mx-auto px-4 md:px-8 py-12">
                 <div className="space-y-12">
-                        {/* Featured News */}
-                        {featuredNews.length > 0 && (
-                            <div>
-                                <h2 className="text-2xl font-bold text-royal mb-6 flex items-center gap-2">
-                                    <span className="w-8 h-1 bg-gold rounded-full" />
-                                    Featured Stories
-                                </h2>
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    {featuredNews.map((news, index) => (
-                                        <motion.article
-                                            key={news._id}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: index * 0.1 }}
-                                            className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border border-royal/5"
-                                        >
-                                            <Link to={`/news-events/${news.slug}`} className="block">
-                                                <div className="relative h-56 overflow-hidden">
-                                                    <img
-                                                        src={news.imageUrl || "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600"}
-                                                        alt={news.title}
-                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                                    />
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                                                    <span className={`absolute top-4 left-4 px-3 py-1 ${categoryColors[news.category]} text-white text-xs font-bold rounded-full uppercase`}>
-                                                        {categoryLabels[news.category]}
-                                                    </span>
-                                                    <div className="absolute bottom-4 left-4 flex items-center gap-2 text-white/80 text-sm">
-                                                        <CalendarDays className="w-4 h-4" />
-                                                        {formatDate(news.date)}
-                                                    </div>
-                                                </div>
-                                                <div className="p-6">
-                                                    <h3 className="text-xl font-bold text-royal mb-3 group-hover:text-gold transition-colors line-clamp-2">
-                                                        {news.title}
-                                                    </h3>
-                                                    <p className="text-royal/70 mb-4 line-clamp-2">{news.excerpt}</p>
-                                                    <span className="inline-flex items-center gap-2 text-gold font-semibold hover:gap-3 transition-all">
-                                                        Read More <ArrowRight className="w-4 h-4" />
-                                                    </span>
-                                                </div>
-                                            </Link>
-                                        </motion.article>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* All News */}
+                    {/* Featured News */}
+                    {featuredNews.length > 0 && (
                         <div>
                             <h2 className="text-2xl font-bold text-royal mb-6 flex items-center gap-2">
                                 <span className="w-8 h-1 bg-gold rounded-full" />
-                                Latest Updates
+                                Featured Stories
                             </h2>
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {regularNews.map((news, index) => (
+                            <div className="grid md:grid-cols-2 gap-6">
+                                {featuredNews.map((news, index) => (
                                     <motion.article
                                         key={news._id}
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: index * 0.1 }}
-                                        className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all border border-royal/5"
+                                        className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border border-royal/5"
                                     >
                                         <Link to={`/news-events/${news.slug}`} className="block">
-                                            <div className="relative h-40 overflow-hidden">
+                                            <div className="relative h-56 overflow-hidden">
                                                 <img
                                                     src={news.imageUrl || "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600"}
                                                     alt={news.title}
                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                 />
-                                                <span className={`absolute top-3 left-3 px-2.5 py-1 ${categoryColors[news.category]} text-white text-xs font-bold rounded-full uppercase`}>
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                                <span className={`absolute top-4 left-4 px-3 py-1 ${categoryColors[news.category]} text-white text-xs font-bold rounded-full uppercase`}>
                                                     {categoryLabels[news.category]}
                                                 </span>
-                                            </div>
-                                            <div className="p-5">
-                                                <div className="flex items-center gap-2 text-royal/60 text-xs mb-2">
-                                                    <CalendarDays className="w-3 h-3" />
+                                                <div className="absolute bottom-4 left-4 flex items-center gap-2 text-white/80 text-sm">
+                                                    <CalendarDays className="w-4 h-4" />
                                                     {formatDate(news.date)}
                                                 </div>
-                                                <h3 className="font-bold text-royal mb-2 group-hover:text-gold transition-colors line-clamp-2">
+                                            </div>
+                                            <div className="p-6">
+                                                <h3 className="text-xl font-bold text-royal mb-3 group-hover:text-gold transition-colors line-clamp-2">
                                                     {news.title}
                                                 </h3>
-                                                <p className="text-sm text-royal/60 line-clamp-2">{news.excerpt}</p>
+                                                <p className="text-royal/70 mb-4 line-clamp-2">{news.excerpt}</p>
+                                                <span className="inline-flex items-center gap-2 text-gold font-semibold hover:gap-3 transition-all">
+                                                    Read More <ArrowRight className="w-4 h-4" />
+                                                </span>
                                             </div>
                                         </Link>
                                     </motion.article>
                                 ))}
                             </div>
                         </div>
+                    )}
+
+                    {/* All News */}
+                    <div>
+                        <h2 className="text-2xl font-bold text-royal mb-6 flex items-center gap-2">
+                            <span className="w-8 h-1 bg-gold rounded-full" />
+                            Latest Updates
+                        </h2>
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {regularNews.map((news, index) => (
+                                <motion.article
+                                    key={news._id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all border border-royal/5"
+                                >
+                                    <Link to={`/news-events/${news.slug}`} className="block">
+                                        <div className="relative h-40 overflow-hidden">
+                                            <img
+                                                src={news.imageUrl || "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600"}
+                                                alt={news.title}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                            />
+                                            <span className={`absolute top-3 left-3 px-2.5 py-1 ${categoryColors[news.category]} text-white text-xs font-bold rounded-full uppercase`}>
+                                                {categoryLabels[news.category]}
+                                            </span>
+                                        </div>
+                                        <div className="p-5">
+                                            <div className="flex items-center gap-2 text-royal/60 text-xs mb-2">
+                                                <CalendarDays className="w-3 h-3" />
+                                                {formatDate(news.date)}
+                                            </div>
+                                            <h3 className="font-bold text-royal mb-2 group-hover:text-gold transition-colors line-clamp-2">
+                                                {news.title}
+                                            </h3>
+                                            <p className="text-sm text-royal/60 line-clamp-2">{news.excerpt}</p>
+                                        </div>
+                                    </Link>
+                                </motion.article>
+                            ))}
+                        </div>
                     </div>
+                </div>
             </div>
         </div>
     );

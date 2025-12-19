@@ -38,6 +38,7 @@ import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { PopupBannerModal } from "@/components/PopupBannerModal";
 
 // Layout for public pages (includes Navbar and Footer)
 function PublicLayout() {
@@ -83,6 +84,7 @@ function LandingPage() {
 function App() {
   return (
     <Router>
+      <PopupBannerModal />
       <ScrollToTop />
       <Routes>
         {/* Public Routes with Navbar & Footer */}

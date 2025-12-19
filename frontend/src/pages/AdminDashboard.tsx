@@ -12,12 +12,13 @@ import { TeacherManager } from "@/components/admin/TeacherManager";
 import Analytics from "@/components/admin/Analytics";
 import { NewsEventsManager } from "@/components/admin/NewsEventsManager";
 import { ResultsManager } from "@/components/admin/ResultsManager";
+import { PopupBannerManager } from "@/components/admin/PopupBannerManager";
 import { Menu } from "lucide-react";
 
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers' | 'analytics' | 'news' | 'results'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers' | 'analytics' | 'news' | 'results' | 'popups'>('dashboard');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
@@ -78,6 +79,7 @@ export default function AdminDashboard() {
                         {activeTab === 'analytics' && <Analytics />}
                         {activeTab === 'news' && <NewsEventsManager />}
                         {activeTab === 'results' && <ResultsManager />}
+                        {activeTab === 'popups' && <PopupBannerManager />}
                     </div>
                 </Section>
             </div>

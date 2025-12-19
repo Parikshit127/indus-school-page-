@@ -10,7 +10,7 @@ const contactInfo = [
 
 export function AdmissionCTA() {
     return (
-        <section id="admission-cta" className="py-16 md:py-24 bg-gradient-to-b from-cream to-white relative overflow-hidden">
+        <section id="admission-cta" className="py-16 md:py-24 bg-white relative overflow-hidden">
             <div className="absolute top-0 left-0 w-72 h-72 bg-gold/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-royal/10 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl" />
 

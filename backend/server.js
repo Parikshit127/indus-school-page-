@@ -42,6 +42,8 @@ const newsEventsRoutes = require('./routes/newsEvents');
 app.use('/api/news-events', newsEventsRoutes);
 const resultSessionsRoutes = require('./routes/resultSessions');
 app.use('/api/result-sessions', resultSessionsRoutes);
+const popupBannersRoutes = require('./routes/popupBanners');
+app.use('/api/popup-banners', popupBannersRoutes);
 
 // Start Server
 app.listen(PORT, () => {
