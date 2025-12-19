@@ -6,7 +6,7 @@ export default function AdminLogin() {
     const [password, setPassword] = useState("");
     const [securityCode, setSecurityCode] = useState("");
     const [otp, setOtp] = useState("");
-    const [otpSent, setOtpSent] = useState(false);
+    const [otpSent, setOtpSent] = useState(false); // NOTE: OTP flow disabled for testing; this flag is no longer used
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -26,35 +26,20 @@ export default function AdminLogin() {
         try {
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
-            if (!otpSent) {
-                const response = await fetch(`${apiUrl}/api/leads/auth/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password, securityCode })
-                });
+            // Single-step admin login (OTP flow disabled for testing)
+            const response = await fetch(`${apiUrl}/api/leads/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password, securityCode })
+            });
 
-                const data = await response.json();
+            const data = await response.json();
 
-                if (response.ok && data.success) {
-                    setOtpSent(true);
-                } else {
-                    setError(data.error || "Invalid credentials");
-                }
+            if (response.ok && data.token) {
+                localStorage.setItem("adminToken", data.token);
+                navigate("/admin/dashboard");
             } else {
-                const response = await fetch(`${apiUrl}/api/leads/auth/verify-otp`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, otp })
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.token) {
-                    localStorage.setItem("adminToken", data.token);
-                    navigate("/admin/dashboard");
-                } else {
-                    setError(data.error || "Invalid OTP");
-                }
+                setError(data.error || "Invalid credentials");
             }
         } catch (err) {
             setError("Failed to connect to server");
@@ -151,7 +136,7 @@ export default function AdminLogin() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-royal-dark via-royal to-royal-light">
             <div className="w-full max-w-md p-8 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl">
-                <div className="text-center mb-8">
+                        <div className="text-center mb-8">
                     <h1 className="text-3xl font-serif font-bold text-white mb-2">
                         {showForgotPassword ? "Reset Password" : "Admin Login"}
                     </h1>
@@ -166,7 +151,8 @@ export default function AdminLogin() {
                             </div>
                         )}
 
-                        {!otpSent ? (
+                        {/* OTP-based two-step login UI disabled for testing; keeping code for future use */}
+                        {/* {!otpSent ? ( */}
                             <>
                                 <div>
                                     <label className="block text-white/80 text-sm font-medium mb-2">Email</label>
@@ -217,7 +203,7 @@ export default function AdminLogin() {
                                     />
                                 </div>
                             </>
-                        ) : (
+                        {/* ) : (
                             <div className="animate-in fade-in slide-in-from-right-8 duration-500">
                                 <div className="text-center mb-6">
                                     <div className="bg-white/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
@@ -253,14 +239,14 @@ export default function AdminLogin() {
                                     </button>
                                 </div>
                             </div>
-                        )}
+                        )} */}
 
                         <button
                             type="submit"
                             disabled={loading}
                             className="w-full py-3 bg-gradient-to-r from-gold to-gold-light text-royal-dark font-bold rounded-lg hover:shadow-lg hover:shadow-gold/30 transition-all duration-300 disabled:opacity-50"
                         >
-                            {loading ? "Processing..." : (otpSent ? "Verify OTP" : "Sign In")}
+                            {loading ? "Processing..." : "Sign In"}
                         </button>
 
                         <div className="text-center">

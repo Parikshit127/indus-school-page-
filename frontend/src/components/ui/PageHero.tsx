@@ -14,7 +14,7 @@ export function PageHero({ title, subtitle, image }: PageHeroProps) {
                 src={image}
                 alt={title}
                 className="absolute inset-0 w-full h-full object-cover z-0 scale-105"
-                style={{ filter: "brightness(0.4)" }}
+                style={{ filter: "brightness(0.4) blur(3px)" }}
                 onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.src = 'https://via.placeholder.com/1920x600/1e293b/f1f5f9?text=Hero+Image';

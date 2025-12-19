@@ -32,6 +32,7 @@ import SwimmingActivityPage from "@/pages/activities/SwimmingActivityPage";
 import HorseRidingActivityPage from "@/pages/activities/HorseRidingActivityPage";
 import ContactPage from "@/pages/ContactPage";
 import NewsEventsPage from "@/pages/NewsEventsPage";
+import NewsEventDetailPage from "@/pages/NewsEventDetailPage";
 import AdmissionLandingPage from "@/pages/AdmissionLandingPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import AdminLogin from "@/pages/AdminLogin";
@@ -105,6 +106,7 @@ function App() {
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/news-events" element={<NewsEventsPage />} />
+          <Route path="/news-events/:slug" element={<NewsEventDetailPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="/test" element={<TestPage />} />
         </Route>

@@ -10,12 +10,14 @@ import { MemberManager } from "@/components/admin/MemberManager";
 import { CalendarManager } from "@/components/admin/CalendarManager";
 import { TeacherManager } from "@/components/admin/TeacherManager";
 import Analytics from "@/components/admin/Analytics";
+import { NewsEventsManager } from "@/components/admin/NewsEventsManager";
+import { ResultsManager } from "@/components/admin/ResultsManager";
 import { Menu } from "lucide-react";
 
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers' | 'analytics'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers' | 'analytics' | 'news' | 'results'>('dashboard');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
@@ -74,6 +76,8 @@ export default function AdminDashboard() {
                         {activeTab === 'calendar' && <CalendarManager />}
                         {activeTab === 'teachers' && <TeacherManager />}
                         {activeTab === 'analytics' && <Analytics />}
+                        {activeTab === 'news' && <NewsEventsManager />}
+                        {activeTab === 'results' && <ResultsManager />}
                     </div>
                 </Section>
             </div>

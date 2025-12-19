@@ -3,12 +3,21 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, Bell, ArrowRight } from 'lucide-react';
 
-const newsItems = [
-    { text: "MUN DAY2 02.11.2025", date: "02 Nov", isNew: true },
-    { text: "MUN DAY 1 01.11.2025", date: "01 Nov", isNew: true },
-    { text: "One-day capacity building program on stress management", date: "24 Oct", isNew: false },
-    { text: "Inter-school Debate Competition Results", date: "15 Oct", isNew: false },
-    { text: "Annual Sports Meet Registration Open", date: "10 Oct", isNew: false },
+interface HomeNewsItem {
+    id: string;
+    title: string;
+    slug: string;
+    dateLabel: string;
+    isNew: boolean;
+}
+
+// Fallback static items (used if API fails or has no data)
+const fallbackNews: HomeNewsItem[] = [
+    { title: "MUN DAY2 02.11.2025", dateLabel: "02 Nov", isNew: true, id: "1", slug: "mun-day-2" },
+    { title: "MUN DAY 1 01.11.2025", dateLabel: "01 Nov", isNew: true, id: "2", slug: "mun-day-1" },
+    { title: "One-day capacity building program on stress management", dateLabel: "24 Oct", isNew: false, id: "3", slug: "stress-management-workshop" },
+    { title: "Inter-school Debate Competition Results", dateLabel: "15 Oct", isNew: false, id: "4", slug: "debate-competition-results" },
+    { title: "Annual Sports Meet Registration Open", dateLabel: "10 Oct", isNew: false, id: "5", slug: "annual-sports-meet-registration" },
 ];
 
 const infraImages = [
@@ -19,6 +28,7 @@ const infraImages = [
 
 export function HomeInfoSection() {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [newsItems, setNewsItems] = useState<HomeNewsItem[]>(fallbackNews);
 
     // Auto-slide functionality
     useEffect(() => {
@@ -26,6 +36,45 @@ export function HomeInfoSection() {
             setCurrentSlide((prev) => (prev + 1) % infraImages.length);
         }, 5000);
         return () => clearInterval(timer);
+    }, []);
+
+    // Fetch latest 10 news/events for the right column
+    useEffect(() => {
+        const fetchNews = async () => {
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+                const res = await fetch(`${apiUrl}/api/news-events/home-latest`);
+                if (!res.ok) return;
+                const data: { _id: string; title: string; slug: string; date: string }[] = await res.json();
+                if (!Array.isArray(data) || data.length === 0) return;
+
+                // Sort by date desc just in case, then take latest 10
+                const sorted = [...data].sort((a, b) => {
+                    const da = new Date(a.date).getTime();
+                    const db = new Date(b.date).getTime();
+                    return db - da;
+                }).slice(0, 10);
+
+                const mapped: HomeNewsItem[] = sorted.map((item, index) => {
+                    const d = new Date(item.date);
+                    const day = d.getDate().toString().padStart(2, '0');
+                    const month = d.toLocaleString('en-IN', { month: 'short' });
+                    return {
+                        id: item._id,
+                        title: item.title,
+                        slug: item.slug,
+                        dateLabel: `${day} ${month}`,
+                        // Mark latest 2 as NEW
+                        isNew: index < 2
+                    };
+                });
+
+                setNewsItems(mapped);
+            } catch {
+                // Silently fall back to static data
+            }
+        };
+        fetchNews();
     }, []);
 
     const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % infraImages.length);
@@ -156,28 +205,31 @@ export function HomeInfoSection() {
 
                         <div className="flex-1 bg-slate-50/50 p-2 overflow-y-auto max-h-[340px] custom-scrollbar">
                             <ul className="space-y-1">
-                                {newsItems.map((item, index) => (
-                                    <li key={index} className="group hover:bg-white hover:shadow-sm rounded-lg p-3 transition-all duration-200 border border-transparent hover:border-slate-100">
-                                        <div className="flex gap-3">
-                                            {/* Date Box */}
-                                            <div className="flex flex-col items-center justify-center w-12 h-12 bg-white border border-slate-200 rounded-lg shrink-0 group-hover:border-royal/20 transition-colors">
-                                                <span className="text-[10px] text-slate-500 uppercase font-bold">{item.date.split(' ')[1]}</span>
-                                                <span className="text-lg font-bold text-royal leading-none">{item.date.split(' ')[0]}</span>
-                                            </div>
+                                {newsItems.map((item) => {
+                                    const [day, month] = item.dateLabel.split(' ');
+                                    return (
+                                        <li key={item.id} className="group hover:bg-white hover:shadow-sm rounded-lg p-3 transition-all duration-200 border border-transparent hover:border-slate-100">
+                                            <Link to={`/news-events/${item.slug}`} className="flex gap-3">
+                                                {/* Date Box */}
+                                                <div className="flex flex-col items-center justify-center w-12 h-12 bg-white border border-slate-200 rounded-lg shrink-0 group-hover:border-royal/20 transition-colors">
+                                                    <span className="text-[10px] text-slate-500 uppercase font-bold">{month}</span>
+                                                    <span className="text-lg font-bold text-royal leading-none">{day}</span>
+                                                </div>
 
-                                            <div className="flex-1">
-                                                <p className="text-sm text-slate-700 font-medium line-clamp-2 group-hover:text-royal transition-colors">
-                                                    {item.text}
-                                                </p>
-                                                {item.isNew && (
-                                                    <span className="inline-block mt-1 text-[10px] font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded tracking-wider">
-                                                        NEW
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </li>
-                                ))}
+                                                <div className="flex-1">
+                                                    <p className="text-sm text-slate-700 font-medium line-clamp-2 group-hover:text-royal transition-colors">
+                                                        {item.title}
+                                                    </p>
+                                                    {item.isNew && (
+                                                        <span className="inline-block mt-1 text-[10px] font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded tracking-wider">
+                                                            NEW
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </Link>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         </div>
 

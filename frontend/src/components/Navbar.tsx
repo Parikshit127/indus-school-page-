@@ -67,7 +67,22 @@ export function Navbar() {
                 { name: "Academic Results", path: "/achievements/results" }
             ]
         },
-        { name: "Facilities", path: "/facilities" },
+        {
+            name: "Facilities",
+            path: "/facilities",
+            dropdown: [
+                { name: "Campus", path: "/facilities#campus" },
+                { name: "Smart Class Rooms", path: "/facilities#smart-class" },
+                { name: "Science Lab", path: "/facilities#science-lab" },
+                { name: "Library", path: "/facilities#library" },
+                { name: "Hostel & Food", path: "/facilities#hostel-food" },
+                { name: "School Clinic", path: "/facilities#school-clinic" },
+                { name: "Transport", path: "/facilities#transport" },
+                { name: "School Book Shop", path: "/facilities#book-shop" },
+                { name: "Computer Lab", path: "/facilities#computer-lab" },
+                { name: "Psychological Counselling", path: "/facilities#counselling" }
+            ]
+        },
         { name: "Contact Us", path: "/contact" },
     ];
 

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { PageHero } from "@/components/ui/PageHero";
 import { Monitor, FlaskConical, Library, Utensils, HeartPulse, Bus, ShoppingBag, Laptop, HeartHandshake, Building2, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -103,8 +104,20 @@ const facilities = [
 
 export default function FacilitiesPage() {
     const [selectedId, setSelectedId] = useState(facilities[0].id);
+    const location = useLocation();
 
     const selectedFacility = facilities.find(f => f.id === selectedId) || facilities[0];
+
+    // Allow deep-linking via hash e.g. /facilities#science-lab
+    useEffect(() => {
+        if (location.hash) {
+            const hashId = location.hash.replace('#', '');
+            const exists = facilities.some(f => f.id === hashId);
+            if (exists) {
+                setSelectedId(hashId);
+            }
+        }
+    }, [location.hash]);
 
     return (
         <div className="bg-white min-h-screen">

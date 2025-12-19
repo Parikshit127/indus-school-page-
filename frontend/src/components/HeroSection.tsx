@@ -105,9 +105,9 @@ export function HeroSection({ staticImage, hideStats, removeMobilePadding }: { s
                 </AnimatePresence>
             </div>
 
-            {/* Navigation Arrows */}
+            {/* Navigation Arrows (desktop / laptop only) */}
             {slides.length > 1 && (
-                <div className="absolute bottom-8 right-8 z-30 flex gap-2">
+                <div className="hidden md:flex absolute bottom-8 right-8 z-30 gap-2">
                     <button onClick={prevSlide} className="p-2.5 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-all border border-white/20" aria-label="Previous Slide"><ChevronLeft size={20} /></button>
                     <button onClick={nextSlide} className="p-2.5 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-all border border-white/20" aria-label="Next Slide"><ChevronRight size={20} /></button>
                 </div>
@@ -131,6 +131,11 @@ export function HeroSection({ staticImage, hideStats, removeMobilePadding }: { s
                             Join 2500+ successful students at Rohtak's premier CBSE school. 22 years of academic excellence, character building, and holistic development.
                         </p>
                     </motion.div>
+
+                    {/* Mobile: Admission Form directly below hero text */}
+                    <div className="mt-6 md:hidden">
+                        <LeadForm />
+                    </div>
 
                     {/* CTAs */}
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="flex flex-wrap gap-4 justify-center md:justify-start">
@@ -166,7 +171,12 @@ export function HeroSection({ staticImage, hideStats, removeMobilePadding }: { s
                 </div>
 
                 {/* Right Form */}
-                <motion.div initial={{ opacity: 0, x: 20, y: 20 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ delay: 0.6 }} className="md:col-span-5 w-full max-w-md mx-auto md:ml-auto">
+                <motion.div
+                    initial={{ opacity: 0, x: 20, y: 20 }}
+                    animate={{ opacity: 1, x: 0, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="hidden md:block md:col-span-5 w-full max-w-md mx-auto md:ml-auto"
+                >
                     <LeadForm />
                 </motion.div>
             </div>
