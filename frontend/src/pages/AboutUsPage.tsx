@@ -94,18 +94,16 @@ export default function AboutUsPage() {
                     >
                         <div className="md:w-1/3 bg-royal-dark relative h-64 md:h-auto min-h-[300px]">
                             <img
-                                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974" // Placeholder for Founder
+                                src="http://www.ipsrohtak.edu.in/downloads/ch-mitersen.jpg" // Placeholder for Founder
                                 alt="Founder"
-                                className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay"
+                                className="absolute inset-0 w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
-                                <h3 className="text-xl font-serif font-bold mb-1">Ch. Mitter Sen Sindhu Ji</h3>
-                                <p className="text-gold text-xs font-bold uppercase tracking-widest">Founder</p>
-                                <p className="text-[10px] text-white/60 mt-1">Sindhu Education Foundation</p>
-                            </div>
                         </div>
-                        <div className="flex-1 p-8 flex items-center">
-                            <blockquote className="text-lg font-serif text-slate-600 italic leading-relaxed">
+                        <div className="flex-1 p-8 flex flex-col justify-center">
+                            <h3 className="text-2xl font-serif font-bold mb-2 text-black">Ch. Mitter Sen Sindhu Ji</h3>
+                            <p className="text-gold text-sm font-bold uppercase tracking-widest mb-2">Founder</p>
+                            <p className="text-xs text-slate-600 mb-6">Sindhu Education Foundation</p>
+                            <blockquote className="text-lg font-serif text-slate-600 italic leading-relaxed border-l-4 border-gold pl-4">
                                 "Education should liberate human being from the shackles of ignorance, deprivation and misery."
                             </blockquote>
                         </div>
@@ -117,16 +115,73 @@ export default function AboutUsPage() {
                         whileInView="visible"
                         viewport={{ once: true }}
                         variants={fadeIn}
-                        className="bg-white p-8 rounded-3xl border border-slate-200 flex flex-col justify-center items-center text-center"
+                        className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 flex flex-col md:flex-row"
                     >
-                        <div className="w-20 h-20 rounded-full overflow-hidden mb-4 border-2 border-gold p-1">
-                            <img src="https://ui-avatars.com/api/?name=Ekta+Sindhu&background=random" alt="Chairperson" className="w-full h-full rounded-full object-cover" />
+                        <div className="md:w-1/3 bg-royal-dark relative h-64 md:h-auto min-h-[300px]">
+                            <img
+                                src="https://ipsrohtak.edu.in/downloads/nimages/ekta-sindhu-chairperson.jpg"
+                                alt="Chairperson"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
                         </div>
-                        <h3 className="text-xl font-bold text-royal mb-1">Dr. Ekta Sindhu</h3>
-                        <p className="text-xs text-slate-500 uppercase tracking-widest mb-4">Chairperson</p>
-                        <p className="text-slate-600 font-light italic">
-                            "Welcome to Indus—where education is an adventure, and every child’s potential finds its wings."
-                        </p>
+                        <div className="flex-1 p-8 flex flex-col justify-center">
+                            <h3 className="text-2xl font-serif font-bold mb-2 text-black">Dr. Ekta Sindhu</h3>
+                            <p className="text-gold text-sm font-bold uppercase tracking-widest mb-2">Chairperson</p>
+                            <p className="text-xs text-slate-600 mb-6">Indus Group of Institutions</p>
+                            <blockquote className="text-lg font-serif text-slate-600 italic leading-relaxed border-l-4 border-gold pl-4">
+                                "Welcome to Indus—where education is an adventure, and every child's potential finds its wings."
+                            </blockquote>
+                        </div>
+                    </motion.div>
+
+                    {/* Card 3 */}
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={fadeIn}
+                        className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 flex flex-col md:flex-row"
+                    >
+                        <div className="md:w-1/3 bg-royal-dark relative h-64 md:h-auto min-h-[300px]">
+                            <img
+                                src="http://www.ipsrohtak.edu.in/downloads/Capt.-R.S.-Sindhu_1.jpg"
+                                alt="Member"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+                        </div>
+                        <div className="flex-1 p-8 flex flex-col justify-center">
+                            <h3 className="text-2xl font-serif font-bold mb-2 text-black">Capt. Rudra Sen Sindhu</h3>
+                            <p className="text-gold text-sm font-bold uppercase tracking-widest mb-2">Chairman</p>
+                            <p className="text-xs text-slate-600 mb-6">Sindhu Education Foundation</p>
+                            <blockquote className="text-lg font-serif text-slate-600 italic leading-relaxed border-l-4 border-gold pl-4">
+                                "Under the visionary leadership of Capt. Rudra Sen Sindhu, Indus stands as a symbol of quality, inclusivity, and value-based education."
+                            </blockquote>
+                        </div>
+                    </motion.div>
+
+                    {/* Card 4 */}
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={fadeIn}
+                        className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 flex flex-col md:flex-row"
+                    >
+                        <div className="md:w-1/3 bg-royal-dark relative h-64 md:h-auto min-h-[300px]">
+                            <img
+                                src="https://ipsrohtak.edu.in/downloads/nimages/prinipal.jpg"
+                                alt="Member"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+                        </div>
+                        <div className="flex-1 p-8 flex flex-col justify-center">
+                            <h3 className="text-2xl font-serif font-bold mb-2 text-black">Mr. Deepak Kumar</h3>
+                            <p className="text-gold text-sm font-bold uppercase tracking-widest mb-2">Principal</p>
+                            <p className="text-xs text-slate-600 mb-6">Indus Group of Institutions</p>
+                            <blockquote className="text-lg font-serif text-slate-600 italic leading-relaxed border-l-4 border-gold pl-4">
+                                "At Indus, we don’t just teach children what to think; we empower them to think, grow, and lead."
+                            </blockquote>
+                        </div>
                     </motion.div>
                 </div>
 

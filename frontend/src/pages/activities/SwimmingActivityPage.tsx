@@ -37,7 +37,7 @@ export default function SwimmingActivityPage() {
                         className="relative h-[400px] rounded-3xl overflow-hidden shadow-2xl"
                     >
                         <img
-                            src="https://images.unsplash.com/photo-1576610616656-d3aa5d1f4534?q=80&w=2070&auto=format&fit=crop"
+                            src="https://ipsrohtak.edu.in//downloads/other/n568bb2fc29acd.jpg"
                             alt="School Swimming Pool"
                             className="w-full h-full object-cover"
                             onError={(e) => {

@@ -28,10 +28,10 @@ export default function CulturalActivityPage() {
                             <span className="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-bold border border-blue-100">Vocal Music</span>
                         </div>
                     </div>
-                    <div className="flex-1 grid grid-cols-2 gap-4">
+                    <div className="flex-1 grid grid-cols-2 gap-4 items-start">
                         <img
                             src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=400&auto=format&fit=crop"
-                            className="rounded-2xl shadow-lg transform translate-y-8"
+                            className="rounded-2xl shadow-lg w-full"
                             alt="Dance"
                             onError={(e) => {
                                 const target = e.target as HTMLImageElement;
@@ -40,7 +40,7 @@ export default function CulturalActivityPage() {
                         />
                         <img
                             src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?q=80&w=400&auto=format&fit=crop"
-                            className="rounded-2xl shadow-lg"
+                            className="rounded-2xl shadow-lg w-full"
                             alt="Celebration"
                             onError={(e) => {
                                 const target = e.target as HTMLImageElement;

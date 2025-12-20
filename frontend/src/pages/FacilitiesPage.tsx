@@ -10,7 +10,7 @@ const facilities = [
         id: "campus",
         title: "Campus",
         icon: Building2,
-        image: "/assets/home/welcome.png", // Reuse existing image for now
+        image: "https://ipsrohtak.edu.in//downloads/other/n568b858d186b6.jpg", // Reuse existing image for now
         description: `Indus Public School spreads over a vast lush green campus on National Highway-10, 30 minutes drive from Delhi Border. The school is affiliated to Central Board of Secondary Education, Delhi. 
         
         The campus is designed to provide a serene and conducive environment for learning. With sprawling lawns, modern architecture, and state-of-the-art infrastructure, every corner of the campus inspires students to explore and excel. We prioritize safety and hygiene, ensuring a healthy atmosphere for all.`,
@@ -19,7 +19,7 @@ const facilities = [
         id: "smart-class",
         title: "Smart Class Rooms",
         icon: Monitor,
-        image: "/assets/home/infrastructure.png", // Reuse existing image
+        image: "https://ipsrohtak.edu.in//downloads/other/n568b847b3c3e3.jpg", // Reuse existing image
         description: `Interactive Smart-Class is a revolutionary, teaching-learning system that comes from India's largest and most respected education company, 'Educomp'. With some 3000 progressive schools in the country that are already Smart-Class empowered, it is quickly acquiring the status of a movement for new age learning.
         
         We are proud to have joined this movement. With Smart Class, our teachers will be able to complement their traditional methods of teaching, on almost all school subjects with well researched, mapped-to-curriculum digital lessons (animation, graphics, audio & video) on an everyday basis during their teaching periods. We are confident that this would lead to a whole new learning experience for your wards. Aroused interest levels, sharper understanding of abstract and difficult concepts and yes, better academic performance.
@@ -32,7 +32,7 @@ const facilities = [
         id: "science-lab",
         title: "Science Lab",
         icon: FlaskConical,
-        image: "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2086&auto=format&fit=crop",
+        image: "https://ipsrohtak.edu.in//downloads/other/n568b844a9d60a.jpg",
         description: `Our Science Laboratories are well-equipped to foster scientific temper and curiosity among students. We have separate labs for Physics, Chemistry, and Biology, each designed to meet the highest safety standards.
         
         The labs are spacious and provided with modern apparatus and chemicals to conduct experiments as per the CBSE curriculum. Students are encouraged to learn by doing, which helps in clarifying theoretical concepts. Regular practical classes are conducted under the guidance of experienced teachers and lab assistants.`,
@@ -41,7 +41,7 @@ const facilities = [
         id: "library",
         title: "Library",
         icon: Library,
-        image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2070&auto=format&fit=crop",
+        image: "https://ipsrohtak.edu.in//downloads/other/n568b8466c1c8c.jpg",
         description: `The school library is a treasure trove of knowledge, housing a vast collection of books across various genres, including fiction, non-fiction, reference books, encyclopedias, and periodicals. It is a quiet sanctuary where students can immerse themselves in the world of reading.
         
         We also subscribe to daily newspapers and magazines to keep students updated with current affairs. The library has a comfortable seating arrangement and a digital section for research purposes. Regular library periods are scheduled to inculcate the habit of reading among students.`,
@@ -50,7 +50,7 @@ const facilities = [
         id: "hostel-food",
         title: "Hostel & Food",
         icon: Utensils,
-        image: "https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=2070&auto=format&fit=crop",
+        image: "https://ipsrohtak.edu.in//downloads/other/n568b85c51db4a.jpg",
         description: `We offer excellent hostel facilities for students, providing a home away from home. The separate hostels for boys and girls are safe, secure, and comfortable, with wardens ensuring discipline and care.
         
         Our dining hall serves nutritious and hygienic vegetarian meals, planned by dieticians to ensure a balanced diet. We place a high emphasis on hygiene and cleanliness in the kitchen and dining area. The menu is varied to cater to the tastes of students while ensuring their health and well-being.`,
@@ -59,7 +59,7 @@ const facilities = [
         id: "school-clinic",
         title: "School Clinic",
         icon: HeartPulse,
-        image: "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=2032&auto=format&fit=crop",
+        image: "https://ipsrohtak.edu.in//downloads/other/n568babab69fbe.jpg",
         description: `The health and well-being of our students are of paramount importance. The school clinic is equipped to handle minor injuries and medical emergencies. a qualified nurse is present at all times during school hours.
         
         We conduct regular health check-ups for all students, including dental and eye check-ups. Health records are maintained for each student, and parents are kept informed about their child's health status. We also organize health awareness sessions to educate students about hygiene and healthy living.`,
@@ -68,7 +68,7 @@ const facilities = [
         id: "transport",
         title: "Transport",
         icon: Bus,
-        image: "https://images.unsplash.com/photo-1570126618953-d437136e8c03?q=80&w=2070&auto=format&fit=crop",
+        image: "https://ipsrohtak.edu.in//downloads/other/n568bb915ad40b.jpg",
         description: `The school provides safe and reliable transport facilities with a fleet of well-maintained buses covering Rohtak and surrounding areas. Each bus is equipped with GPS tracking and speed governors for safety.
         
         Drivers and conductors are trained and verified. A teacher or attendant is present in every bus to ensure discipline and safety of the students. We ensure that the commute to and from school is comfortable and hassle-free for our students.`,
@@ -77,7 +77,7 @@ const facilities = [
         id: "book-shop",
         title: "School Book Shop",
         icon: ShoppingBag,
-        image: "https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=1974&auto=format&fit=crop",
+        image: "https://ipsrohtak.edu.in/templates/indus-rtk//img/flash-img.jpg",
         description: `To facilitate parents and students, the school has an in-house book and uniform shop. This one-stop shop ensures that all improved textbooks, notebooks, and stationery items are easily available.
         
         The uniform section provides high-quality school uniforms, shoes, and accessories, ensuring uniformity and adherence to the school's dress code. This facility saves time and effort for parents, making the start of the academic session smooth.`,
@@ -86,7 +86,7 @@ const facilities = [
         id: "computer-lab",
         title: "Computer Lab",
         icon: Laptop,
-        image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=2070&auto=format&fit=crop",
+        image: "https://ipsrohtak.edu.in//downloads/other/n568cc8ddd0ba3.jpg",
         description: `In the digital age, computer literacy is essential. Our school boasts two modern ICT labs equipped with the latest hardware and software. High-speed internet connectivity is available to facilitate research and project work.
         
         The curriculum is designed to go beyond basic computer skills, introducing students to programming, graphic design, and other advanced concepts. Qualified instructors guide students in exploring the limitless possibilities of technology in a responsible manner.`,
@@ -95,7 +95,7 @@ const facilities = [
         id: "counselling",
         title: "Psychological Counselling",
         icon: HeartHandshake,
-        image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?q=80&w=2070&auto=format&fit=crop",
+        image: "https://ipsrohtak.edu.in//downloads/other/n5869e17787504.jpg",
         description: `We understand that students may face various emotional and behavioral challenges. Our dedicated Psychological Counselling cell provides a supportive space for students to discuss their concerns.
         
         A professional school counselor is available to provide one-on-one therapy for stress, anxiety, peer pressure, and other issues. We also conduct workshops on mental health, study skills, and personality development to help students navigate their growing years with confidence and resilience.`,

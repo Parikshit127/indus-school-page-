@@ -21,9 +21,9 @@ const fallbackNews: HomeNewsItem[] = [
 ];
 
 const infraImages = [
-    "/assets/home/infrastructure.png", // Existing generated image
-    "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2086&auto=format&fit=crop", // Science Lab
-    "https://images.unsplash.com/photo-1599687351724-dfa3c4ff81b1?q=80&w=2070&auto=format&fit=crop", // Sports
+    "https://ipsrohtak.edu.in//downloads/other/n5869e17787504.jpg", // Existing generated image
+    "https://ipsrohtak.edu.in//downloads/other/n568b8466c1c8c.jpg", // Science Lab
+    "https://ipsrohtak.edu.in//downloads/other/n568b858d186b6.jpg", // Sports
 ];
 
 export function HomeInfoSection() {
@@ -164,7 +164,7 @@ export function HomeInfoSection() {
 
                         <div className="relative h-56 overflow-hidden">
                             <img
-                                src="/assets/home/welcome.png"
+                                src="https://indianportal.in/wp-content/uploads/2018/07/slide-1-960x620.jpg"
                                 alt="Students Welcome"
                                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                             />

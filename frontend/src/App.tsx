@@ -57,6 +57,7 @@ function PublicLayout() {
 function LandingPage() {
   return (
     <>
+      <PopupBannerModal />
       {/* 1. HERO / ABOVE-THE-FOLD SECTION */}
       <HeroSection />
 
@@ -84,7 +85,6 @@ function LandingPage() {
 function App() {
   return (
     <Router>
-      <PopupBannerModal />
       <ScrollToTop />
       <Routes>
         {/* Public Routes with Navbar & Footer */}

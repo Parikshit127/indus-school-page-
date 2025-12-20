@@ -11,42 +11,42 @@ const facilities = [
         icon: Monitor,
         title: "Smart Classrooms",
         description: "Interactive digital boards, projectors, and audio-visual learning tools in every classroom",
-        image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=2000"
+        image: "https://ipsrohtak.edu.in//downloads/other/n568b847b3c3e3.jpg"
     },
     {
         id: 2,
         icon: FlaskConical,
         title: "Science & Computer Labs",
         description: "State-of-the-art Physics, Chemistry, Biology labs with advanced equipment for hands-on experiments",
-        image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2000"
+        image: "https://ipsrohtak.edu.in//downloads/other/n568b844a9d60a.jpg"
     },
     {
         id: 3,
         icon: Trophy,
         title: "Sports Complex",
         description: "International standard facilities for cricket, basketball, badminton, swimming pool, and athletics track",
-        image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2000"
+        image: "https://ipsrohtak.edu.in//downloads/other/n568b864874264.jpg"
     },
     {
         id: 4,
         icon: Library,
-        title: "Digital Library",
+        title: "Library",
         description: "25,000+ books, e-learning resources, quiet reading zones, and research facilities",
-        image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000"
+        image: "https://ipsrohtak.edu.in//downloads/other/n568b8466c1c8c.jpg"
     },
     {
         id: 5,
         icon: Bus,
         title: "Safe Transport",
         description: "GPS-enabled buses covering all major routes with trained staff and real-time tracking",
-        image: "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=2000"
+        image: "https://ipsrohtak.edu.in//downloads/other/n568bb915ad40b.jpg"
     },
     {
         id: 6,
         icon: HeartPulse,
         title: "Medical Facility",
         description: "On-campus infirmary with qualified nurse, first-aid stations, and tie-up with nearby hospitals",
-        image: "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=2000"
+        image: "https://ipsrohtak.edu.in//downloads/other/n568babab69fbe.jpg"
     }
 ];
 

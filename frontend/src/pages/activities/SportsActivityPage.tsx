@@ -55,7 +55,7 @@ export default function SportsActivityPage() {
                     </div>
                     <div className="relative h-[600px] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
                         <img
-                            src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=800&auto=format&fit=crop"
+                            src="https://ipsrohtak.edu.in/templates/indus-rtk/images/featured3.jpg"
                             alt="Sports Facilities"
                             className="absolute inset-0 w-full h-full object-cover"
                             onError={(e) => {

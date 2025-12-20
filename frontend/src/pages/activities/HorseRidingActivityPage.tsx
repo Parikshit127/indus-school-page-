@@ -23,7 +23,7 @@ export default function HorseRidingActivityPage() {
                         className="order-2 md:order-1 relative h-[450px] rounded-3xl overflow-hidden shadow-2xl"
                     >
                         <img
-                            src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?q=80&w=2070&auto=format&fit=crop"
+                            src="https://ipsrohtak.edu.in//downloads/other/n568b864874264.jpg"
                             alt="Student Horse Riding"
                             className="w-full h-full object-cover"
                             onError={(e) => {
