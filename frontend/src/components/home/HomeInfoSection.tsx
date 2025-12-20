@@ -81,12 +81,12 @@ export function HomeInfoSection() {
     const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + infraImages.length) % infraImages.length);
 
     return (
-        <section className="py-16 bg-white relative">
-            {/* Decorative background element */}
-            <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-50 skew-x-12 -z-10" />
+        <section className="py-16 bg-white relative w-full overflow-hidden">
+            {/* Decorative background element - hidden on mobile to prevent overflow */}
+            <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-50 skew-x-12 -z-10 hidden md:block" />
 
-            <div className="container mx-auto px-4 md:px-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            <div className="container mx-auto px-4 md:px-6 max-w-full">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start w-full">
 
                     {/* COLUMN 1: OUR INFRASTRUCTURE (SLIDER) */}
                     <motion.div

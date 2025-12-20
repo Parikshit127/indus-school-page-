@@ -12,7 +12,7 @@ const highlights = [
 
 export function Highlights() {
     return (
-        <section className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500">
+        <section className="relative w-full overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500">
             {/* Animated background pattern */}
             <div className="absolute inset-0 opacity-10">
                 <div className="absolute inset-0" style={{
@@ -20,23 +20,23 @@ export function Highlights() {
                 }} />
             </div>
 
-            <div className="container mx-auto px-0">
-                <div className="flex items-stretch">
+            <div className="w-full max-w-full">
+                <div className="flex items-stretch w-full">
                     {/* Highlights Label - Premium badge style */}
-                    <div className="relative bg-white/20 backdrop-blur-sm px-5 md:px-8 py-4 flex items-center gap-3 shrink-0 border-r border-white/20">
+                    <div className="relative bg-white/20 backdrop-blur-sm px-3 sm:px-5 md:px-8 py-4 flex items-center gap-2 md:gap-3 shrink-0 border-r border-white/20">
                         <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/20 rotate-45 hidden md:block" />
-                        <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg">
+                        <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg shrink-0">
                             <Megaphone className="w-4 h-4 text-orange-600" />
                         </div>
                         <div className="hidden md:block">
                             <span className="text-white font-bold text-sm tracking-wide uppercase">Latest</span>
                             <span className="block text-white/90 text-xs">Updates</span>
                         </div>
-                        <span className="md:hidden text-white font-bold text-sm">News</span>
+                        <span className="md:hidden text-white font-bold text-sm whitespace-nowrap">News</span>
                     </div>
 
                     {/* Scrolling Ticker */}
-                    <div className="flex-1 overflow-hidden py-4 px-6 md:px-8">
+                    <div className="flex-1 overflow-hidden py-4 px-4 sm:px-6 md:px-8 min-w-0">
                         <motion.div
                             className="flex whitespace-nowrap items-center"
                             animate={{ x: ["0%", "-50%"] }}
@@ -53,12 +53,12 @@ export function Highlights() {
                             {[...highlights, ...highlights].map((item, index) => (
                                 <span
                                     key={index}
-                                    className="inline-flex items-center mx-6 md:mx-10 group"
+                                    className="inline-flex items-center mx-4 sm:mx-6 md:mx-10 group"
                                 >
-                                    <span className="flex items-center gap-2 px-4 py-1.5 bg-white/15 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/25 transition-colors">
-                                        <item.icon className="w-4 h-4 text-white" />
-                                        <span className="text-white font-medium text-sm md:text-base">{item.text}</span>
-                                        <ChevronRight className="w-4 h-4 text-white/60 group-hover:text-white transition-colors" />
+                                    <span className="flex items-center gap-2 px-3 sm:px-4 py-1.5 bg-white/15 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/25 transition-colors">
+                                        <item.icon className="w-3 h-3 sm:w-4 sm:h-4 text-white shrink-0" />
+                                        <span className="text-white font-medium text-xs sm:text-sm md:text-base">{item.text}</span>
+                                        <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-white/60 group-hover:text-white transition-colors shrink-0" />
                                     </span>
                                 </span>
                             ))}

@@ -45,7 +45,7 @@ function PublicLayout() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen">
+      <main className="min-h-screen overflow-x-hidden w-full">
         <Outlet />
       </main>
       <Footer />

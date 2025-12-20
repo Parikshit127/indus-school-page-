@@ -41,9 +41,9 @@ export function Testimonials() {
     const prevTestimonial = () => setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
 
     return (
-        <section className="py-16 md:py-24 bg-royal relative overflow-hidden">
+        <section className="py-16 md:py-24 bg-royal relative w-full overflow-hidden">
             <div className="absolute top-10 left-10 text-white/5"><Quote className="w-32 h-32" /></div>
-            <div className="container mx-auto px-4 md:px-8 relative z-10">
+            <div className="container mx-auto px-4 md:px-8 relative z-10 max-w-full">
                 <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
                     <span className="inline-block px-4 py-1.5 bg-gold/20 text-gold rounded-full text-xs font-bold tracking-widest uppercase mb-4 border border-gold/30">Voices of Trust</span>
                     <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4">What Parents Say <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold to-gold-light">About Us</span></h2>

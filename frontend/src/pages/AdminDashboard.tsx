@@ -10,6 +10,7 @@ import { NewsEventsManager } from "@/components/admin/NewsEventsManager";
 import { ResultsManager } from "@/components/admin/ResultsManager";
 import { PopupBannerManager } from "@/components/admin/PopupBannerManager";
 import { AchievementManager } from "@/components/admin/AchievementManager";
+import { ContentEditor } from "@/components/admin/ContentEditor";
 import { Menu } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -93,7 +94,7 @@ export default function AdminDashboard() {
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                         {activeTab === 'dashboard' && <Analytics />}
                         {activeTab === 'analytics' && <Analytics />}
-                        {activeTab === 'content' && <div className="text-slate-500">Content editor coming soon...</div>}
+                        {activeTab === 'content' && <ContentEditor />}
                         {activeTab === 'gallery' && <GalleryManager />}
                         {activeTab === 'members' && <MemberManager />}
                         {activeTab === 'calendar' && <CalendarManager />}

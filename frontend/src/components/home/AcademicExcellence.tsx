@@ -37,8 +37,8 @@ const keyStats = [
 
 export function AcademicExcellence() {
     return (
-        <section className="py-16 md:py-24 bg-royal">
-            <div className="container mx-auto px-4 md:px-8">
+        <section className="py-16 md:py-24 bg-royal w-full overflow-hidden">
+            <div className="container mx-auto px-4 md:px-8 max-w-full">
                 {/* Section Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

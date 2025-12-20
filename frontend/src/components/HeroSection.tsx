@@ -90,14 +90,14 @@ export function HeroSection({ staticImage, hideStats, removeMobilePadding }: { s
     }
 
     return (
-        <section id="admissions" className={`relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center overflow-hidden ${removeMobilePadding ? 'pt-0 pb-0' : 'pt-20 pb-12'} md:py-0`}>
+        <section id="admissions" className={`relative min-h-[100dvh] w-full flex flex-col md:flex-row items-center justify-center overflow-hidden ${removeMobilePadding ? 'pt-0 pb-0' : 'pt-20 pb-12'} md:py-0`}>
             {/* Background Slider */}
-            <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 z-0 w-full h-full">
                 <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-royal/80 via-royal/60 to-royal/30 z-10" />
                 <AnimatePresence mode="popLayout">
-                    <motion.div key={currentSlide} initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1.2 }} className="absolute inset-0">
+                    <motion.div key={currentSlide} initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1.2 }} className="absolute inset-0 w-full h-full">
                         {slides[currentSlide].type === 'video' ? (
-                            <video src={slides[currentSlide].url} autoPlay muted loop className="w-full h-full object-cover" />
+                            <video src={slides[currentSlide].url} autoPlay muted loop playsInline className="w-full h-full object-cover" />
                         ) : (
                             <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url('${slides[currentSlide].url}')` }} />
                         )}
@@ -107,13 +107,13 @@ export function HeroSection({ staticImage, hideStats, removeMobilePadding }: { s
 
             {/* Navigation Arrows (desktop / laptop only) */}
             {slides.length > 1 && (
-                <div className="hidden md:flex absolute bottom-8 right-8 z-30 gap-2">
+                <div className="hidden md:flex absolute bottom-8 right-4 md:right-8 z-30 gap-2">
                     <button onClick={prevSlide} className="p-2.5 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-all border border-white/20" aria-label="Previous Slide"><ChevronLeft size={20} /></button>
                     <button onClick={nextSlide} className="p-2.5 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-all border border-white/20" aria-label="Next Slide"><ChevronRight size={20} /></button>
                 </div>
             )}
 
-            <div className="container mx-auto px-4 md:px-6 relative z-10 grid md:grid-cols-12 gap-8 items-center mt-12 md:mt-0">
+            <div className="container mx-auto px-4 md:px-6 relative z-10 grid md:grid-cols-12 gap-8 items-center mt-12 md:mt-0 w-full max-w-full">
                 {/* Left Content */}
                 <div className="md:col-span-7 text-white space-y-6 text-center md:text-left">
                     {displayContent.announcement?.isActive && (
