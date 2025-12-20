@@ -1,10 +1,6 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Section } from "@/components/ui/section";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
-import { DashboardOverview } from "@/components/admin/DashboardOverview";
-import { ContentEditor } from "@/components/admin/ContentEditor";
 import { GalleryManager } from "@/components/admin/GalleryManager";
 import { MemberManager } from "@/components/admin/MemberManager";
 import { CalendarManager } from "@/components/admin/CalendarManager";
@@ -13,10 +9,8 @@ import Analytics from "@/components/admin/Analytics";
 import { NewsEventsManager } from "@/components/admin/NewsEventsManager";
 import { ResultsManager } from "@/components/admin/ResultsManager";
 import { PopupBannerManager } from "@/components/admin/PopupBannerManager";
-import { Menu } from "lucide-react";
-
-
 import { AchievementManager } from "@/components/admin/AchievementManager";
+import { Menu } from "lucide-react";
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
