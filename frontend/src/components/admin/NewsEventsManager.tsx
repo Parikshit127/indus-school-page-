@@ -169,27 +169,81 @@ export function NewsEventsManager() {
         }
     };
 
-    const insertFormatSnippet = (snippet: string) => {
-        if (!editingItem) return;
+    const applyFormatting = (formatType: 'bold' | 'italic' | 'bullet' | 'numbered' | 'quote') => {
+        if (!editingItem || !contentRef.current) return;
+        
         const textarea = contentRef.current;
-        // Simple: insert at cursor position, fallback append at end
-        if (textarea) {
-            const start = textarea.selectionStart || 0;
-            const end = textarea.selectionEnd || start;
-            const current = editingItem.content || "";
-            const before = current.slice(0, start);
-            const after = current.slice(end);
-            const nextValue = `${before}${snippet}${after}`;
-            setEditingItem({ ...editingItem, content: nextValue });
-            // Move cursor after inserted snippet
-            requestAnimationFrame(() => {
-                const pos = start + snippet.length;
-                textarea.selectionStart = textarea.selectionEnd = pos;
-                textarea.focus();
-            });
-        } else {
-            setEditingItem({ ...editingItem, content: (editingItem.content || "") + snippet });
+        const start = textarea.selectionStart || 0;
+        const end = textarea.selectionEnd || start;
+        const current = editingItem.content || "";
+        const selectedText = current.slice(start, end);
+        const before = current.slice(0, start);
+        const after = current.slice(end);
+        
+        let formattedText = '';
+        let newCursorPos = start;
+        
+        switch (formatType) {
+            case 'bold':
+                if (selectedText) {
+                    // Wrap selected text
+                    formattedText = `**${selectedText}**`;
+                    newCursorPos = start + formattedText.length;
+                } else {
+                    // Insert placeholder
+                    formattedText = '**bold text**';
+                    newCursorPos = start + formattedText.length;
+                }
+                break;
+            case 'italic':
+                if (selectedText) {
+                    formattedText = `_${selectedText}_`;
+                    newCursorPos = start + formattedText.length;
+                } else {
+                    formattedText = '_italic text_';
+                    newCursorPos = start + formattedText.length;
+                }
+                break;
+            case 'bullet':
+                if (selectedText) {
+                    // Convert selected lines to bullet points
+                    const lines = selectedText.split('\n').filter(l => l.trim());
+                    formattedText = '\n' + lines.map(l => `- ${l.trim()}`).join('\n') + '\n';
+                    newCursorPos = start + formattedText.length;
+                } else {
+                    formattedText = '\n- Item 1\n- Item 2\n';
+                    newCursorPos = start + formattedText.length;
+                }
+                break;
+            case 'numbered':
+                if (selectedText) {
+                    const lines = selectedText.split('\n').filter(l => l.trim());
+                    formattedText = '\n' + lines.map((l, i) => `${i + 1}. ${l.trim()}`).join('\n') + '\n';
+                    newCursorPos = start + formattedText.length;
+                } else {
+                    formattedText = '\n1. First item\n2. Second item\n';
+                    newCursorPos = start + formattedText.length;
+                }
+                break;
+            case 'quote':
+                if (selectedText) {
+                    formattedText = `\n> ${selectedText.split('\n').join('\n> ')}\n`;
+                    newCursorPos = start + formattedText.length;
+                } else {
+                    formattedText = '\n> Quote text here\n';
+                    newCursorPos = start + formattedText.length;
+                }
+                break;
         }
+        
+        const nextValue = `${before}${formattedText}${after}`;
+        setEditingItem({ ...editingItem, content: nextValue });
+        
+        // Restore cursor position
+        requestAnimationFrame(() => {
+            textarea.focus();
+            textarea.setSelectionRange(newCursorPos, newCursorPos);
+        });
     };
 
     return (
@@ -392,41 +446,46 @@ export function NewsEventsManager() {
                                     Full Content (Blog Details)
                                 </label>
                                 {/* Simple formatting toolbar */}
-                                <div className="flex flex-wrap gap-1 mb-2">
+                                <div className="flex flex-wrap gap-1 mb-2 p-2 bg-slate-50 rounded-lg border border-slate-200">
                                     <button
                                         type="button"
-                                        onClick={() => insertFormatSnippet("**Bold text** ")}
-                                        className="px-2 py-1 text-[11px] border border-slate-200 rounded-md text-slate-600 hover:bg-slate-50 flex items-center gap-1"
+                                        onClick={() => applyFormatting('bold')}
+                                        className="px-3 py-1.5 text-xs border border-slate-300 rounded-md text-slate-700 hover:bg-white hover:border-royal hover:text-royal transition-colors flex items-center gap-1.5 font-medium"
+                                        title="Bold (Ctrl+B)"
                                     >
-                                        <Bold className="w-3 h-3" /> Bold
+                                        <Bold className="w-3.5 h-3.5" /> Bold
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => insertFormatSnippet("_Italic text_ ")}
-                                        className="px-2 py-1 text-[11px] border border-slate-200 rounded-md text-slate-600 hover:bg-slate-50 flex items-center gap-1"
+                                        onClick={() => applyFormatting('italic')}
+                                        className="px-3 py-1.5 text-xs border border-slate-300 rounded-md text-slate-700 hover:bg-white hover:border-royal hover:text-royal transition-colors flex items-center gap-1.5 font-medium"
+                                        title="Italic (Ctrl+I)"
                                     >
-                                        <Italic className="w-3 h-3" /> Italic
+                                        <Italic className="w-3.5 h-3.5" /> Italic
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => insertFormatSnippet("\n- Point 1\n- Point 2\n")}
-                                        className="px-2 py-1 text-[11px] border border-slate-200 rounded-md text-slate-600 hover:bg-slate-50 flex items-center gap-1"
+                                        onClick={() => applyFormatting('bullet')}
+                                        className="px-3 py-1.5 text-xs border border-slate-300 rounded-md text-slate-700 hover:bg-white hover:border-royal hover:text-royal transition-colors flex items-center gap-1.5 font-medium"
+                                        title="Bullet List"
                                     >
-                                        <List className="w-3 h-3" /> Bullet List
+                                        <List className="w-3.5 h-3.5" /> Bullet List
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => insertFormatSnippet("\n1. Step one\n2. Step two\n")}
-                                        className="px-2 py-1 text-[11px] border border-slate-200 rounded-md text-slate-600 hover:bg-slate-50 flex items-center gap-1"
+                                        onClick={() => applyFormatting('numbered')}
+                                        className="px-3 py-1.5 text-xs border border-slate-300 rounded-md text-slate-700 hover:bg-white hover:border-royal hover:text-royal transition-colors flex items-center gap-1.5 font-medium"
+                                        title="Numbered List"
                                     >
-                                        <ListOrdered className="w-3 h-3" /> Numbered
+                                        <ListOrdered className="w-3.5 h-3.5" /> Numbered
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => insertFormatSnippet('\n> Highlighted note\n')}
-                                        className="px-2 py-1 text-[11px] border border-slate-200 rounded-md text-slate-600 hover:bg-slate-50 flex items-center gap-1"
+                                        onClick={() => applyFormatting('quote')}
+                                        className="px-3 py-1.5 text-xs border border-slate-300 rounded-md text-slate-700 hover:bg-white hover:border-royal hover:text-royal transition-colors flex items-center gap-1.5 font-medium"
+                                        title="Quote"
                                     >
-                                        <Quote className="w-3 h-3" /> Quote
+                                        <Quote className="w-3.5 h-3.5" /> Quote
                                     </button>
                                 </div>
                                 <textarea
@@ -440,7 +499,7 @@ export function NewsEventsManager() {
                                     placeholder="Write detailed description, highlights, schedule etc."
                                 />
                                 <p className="text-[11px] text-slate-400 mt-1">
-                                    Tip: Use the buttons above to quickly insert bold text, bullet lists, and highlighted notes.
+                                    Tip: Select text and click formatting buttons to apply styles, or click without selection to insert placeholder text. Supports <strong>**bold**</strong>, <em>_italic_</em>, lists, and quotes.
                                 </p>
                             </div>
 
