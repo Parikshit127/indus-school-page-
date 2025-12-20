@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import {
     Monitor, FlaskConical, Trophy, Library, Bus, HeartPulse,
-    Shield, Wifi, Camera, TreeDeciduous, ChevronLeft, ChevronRight
+    Shield, Wifi, Camera, TreeDeciduous
 } from "lucide-react";
 
 const facilities = [
@@ -60,14 +60,6 @@ const safetyFeatures = [
 export function InfrastructureFacilities() {
     const [activeIndex, setActiveIndex] = useState(0);
 
-    const nextSlide = () => {
-        setActiveIndex((prev) => (prev + 1) % facilities.length);
-    };
-
-    const prevSlide = () => {
-        setActiveIndex((prev) => (prev - 1 + facilities.length) % facilities.length);
-    };
-
     return (
         <section className="py-16 md:py-24 bg-slate-50 relative w-full overflow-hidden">
             <div className="container mx-auto px-4 md:px-8 max-w-full">
@@ -103,22 +95,6 @@ export function InfrastructureFacilities() {
                             style={{ backgroundImage: `url('${facilities[activeIndex].image}')` }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-royal/80 via-transparent to-transparent" />
-
-                        {/* Navigation Arrows */}
-                        <div className="absolute bottom-4 right-4 flex gap-2">
-                            <button
-                                onClick={prevSlide}
-                                className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 transition-colors"
-                            >
-                                <ChevronLeft className="w-5 h-5" />
-                            </button>
-                            <button
-                                onClick={nextSlide}
-                                className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 transition-colors"
-                            >
-                                <ChevronRight className="w-5 h-5" />
-                            </button>
-                        </div>
 
                         {/* Current Facility Info Overlay */}
                         <div className="absolute bottom-0 left-0 right-0 p-6">
