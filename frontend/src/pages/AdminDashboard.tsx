@@ -16,9 +16,11 @@ import { PopupBannerManager } from "@/components/admin/PopupBannerManager";
 import { Menu } from "lucide-react";
 
 
+import { AchievementManager } from "@/components/admin/AchievementManager";
+
 export default function AdminDashboard() {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers' | 'analytics' | 'news' | 'results' | 'popups'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers' | 'analytics' | 'news' | 'results' | 'popups' | 'achievements'>('dashboard');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
@@ -66,23 +68,49 @@ export default function AdminDashboard() {
                 onClose={() => setIsSidebarOpen(false)}
             />
 
-            {/* Main Content Area */}
-            <div className={`flex-1 min-w-0 transition-all duration-300 md:ml-64 pt-16 md:pt-0`}>
-                <Section className="min-h-screen pt-4 md:pt-8 pb-12">
-                    <div className="max-w-7xl mx-auto px-3 md:px-4">
-                        {activeTab === 'dashboard' && <DashboardOverview />}
-                        {activeTab === 'content' && <ContentEditor />}
+            {/* Main Content - Add left margin for fixed sidebar on desktop */}
+            <main className="flex-1 md:ml-64 p-6 md:p-10 mt-14 md:mt-0 overflow-y-auto min-h-screen">
+                <div className="max-w-7xl mx-auto">
+                    {/* Header */}
+                    <div className="flex justify-between items-end mb-8">
+                        <div>
+                            <h2 className="text-2xl md:text-3xl font-serif font-bold text-royal">
+                                {activeTab === 'dashboard' && 'Dashboard Overview'}
+                                {activeTab === 'content' && 'Content Management'}
+                                {activeTab === 'gallery' && 'Gallery Management'}
+                                {activeTab === 'members' && 'Managing Committee'}
+                                {activeTab === 'calendar' && 'Academic Calendar'}
+                                {activeTab === 'teachers' && 'Faculty Management'}
+                                {activeTab === 'analytics' && 'Lead Analytics'}
+                                {activeTab === 'news' && 'News & Events'}
+                                {activeTab === 'results' && 'Academic Results'}
+                                {activeTab === 'popups' && 'Popup Banners'}
+                                {activeTab === 'achievements' && 'Achievements'}
+                            </h2>
+                            <p className="text-slate-500 mt-1 text-sm">Welcome back, Administrator</p>
+                        </div>
+                        <div className="text-right hidden md:block">
+                            <p className="text-sm font-bold text-royal">Indus Public School</p>
+                            <p className="text-xs text-slate-400">Admin Panel v1.0</p>
+                        </div>
+                    </div>
+
+                    {/* Content Area - Render component based on activeTab */}
+                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        {activeTab === 'dashboard' && <Analytics />}
+                        {activeTab === 'analytics' && <Analytics />}
+                        {activeTab === 'content' && <div className="text-slate-500">Content editor coming soon...</div>}
                         {activeTab === 'gallery' && <GalleryManager />}
                         {activeTab === 'members' && <MemberManager />}
                         {activeTab === 'calendar' && <CalendarManager />}
                         {activeTab === 'teachers' && <TeacherManager />}
-                        {activeTab === 'analytics' && <Analytics />}
                         {activeTab === 'news' && <NewsEventsManager />}
                         {activeTab === 'results' && <ResultsManager />}
                         {activeTab === 'popups' && <PopupBannerManager />}
+                        {activeTab === 'achievements' && <AchievementManager />}
                     </div>
-                </Section>
-            </div>
+                </div>
+            </main>
         </div>
     );
 }

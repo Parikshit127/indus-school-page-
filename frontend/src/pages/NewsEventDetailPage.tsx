@@ -76,7 +76,7 @@ export default function NewsEventDetailPage() {
     return (
         <div className="min-h-screen bg-slate-50">
             {/* Header Section - Royal Blue for Navbar Visibility */}
-            <section className="bg-royal py-12 md:py-16">
+            <section className="bg-royal pt-32 pb-12 md:pt-40 md:pb-16">
                 <div className="container mx-auto px-4 md:px-8">
                     {/* Title & Meta in Header */}
                     <motion.div

@@ -44,6 +44,8 @@ const resultSessionsRoutes = require('./routes/resultSessions');
 app.use('/api/result-sessions', resultSessionsRoutes);
 const popupBannersRoutes = require('./routes/popupBanners');
 app.use('/api/popup-banners', popupBannersRoutes);
+const achievementsRoutes = require('./routes/achievements');
+app.use('/api/achievements', achievementsRoutes);
 
 // Start Server
 app.listen(PORT, () => {

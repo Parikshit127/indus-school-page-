@@ -1,65 +1,81 @@
-import { Section } from "@/components/ui/section";
+import { useState, useEffect } from "react";
 import { PageHero } from "@/components/ui/PageHero";
-import {
-    Trophy, Medal, Star, GraduationCap, Anchor, Award,
-    Music, FlaskConical, Globe, Target, Sparkles, Users
-} from "lucide-react";
-import { motion } from "framer-motion";
+import { Section } from "@/components/ui/section";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Trophy, Sparkles } from "lucide-react";
 
-// Academic achievers data
-const academicAchievers = [
-    { name: "Abhimanyu Balyan", achievement: "All India Rank in Civil Services", icon: Award },
-    { name: "Niyanta", achievement: "MBBS from AIIMS", icon: GraduationCap },
-    { name: "Harshit Beniwal", achievement: "IIT Guwahati", icon: Star },
-    { name: "Vasu", achievement: "99.9 Percentile in JEE Advanced", icon: Target },
-    { name: "Rohit Malik", achievement: "Indian Navy", icon: Anchor },
-    { name: "Sameer Malik & Manshu Baraak", achievement: "Merchant Navy", icon: Anchor },
-    { name: "Sumit", achievement: "NDA Cleared", icon: Medal },
-    { name: "Jasvin", achievement: "NTSE Topper", icon: Trophy },
-    { name: "Ankita Chaudhary, Yadvinder & Akanksha", achievement: "UPSC Cleared", icon: Award },
-];
+interface Achievement {
+    _id: string;
+    studentName: string;
+    achievement: string;
+    class?: string;
+    category: string;
+    date?: string;
+    order: number;
+}
 
-// Sports champions data
-const sportsChampions = [
-    { name: "Ashima Ahlawat", class: "", achievement: "International Shooting Player", medal: "gold", sport: "Shooting" },
-    { name: "Jhankaar", class: "Class 9", achievement: "2nd Position in Jujutsu - World Championship", medal: "silver", sport: "Jujutsu" },
-    { name: "Mahir", class: "Class 7", achievement: "3rd Position in Jujutsu - World Championship", medal: "bronze", sport: "Jujutsu" },
-    { name: "Rayan", class: "Class 4", achievement: "3rd Position in Kurash", medal: "bronze", sport: "Kurash" },
-    { name: "Harsh", class: "Class", achievement: "1st Position National Holder in Taekwondo", medal: "gold", sport: "Taekwondo" },
-    { name: "Akshita", class: "Class 7", achievement: "1st Position in Table Tennis", medal: "gold", sport: "Table Tennis" },
-    { name: "Dhruv", class: "Class 8", achievement: "1st Position in Swimming - District Level", medal: "gold", sport: "Swimming" },
-    { name: "Manavjeet", class: "Class 10", achievement: "1st Position in Chess - District Level", medal: "gold", sport: "Chess" },
-    { name: "Krishna", class: "Class 12", achievement: "International Player", medal: "gold", sport: "Sports" },
-    { name: "Vineet, Amanpreet & Ishaan", class: "Various", achievement: "National Baseball Players", medal: "gold", sport: "Baseball" },
-    { name: "Aryan Singh & Aryan", class: "Class 12 & 10", achievement: "National Football Players", medal: "gold", sport: "Football" },
-    { name: "Kreytin", class: "Class 4", achievement: "Gold Medal in Skating", medal: "gold", sport: "Skating" },
-];
-
-// More sports achievements
-const additionalSports = [
-    { name: "Jagrit", class: "Class 4", sport: "Badminton", achievement: "Accolades" },
-    { name: "Sikander", class: "Class 8", sport: "Badminton", achievement: "Accolades" },
-    { name: "Manasvi", class: "Class 9", sport: "Badminton", achievement: "Accolades" },
-    { name: "Seerat", class: "Class 10", sport: "Badminton", achievement: "Accolades" },
-    { name: "Vidhi", class: "Class 9", sport: "Athletics", achievement: "State Level Athlete" },
-    { name: "Ritika", class: "Class 3", sport: "Athletics", achievement: "State Level Athlete" },
-    { name: "Prachi", class: "Class 7", sport: "Wrestling", achievement: "2nd Position - District Level" },
-    { name: "Arpit", class: "Class 8", sport: "Shooting", achievement: "3rd Rank - District Level" },
-    { name: "Daksh Chahar", class: "Class 9", sport: "Dragon Boat & Canoe Sprint", achievement: "National Championship" },
-    { name: "Aman", class: "Class 11", sport: "Gymnastics", achievement: "State Level Gymnast" },
-];
-
-const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-};
-
-const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-};
+interface AchievementBanner {
+    _id: string;
+    title?: string;
+    imageUrl: string;
+    order: number;
+}
 
 export default function AchievementsPage() {
+    const [achievements, setAchievements] = useState<Achievement[]>([]);
+    const [banners, setBanners] = useState<AchievementBanner[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [showAllAchievements, setShowAllAchievements] = useState(false);
+    const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [achievementsRes, bannersRes] = await Promise.all([
+                    fetch(`${apiUrl}/api/achievements`),
+                    fetch(`${apiUrl}/api/achievements/banners`)
+                ]);
+
+                if (achievementsRes.ok) {
+                    const data = await achievementsRes.json();
+                    setAchievements(data);
+                }
+
+                if (bannersRes.ok) {
+                    const data = await bannersRes.json();
+                    setBanners(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch achievements data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    // Banner Autoplay
+    useEffect(() => {
+        if (banners.length <= 1) return;
+        const timer = setInterval(() => {
+            setCurrentBannerIndex((prev) => (prev + 1) % banners.length);
+        }, 5000);
+        return () => clearInterval(timer);
+    }, [banners.length]);
+
+    const nextBanner = () => {
+        setCurrentBannerIndex((prev) => (prev + 1) % banners.length);
+    };
+
+    const prevBanner = () => {
+        setCurrentBannerIndex((prev) => (prev - 1 + banners.length) % banners.length);
+    };
+
+    const displayedAchievements = showAllAchievements ? achievements : achievements.slice(0, 10);
+
     return (
         <div className="bg-slate-50 min-h-screen">
             <PageHero
@@ -68,318 +84,190 @@ export default function AchievementsPage() {
                 image="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070"
             />
 
-            <Section className="py-20 space-y-24">
-
-                {/* Introduction Section */}
+            {/* Tagline Section */}
+            <Section className="py-16 md:py-20 text-center">
                 <motion.div
-                    initial="hidden"
-                    whileInView="visible"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    variants={fadeIn}
-                    className="max-w-4xl mx-auto text-center -mt-20 relative z-20"
+                    className="max-w-4xl mx-auto"
                 >
-                    <div className="bg-white p-10 rounded-3xl shadow-xl border border-slate-100">
-                        <div className="w-16 h-16 mx-auto bg-gold/10 rounded-full flex items-center justify-center text-gold mb-6">
-                            <Sparkles size={32} />
-                        </div>
-                        <h2 className="text-2xl md:text-3xl font-serif font-bold text-royal mb-6">
-                            Session 2023-2024: A Year of Promises & Achievements
-                        </h2>
-                        <p className="text-slate-600 leading-relaxed text-lg">
-                            The session 2023-2024 has been full of promises and achievements for our Indusians in the field of academics, sports, and career. The list is exhaustive. We have been highlighting our students on the school's website and informing our parents through WhatsApp groups.
-                        </p>
-                        <div className="mt-8 p-6 bg-gradient-to-r from-royal/5 to-gold/5 rounded-2xl">
-                            <p className="text-royal font-serif italic text-xl">
-                                "The future belongs to those who believe in the beauty of their dreams."
-                            </p>
-                        </div>
-                    </div>
-                </motion.div>
-
-                {/* Academic Achievers Section */}
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    variants={staggerContainer}
-                >
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-royal mb-4">
-                            Academic Excellence
-                        </h2>
-                        <p className="text-slate-600 max-w-2xl mx-auto">
-                            Many of our students are doctors in PGI Rohtak, some from Russia, China etc. Our alumni are shining across the globe.
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {academicAchievers.map((achiever, index) => (
-                            <motion.div
-                                key={index}
-                                variants={fadeIn}
-                                className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-gold/30 transition-all duration-300 group"
-                            >
-                                <div className="flex items-start gap-4">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-royal to-royal-light rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
-                                        <achiever.icon size={24} />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-royal text-lg">{achiever.name}</h3>
-                                        <p className="text-slate-600 text-sm mt-1">{achiever.achievement}</p>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-
-                    {/* Global Success */}
-                    <motion.div
-                        variants={fadeIn}
-                        className="mt-12 bg-gradient-to-r from-royal-dark to-royal p-8 rounded-3xl text-white text-center"
-                    >
-                        <Globe className="w-12 h-12 mx-auto mb-4 text-gold" />
-                        <h3 className="text-2xl font-serif font-bold mb-4">Global Success Stories</h3>
-                        <p className="text-white/80 max-w-3xl mx-auto">
-                            Many Indusians have cleared their IELTS and are now working in <span className="text-gold font-bold">USA, UK, Australia, Canada</span> and other countries, making us proud on the global stage.
-                        </p>
-                    </motion.div>
-                </motion.div>
-
-                {/* Sports Champions Section */}
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    variants={staggerContainer}
-                >
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-royal mb-4">
-                            Sports Champions
-                        </h2>
-                        <p className="text-slate-600 max-w-2xl mx-auto">
-                            Our students excel in various sports disciplines, bringing laurels at national and international levels.
-                        </p>
-                    </div>
-
-                    {/* Featured Champions Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        {sportsChampions.slice(0, 8).map((champion, index) => (
-                            <motion.div
-                                key={index}
-                                variants={fadeIn}
-                                className={`relative overflow-hidden rounded-2xl p-6 ${champion.medal === 'gold' ? 'bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-200' :
-                                    champion.medal === 'silver' ? 'bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-slate-300' :
-                                        'bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200'
-                                    } hover:shadow-xl transition-all duration-300 group`}
-                            >
-                                <div className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center ${champion.medal === 'gold' ? 'bg-amber-400 text-amber-900' :
-                                    champion.medal === 'silver' ? 'bg-slate-400 text-slate-900' :
-                                        'bg-orange-400 text-orange-900'
-                                    }`}>
-                                    <Medal size={18} />
-                                </div>
-                                <div className="mb-4">
-                                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{champion.sport}</span>
-                                </div>
-                                <h3 className="font-bold text-royal text-lg mb-1">{champion.name}</h3>
-                                {champion.class && <p className="text-slate-500 text-sm mb-3">{champion.class}</p>}
-                                <p className="text-slate-700 text-sm font-medium">{champion.achievement}</p>
-                            </motion.div>
-                        ))}
-                    </div>
-
-                    {/* Additional Sports List */}
-                    <motion.div
-                        variants={fadeIn}
-                        className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100"
-                    >
-                        <h3 className="text-xl font-bold text-royal mb-6 flex items-center gap-3">
-                            <Trophy className="text-gold" />
-                            More Sports Achievements
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {additionalSports.map((athlete, index) => (
-                                <div key={index} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-                                    <div className="w-2 h-2 bg-gold rounded-full"></div>
-                                    <div>
-                                        <span className="font-medium text-royal">{athlete.name}</span>
-                                        <span className="text-slate-400 mx-2">•</span>
-                                        <span className="text-slate-500 text-sm">{athlete.class}</span>
-                                        <p className="text-slate-600 text-sm">{athlete.sport} - {athlete.achievement}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </motion.div>
-                </motion.div>
-
-                {/* Sports Gallery */}
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    variants={fadeIn}
-                >
-                    <h3 className="text-2xl font-serif font-bold text-royal mb-8 text-center">
-                        Sports Highlights
-                    </h3>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {[
-                            "https://images.unsplash.com/photo-1461896836934-28e4a8c39a01?q=80&w=500",
-                            "https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=500",
-                            "https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=500",
-                            "https://images.unsplash.com/photo-1526676037777-05a232554f77?q=80&w=500",
-                        ].map((img, idx) => (
-                            <div key={idx} className="aspect-square rounded-2xl overflow-hidden group">
-                                <img
-                                    src={img}
-                                    alt={`Sports achievement ${idx + 1}`}
-                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                    onError={(e) => {
-                                        e.currentTarget.src = `https://picsum.photos/500/500?random=${idx}`;
-                                    }}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                </motion.div>
-
-                {/* Extracurricular Excellence */}
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    variants={staggerContainer}
-                >
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-royal mb-4">
-                            Extracurricular Excellence
-                        </h2>
-                        <p className="text-slate-600 max-w-2xl mx-auto">
-                            Beyond academics and sports, our students shine in arts, science, and innovation.
-                        </p>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {/* ATL Labs */}
-                        <motion.div variants={fadeIn} className="bg-gradient-to-br from-purple-500 to-indigo-600 p-8 rounded-3xl text-white">
-                            <FlaskConical className="w-12 h-12 mb-6 text-purple-200" />
-                            <h3 className="text-2xl font-serif font-bold mb-4">ATL Labs & Innovation</h3>
-                            <p className="text-white/80 mb-4">
-                                ATL Labs have given food for thought to our young scientists. Aryan Kumar of class 8B has been working on launching a website exclusively for school. Vedansh of 8A has made an animated short film and posted it on the website.
-                            </p>
-                            <div className="bg-white/10 rounded-xl p-4">
-                                <p className="text-purple-100 text-sm italic">
-                                    "Each child is gifted, we have to just unfurl that gift and bring it out as a life skill."
-                                </p>
-                            </div>
-                        </motion.div>
-
-                        {/* Music & Cultural */}
-                        <motion.div variants={fadeIn} className="bg-gradient-to-br from-rose-500 to-pink-600 p-8 rounded-3xl text-white">
-                            <Music className="w-12 h-12 mb-6 text-rose-200" />
-                            <h3 className="text-2xl font-serif font-bold mb-4">Music & Cultural</h3>
-                            <p className="text-white/80 mb-4">
-                                Our musical choir won <span className="font-bold text-white">3rd position</span> in the interstate music competition. Students participate in dance, art, handwriting, and cultural activities.
-                            </p>
-                            <div className="bg-white/10 rounded-xl p-4">
-                                <p className="text-rose-100 text-sm">Nimfiya of Class 5 has proved her mental grit in Abacus competitions.</p>
-                            </div>
-                        </motion.div>
-
-                        {/* Academic Competitions */}
-                        <motion.div variants={fadeIn} className="bg-gradient-to-br from-emerald-500 to-teal-600 p-8 rounded-3xl text-white">
-                            <GraduationCap className="w-12 h-12 mb-6 text-emerald-200" />
-                            <h3 className="text-2xl font-serif font-bold mb-4">Academic Competitions</h3>
-                            <p className="text-white/80 mb-4">
-                                Among 27 schools, our students won the <span className="font-bold text-white">1st position</span> in Mathematics Quiz. We conduct inter-house competitions in elocution, speeches, debates, quiz, and more.
-                            </p>
-                            <div className="bg-white/10 rounded-xl p-4">
-                                <p className="text-emerald-100 text-sm">Parents witnessed amazing, innovative ideas at our science exhibition.</p>
-                            </div>
-                        </motion.div>
-                    </div>
-                </motion.div>
-
-                {/* Inter-House Activities */}
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    variants={fadeIn}
-                    className="bg-royal-dark rounded-3xl p-10 text-white"
-                >
-                    <div className="flex items-center gap-4 mb-8">
-                        <Users className="w-10 h-10 text-gold" />
-                        <h3 className="text-2xl font-serif font-bold">Inter-House Competitions & Activities</h3>
-                    </div>
-                    <p className="text-white/80 mb-8 max-w-4xl">
-                        Our students have been participating in various fields in their individual capacity as we groom them to face challenges. We have inter-house competitions wherein our students choose to participate in a wide range of activities.
+                    <Sparkles className="w-12 h-12 text-gold mx-auto mb-6" />
+                    <h2 className="text-3xl md:text-5xl font-serif font-bold text-royal mb-6 leading-tight">
+                        "Excellence is not an act, but a habit."
+                    </h2>
+                    <p className="text-lg md:text-xl text-slate-600 italic">
+                        At Indus Public School, we nurture talent and celebrate every milestone of our students' journey towards greatness.
                     </p>
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                        {["Elocution", "Speeches", "Debates", "Dialogue Delivery", "Music", "Dance", "Art", "Handwriting", "Spell Bee", "Quiz", "House Boards", "Displays"].map((activity, idx) => (
-                            <div key={idx} className="bg-white/10 rounded-xl p-3 text-center hover:bg-white/20 transition-colors">
-                                <span className="text-sm font-medium">{activity}</span>
-                            </div>
-                        ))}
-                    </div>
-                    <p className="text-white/70 mt-8 text-sm">
-                        Our assembly activities encourage students to come up on the stage for extempore, skits, news reading, thought of the day and many more.
-                    </p>
+                    <div className="h-1 w-24 bg-gold mx-auto mt-8 rounded-full"></div>
                 </motion.div>
-
-                {/* Achievement Gallery */}
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    variants={fadeIn}
-                >
-                    <h3 className="text-2xl font-serif font-bold text-royal mb-8 text-center">
-                        Moments of Pride
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {[
-                            { img: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=600", caption: "Academic Excellence" },
-                            { img: "https://images.unsplash.com/photo-1461896836934-28e4a8c39a01?q=80&w=600", caption: "Sports Achievements" },
-                            { img: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=600", caption: "Cultural Programs" },
-                        ].map((item, idx) => (
-                            <div key={idx} className="group relative overflow-hidden rounded-2xl aspect-[4/3]">
-                                <img
-                                    src={item.img}
-                                    alt={item.caption}
-                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
-                                    <h4 className="text-white font-bold text-xl">{item.caption}</h4>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </motion.div>
-
-                {/* Inspirational Closing */}
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    variants={fadeIn}
-                    className="text-center max-w-4xl mx-auto"
-                >
-                    <div className="bg-gradient-to-br from-gold/10 via-white to-royal/5 p-12 rounded-3xl border border-gold/20">
-                        <Sparkles className="w-12 h-12 mx-auto mb-6 text-gold" />
-                        <blockquote className="text-2xl md:text-3xl font-serif text-royal leading-relaxed mb-8">
-                            "Every day of your life is another lesson. If you learn the lesson well and apply it; whether positive or negative, you determine what happens tomorrow."
-                        </blockquote>
-                        <p className="text-slate-600 text-lg mb-8">
-                            We have often been taught that if we truly want to get somewhere in our lives, we have to work hard and stay focused on our goals.
-                            <span className="font-bold text-royal"> Every skill you acquire doubles your odds of success.</span>
-                        </p>
-                        <div className="h-1 w-24 bg-gold mx-auto rounded-full"></div>
-                    </div>
-                </motion.div>
-
             </Section>
+
+            {/* Achievements Table - Just like Members */}
+            <Section className="py-12 bg-white">
+                <div className="max-w-6xl mx-auto">
+                    <div className="flex items-center justify-center gap-4 mb-10">
+                        <div className="h-px bg-royal/20 w-12 md:w-20"></div>
+                        <h2 className="text-2xl md:text-3xl font-bold text-royal uppercase tracking-widest text-center">
+                            Hall of Fame
+                        </h2>
+                        <div className="h-px bg-royal/20 w-12 md:w-20"></div>
+                    </div>
+
+                    {loading ? (
+                        <div className="text-center py-12 text-slate-500">Loading achievements...</div>
+                    ) : achievements.length > 0 ? (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                        >
+                            <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-8">
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-sm text-left whitespace-nowrap md:whitespace-normal">
+                                        <thead className="text-xs text-royal uppercase bg-slate-50/50">
+                                            <tr>
+                                                <th className="px-6 py-4 rounded-tl-xl text-center">#</th>
+                                                <th className="px-6 py-4">Student Name</th>
+                                                <th className="px-6 py-4">Achievement</th>
+                                                <th className="px-6 py-4">Class</th>
+                                                <th className="px-6 py-4 rounded-tr-xl">Category</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-100">
+                                            {displayedAchievements.map((item, index) => (
+                                                <tr key={item._id} className="hover:bg-slate-50/50 transition-colors group">
+                                                    <td className="px-6 py-4 font-medium text-slate-400 text-center w-16">
+                                                        {index + 1}
+                                                    </td>
+                                                    <td className="px-6 py-4 text-base font-bold text-royal group-hover:text-gold transition-colors">
+                                                        {item.studentName}
+                                                    </td>
+                                                    <td className="px-6 py-4 text-slate-700 font-medium">
+                                                        {item.achievement}
+                                                    </td>
+                                                    <td className="px-6 py-4 text-slate-500">
+                                                        {item.class || "-"}
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${item.category?.toLowerCase() === 'sports'
+                                                                ? 'bg-orange-50 text-orange-700 border-orange-100'
+                                                                : item.category?.toLowerCase() === 'academic'
+                                                                    ? 'bg-blue-50 text-blue-700 border-blue-100'
+                                                                    : 'bg-purple-50 text-purple-700 border-purple-100'
+                                                            }`}>
+                                                            {item.category || "General"}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            {achievements.length > 10 && (
+                                <div className="text-center">
+                                    <button
+                                        onClick={() => setShowAllAchievements(!showAllAchievements)}
+                                        className="inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-slate-200 rounded-full text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-royal hover:border-royal transition-all duration-300 shadow-sm"
+                                    >
+                                        {showAllAchievements ? (
+                                            <>Show Less <ChevronUp size={16} /></>
+                                        ) : (
+                                            <>See All Achievements ({achievements.length}) <ChevronDown size={16} /></>
+                                        )}
+                                    </button>
+                                </div>
+                            )}
+                        </motion.div>
+                    ) : (
+                        <div className="text-center py-12 bg-slate-50 rounded-xl border border-dashed border-slate-300">
+                            <Trophy className="mx-auto h-12 w-12 text-slate-300 mb-3" />
+                            <p className="text-slate-500">No achievements added yet.</p>
+                        </div>
+                    )}
+                </div>
+            </Section>
+
+            {/* Sliding Banners Section */}
+            {banners.length > 0 && (
+                <Section className="py-20 bg-royal text-white overflow-hidden relative">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10 pointer-events-none">
+                        <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+                        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
+                    </div>
+
+                    <div className="max-w-screen-xl mx-auto relative z-10 px-4">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-center mb-12"
+                        >
+                            <span className="text-gold font-bold tracking-widest uppercase text-sm mb-2 block">Gallery</span>
+                            <h2 className="text-3xl md:text-5xl font-serif font-bold">Moments of Pride</h2>
+                        </motion.div>
+
+                        <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-royal-dark aspect-video md:aspect-[21/9]">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={currentBannerIndex}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.5 }}
+                                    className="absolute inset-0"
+                                >
+                                    <img
+                                        src={banners[currentBannerIndex].imageUrl}
+                                        alt={banners[currentBannerIndex].title || "Achievement"}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    {banners[currentBannerIndex].title && (
+                                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8 pt-24">
+                                            <h3 className="text-2xl md:text-3xl font-bold text-white text-center md:text-left drop-shadow-md">
+                                                {banners[currentBannerIndex].title}
+                                            </h3>
+                                        </div>
+                                    )}
+                                </motion.div>
+                            </AnimatePresence>
+
+                            {/* Slider Navigation */}
+                            {banners.length > 1 && (
+                                <>
+                                    <button
+                                        onClick={prevBanner}
+                                        className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/30 text-white hover:bg-white hover:text-royal transition-all backdrop-blur-sm shadow-lg"
+                                    >
+                                        <ChevronLeft size={24} />
+                                    </button>
+                                    <button
+                                        onClick={nextBanner}
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/30 text-white hover:bg-white hover:text-royal transition-all backdrop-blur-sm shadow-lg"
+                                    >
+                                        <ChevronRight size={24} />
+                                    </button>
+
+                                    {/* Dots */}
+                                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                                        {banners.map((_, idx) => (
+                                            <button
+                                                key={idx}
+                                                onClick={() => setCurrentBannerIndex(idx)}
+                                                className={`w-2.5 h-2.5 rounded-full transition-all ${idx === currentBannerIndex ? "bg-gold w-8" : "bg-white/50 hover:bg-white"
+                                                    }`}
+                                            />
+                                        ))}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </Section>
+            )}
         </div>
     );
 }
