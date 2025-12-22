@@ -83,6 +83,17 @@ export function Navbar() {
                 { name: "Psychological Counselling", path: "/facilities#counselling" }
             ]
         },
+        {
+            name: "Admissions",
+            path: "/admissions",
+            dropdown: [
+                { name: "Admission Procedure", path: "/admissions#admission-procedure" },
+                { name: "Rules & Regulations", path: "/admissions#rules-regulations" },
+                { name: "Withdrawals", path: "/admissions#withdrawals" },
+                { name: "Online Registration Form", path: "/admissions#online-registration" },
+                { name: "TC", path: "/admissions#tc" }
+            ]
+        },
         { name: "Contact Us", path: "/contact" },
     ];
 

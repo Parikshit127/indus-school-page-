@@ -34,6 +34,7 @@ import ContactPage from "@/pages/ContactPage";
 import NewsEventsPage from "@/pages/NewsEventsPage";
 import NewsEventDetailPage from "@/pages/NewsEventDetailPage";
 import AdmissionLandingPage from "@/pages/AdmissionLandingPage";
+import AdmissionsPage from "@/pages/AdmissionsPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
@@ -106,6 +107,7 @@ function App() {
           <Route path="/achievements" element={<AchievementsPage />} />
           <Route path="/achievements/results" element={<ResultsPage />} />
           <Route path="/about" element={<AboutUsPage />} />
+          <Route path="/admissions" element={<AdmissionsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/news-events" element={<NewsEventsPage />} />
           <Route path="/news-events/:slug" element={<NewsEventDetailPage />} />
