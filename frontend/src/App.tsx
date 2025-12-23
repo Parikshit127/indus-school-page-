@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
+import { TopBar } from "@/components/TopBar";
 import { Footer } from "@/components/Footer";
 import { HeroSection } from "@/components/HeroSection";
 
@@ -35,16 +36,20 @@ import NewsEventsPage from "@/pages/NewsEventsPage";
 import NewsEventDetailPage from "@/pages/NewsEventDetailPage";
 import AdmissionLandingPage from "@/pages/AdmissionLandingPage";
 import AdmissionsPage from "@/pages/AdmissionsPage";
+import FeedbackPage from "@/pages/FeedbackPage";
+import CareerPage from "@/pages/CareerPage";
+import MandatoryDisclosurePage from "@/pages/MandatoryDisclosurePage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { PopupBannerModal } from "@/components/PopupBannerModal";
 
-// Layout for public pages (includes Navbar and Footer)
+// Layout for public pages (includes TopBar, Navbar and Footer)
 function PublicLayout() {
   return (
     <>
+      <TopBar />
       <Navbar />
       <main className="min-h-screen overflow-x-hidden w-full">
         <Outlet />
@@ -108,6 +113,9 @@ function App() {
           <Route path="/achievements/results" element={<ResultsPage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/admissions" element={<AdmissionsPage />} />
+          <Route path="/feedback" element={<FeedbackPage />} />
+          <Route path="/career" element={<CareerPage />} />
+          <Route path="/mandatory-disclosure" element={<MandatoryDisclosurePage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/news-events" element={<NewsEventsPage />} />
           <Route path="/news-events/:slug" element={<NewsEventDetailPage />} />

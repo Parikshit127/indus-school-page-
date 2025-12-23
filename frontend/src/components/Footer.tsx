@@ -47,11 +47,11 @@ export function Footer() {
                             </div>
                             <div className="flex items-center gap-3 text-white/80">
                                 <Phone className="text-gold shrink-0" size={20} />
-                                <p>+91 12345 67890</p>
+                                <p>9992900573, 9992900574</p>
                             </div>
                             <div className="flex items-center gap-3 text-white/80">
                                 <Mail className="text-gold shrink-0" size={20} />
-                                <p>admissions@indusrohtak.com</p>
+                                <p>ipsrtk@gmail.com</p>
                             </div>
                         </div>
 
@@ -93,6 +93,33 @@ export function Footer() {
                                 >
                                     <span className="w-1.5 h-1.5 bg-gold/50 rounded-full"></span>
                                     Admissions
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/feedback"
+                                    className="text-white/70 hover:text-gold transition-colors flex items-center gap-2"
+                                >
+                                    <span className="w-1.5 h-1.5 bg-gold/50 rounded-full"></span>
+                                    Feedback
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/career"
+                                    className="text-white/70 hover:text-gold transition-colors flex items-center gap-2"
+                                >
+                                    <span className="w-1.5 h-1.5 bg-gold/50 rounded-full"></span>
+                                    Career
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/mandatory-disclosure"
+                                    className="text-white/70 hover:text-gold transition-colors flex items-center gap-2"
+                                >
+                                    <span className="w-1.5 h-1.5 bg-gold/50 rounded-full"></span>
+                                    Mandatory Disclosure
                                 </Link>
                             </li>
                         </ul>

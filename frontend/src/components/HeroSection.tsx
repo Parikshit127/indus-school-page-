@@ -90,7 +90,7 @@ export function HeroSection({ staticImage, hideStats, removeMobilePadding }: { s
     }
 
     return (
-        <section id="admissions" className={`relative min-h-[100dvh] w-full flex flex-col md:flex-row items-center justify-center overflow-hidden ${removeMobilePadding ? 'pt-0 pb-0' : 'pt-20 pb-12'} md:py-0`}>
+        <section id="admissions" className={`relative min-h-[100dvh] w-full flex flex-col md:flex-row items-center justify-center overflow-hidden ${removeMobilePadding ? 'pt-0 pb-0' : 'pt-36 pb-12'} md:py-0`}>
             {/* Background Slider */}
             <div className="absolute inset-0 z-0 w-full h-full">
                 <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-royal/80 via-royal/60 to-royal/30 z-10" />

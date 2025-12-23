@@ -8,7 +8,7 @@ interface PageHeroProps {
 
 export function PageHero({ title, subtitle, image }: PageHeroProps) {
     return (
-        <div className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+        <div className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden pt-32">
             {/* Background Image */}
             <img
                 src={image}

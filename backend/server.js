@@ -46,6 +46,8 @@ const popupBannersRoutes = require('./routes/popupBanners');
 app.use('/api/popup-banners', popupBannersRoutes);
 const achievementsRoutes = require('./routes/achievements');
 app.use('/api/achievements', achievementsRoutes);
+const announcementsRoutes = require('./routes/announcements');
+app.use('/api/announcements', announcementsRoutes);
 
 // Start Server
 app.listen(PORT, () => {

@@ -10,12 +10,13 @@ import { NewsEventsManager } from "@/components/admin/NewsEventsManager";
 import { ResultsManager } from "@/components/admin/ResultsManager";
 import { PopupBannerManager } from "@/components/admin/PopupBannerManager";
 import { AchievementManager } from "@/components/admin/AchievementManager";
+import { AnnouncementManager } from "@/components/admin/AnnouncementManager";
 import { ContentEditor } from "@/components/admin/ContentEditor";
 import { Menu } from "lucide-react";
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers' | 'analytics' | 'news' | 'results' | 'popups' | 'achievements'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers' | 'analytics' | 'news' | 'results' | 'popups' | 'achievements' | 'announcements'>('dashboard');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
@@ -81,6 +82,7 @@ export default function AdminDashboard() {
                                 {activeTab === 'results' && 'Academic Results'}
                                 {activeTab === 'popups' && 'Popup Banners'}
                                 {activeTab === 'achievements' && 'Achievements'}
+                                {activeTab === 'announcements' && 'Announcements Ticker'}
                             </h2>
                             <p className="text-slate-500 mt-1 text-sm">Welcome back, Administrator</p>
                         </div>
@@ -103,6 +105,7 @@ export default function AdminDashboard() {
                         {activeTab === 'results' && <ResultsManager />}
                         {activeTab === 'popups' && <PopupBannerManager />}
                         {activeTab === 'achievements' && <AchievementManager />}
+                        {activeTab === 'announcements' && <AnnouncementManager />}
                     </div>
                 </div>
             </main>

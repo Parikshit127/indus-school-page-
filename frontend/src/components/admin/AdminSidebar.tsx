@@ -1,8 +1,8 @@
 import { LayoutDashboard, FileEdit, LogOut, Image as ImageIcon, Users, Calendar, GraduationCap, BarChart3, Newspaper, Trophy, Megaphone } from "lucide-react";
 
 interface AdminSidebarProps {
-    activeTab: 'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers' | 'analytics' | 'news' | 'results' | 'popups' | 'achievements';
-    setActiveTab: (tab: 'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers' | 'analytics' | 'news' | 'results' | 'popups' | 'achievements') => void;
+    activeTab: 'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers' | 'analytics' | 'news' | 'results' | 'popups' | 'achievements' | 'announcements';
+    setActiveTab: (tab: 'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers' | 'analytics' | 'news' | 'results' | 'popups' | 'achievements' | 'announcements') => void;
     onLogout: () => void;
     isOpen?: boolean;
     onClose?: () => void;
@@ -131,6 +131,17 @@ export function AdminSidebar({ activeTab, setActiveTab, onLogout, isOpen, onClos
                 >
                     <Megaphone size={20} />
                     <span>Popup Banners</span>
+                </button>
+
+                <button
+                    onClick={() => { setActiveTab('announcements'); onClose?.(); }}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${activeTab === 'announcements'
+                        ? 'bg-gold text-royal-dark font-bold shadow-lg shadow-gold/20'
+                        : 'text-white/70 hover:bg-white/5 hover:text-white'
+                        }`}
+                >
+                    <Newspaper size={20} />
+                    <span>Ticker News</span>
                 </button>
 
                 <button
