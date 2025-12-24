@@ -3,6 +3,7 @@ import { Facebook, Instagram, Youtube, Twitter, Linkedin } from "lucide-react";
 
 export function TopBar() {
     const topLinks = [
+        { name: "Fees Structure", path: "/fees" },
         { name: "Feedback", path: "/feedback" },
         { name: "Career", path: "/career" },
         { name: "CBSE Mandatory Disclosure", path: "/mandatory-disclosure" }

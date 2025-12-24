@@ -39,6 +39,7 @@ import AdmissionsPage from "@/pages/AdmissionsPage";
 import FeedbackPage from "@/pages/FeedbackPage";
 import CareerPage from "@/pages/CareerPage";
 import MandatoryDisclosurePage from "@/pages/MandatoryDisclosurePage";
+import FeesPage from "@/pages/FeesPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
@@ -116,6 +117,7 @@ function App() {
           <Route path="/feedback" element={<FeedbackPage />} />
           <Route path="/career" element={<CareerPage />} />
           <Route path="/mandatory-disclosure" element={<MandatoryDisclosurePage />} />
+          <Route path="/fees" element={<FeesPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/news-events" element={<NewsEventsPage />} />
           <Route path="/news-events/:slug" element={<NewsEventDetailPage />} />

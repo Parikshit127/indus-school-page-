@@ -9,17 +9,9 @@ interface HighlightItem {
     link?: string;
 }
 
-// Sample highlights data - used as fallback
-const defaultHighlights: HighlightItem[] = [
-    { text: "Admission Open for classes Nur to IX and XI", icon: Bell, type: "admission", link: "/admissions" },
-    { text: "Annual Sports Day on 15th January 2025", icon: Calendar, type: "event" },
-    { text: "Science Exhibition Winners announced", icon: Award, type: "achievement" },
-    { text: "Parent-Teacher Meeting on 20th December", icon: Calendar, type: "event" },
-    { text: "Winter Vacation: 25th Dec to 5th Jan", icon: Calendar, type: "notice" },
-];
 
 export function Highlights() {
-    const [highlights, setHighlights] = useState<HighlightItem[]>(defaultHighlights);
+    const [highlights, setHighlights] = useState<HighlightItem[]>([]);
 
     useEffect(() => {
         const fetchAnnouncements = async () => {
@@ -55,6 +47,8 @@ export function Highlights() {
             default: return Megaphone;
         }
     };
+
+    if (highlights.length === 0) return null;
 
     return (
         <section className="relative w-full overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500">

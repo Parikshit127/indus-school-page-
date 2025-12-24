@@ -4,6 +4,7 @@ import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { GalleryManager } from "@/components/admin/GalleryManager";
 import { MemberManager } from "@/components/admin/MemberManager";
 import { CalendarManager } from "@/components/admin/CalendarManager";
+import { FeesManager } from "@/components/admin/FeesManager";
 import { TeacherManager } from "@/components/admin/TeacherManager";
 import Analytics from "@/components/admin/Analytics";
 import { NewsEventsManager } from "@/components/admin/NewsEventsManager";
@@ -16,7 +17,7 @@ import { Menu } from "lucide-react";
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'teachers' | 'analytics' | 'news' | 'results' | 'popups' | 'achievements' | 'announcements'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'gallery' | 'members' | 'calendar' | 'fees' | 'teachers' | 'analytics' | 'news' | 'results' | 'popups' | 'achievements' | 'announcements'>('dashboard');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
@@ -76,6 +77,7 @@ export default function AdminDashboard() {
                                 {activeTab === 'gallery' && 'Gallery Management'}
                                 {activeTab === 'members' && 'Managing Committee'}
                                 {activeTab === 'calendar' && 'Academic Calendar'}
+                                {activeTab === 'fees' && 'Fees Structure'}
                                 {activeTab === 'teachers' && 'Faculty Management'}
                                 {activeTab === 'analytics' && 'Lead Analytics'}
                                 {activeTab === 'news' && 'News & Events'}
@@ -100,6 +102,7 @@ export default function AdminDashboard() {
                         {activeTab === 'gallery' && <GalleryManager />}
                         {activeTab === 'members' && <MemberManager />}
                         {activeTab === 'calendar' && <CalendarManager />}
+                        {activeTab === 'fees' && <FeesManager />}
                         {activeTab === 'teachers' && <TeacherManager />}
                         {activeTab === 'news' && <NewsEventsManager />}
                         {activeTab === 'results' && <ResultsManager />}

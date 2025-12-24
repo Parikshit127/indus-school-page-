@@ -32,7 +32,7 @@ export function Footer() {
     return (
         <footer className="bg-royal text-white border-t border-white/10">
             <Section className="py-16">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                     {/* Brand & Contact */}
                     <div className="space-y-6">
                         <div>
@@ -86,6 +86,13 @@ export function Footer() {
                                     </Link>
                                 </li>
                             ))}
+                        </ul>
+                    </div>
+
+                    {/* Other Links */}
+                    <div>
+                        <h4 className="font-bold text-lg mb-4 text-gold">Other Links</h4>
+                        <ul className="space-y-3">
                             <li>
                                 <Link
                                     to="/#admissions"
@@ -120,6 +127,15 @@ export function Footer() {
                                 >
                                     <span className="w-1.5 h-1.5 bg-gold/50 rounded-full"></span>
                                     Mandatory Disclosure
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/fees"
+                                    className="text-white/70 hover:text-gold transition-colors flex items-center gap-2"
+                                >
+                                    <span className="w-1.5 h-1.5 bg-gold/50 rounded-full"></span>
+                                    Fees Structure
                                 </Link>
                             </li>
                         </ul>

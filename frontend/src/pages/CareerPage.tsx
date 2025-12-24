@@ -1,14 +1,12 @@
-import { PageHero } from "@/components/ui/PageHero";
 import { Briefcase, TrendingUp, Users, Award } from "lucide-react";
 
 export default function CareerPage() {
     return (
-        <div className="bg-white min-h-screen">
-            <PageHero
-                title="Career Opportunities"
-                subtitle="Join the Indus Public School family and shape the future of education"
-                image="/assets/home/infrastructure.png"
-            />
+        <div className="bg-white min-h-screen pt-40">
+            <div className="container mx-auto px-4 mb-8">
+                <h1 className="text-4xl font-serif font-bold text-royal text-center">Career Opportunities</h1>
+                <p className="text-gray-500 text-center mt-2 font-medium">Join the Indus Public School family and shape the future of education</p>
+            </div>
 
             <div className="container mx-auto px-4 py-16">
                 {/* Introduction */}

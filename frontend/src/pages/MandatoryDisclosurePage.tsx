@@ -1,14 +1,13 @@
-import { PageHero } from "@/components/ui/PageHero";
 import { FileText, GraduationCap, Building, Users } from "lucide-react";
 
 export default function MandatoryDisclosurePage() {
     return (
-        <div className="bg-white min-h-screen">
-            <PageHero
-                title="Mandatory Disclosure 2024-2025"
-                subtitle="Complete information as per CBSE guidelines"
-                image="/assets/home/infrastructure.png"
-            />
+        <div className="bg-white min-h-screen pt-40">
+            <div className="container mx-auto px-4 mb-8 text-center">
+                <h1 className="text-4xl font-serif font-bold text-royal">Mandatory Disclosure 2024-2025</h1>
+                <p className="text-gray-500 mt-2 font-medium text-lg">Complete information as per CBSE guidelines</p>
+                <div className="w-24 h-1 bg-gold mx-auto mt-4"></div>
+            </div>
 
             <div className="container mx-auto px-4 py-16">
                 <div className="max-w-6xl mx-auto space-y-12">
