@@ -6,6 +6,7 @@ const authMiddleware = require('../middleware/auth');
 
 // GET: Get content for a specific section
 const CalendarFile = require('../models/CalendarFile');
+const FeesFile = require('../models/FeesFile');
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -61,6 +62,55 @@ router.post('/calendar/upload', authMiddleware, upload.single('file'), async (re
     }
 });
 
+// Serve Fees PDF from DB
+router.get('/fees/pdf', async (req, res) => {
+    try {
+        const fileDoc = await FeesFile.findOne().sort({ uploadedAt: -1 });
+        if (!fileDoc) return res.status(404).send('No fees document found');
+        
+        res.set('Content-Type', fileDoc.contentType);
+        res.set('Content-Disposition', `inline; filename="${fileDoc.filename}"`);
+        res.send(fileDoc.data);
+    } catch (err) {
+        console.error('Error serving PDF:', err);
+        res.status(500).send('Error retrieving file');
+    }
+});
+
+// Upload Fees PDF to DB
+router.post('/fees/upload', authMiddleware, upload.single('file'), async (req, res) => {
+    try {
+        if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+
+        // Save file to MongoDB
+        const newFile = new FeesFile({
+            filename: req.file.originalname,
+            contentType: req.file.mimetype,
+            data: req.file.buffer
+        });
+        await newFile.save();
+
+        const baseUrl = process.env.API_URL || `${req.protocol}://${req.get('host')}`;
+        const pdfUrl = `${baseUrl}/api/content/fees/pdf`;
+
+        await PageContent.findOneAndUpdate(
+            { section: 'fees' },
+            { 
+                $set: { 
+                    'data.fees.pdfUrl': pdfUrl,
+                    'data.fees.lastUpdated': Date.now() 
+                } 
+            },
+            { upsert: true }
+        );
+
+        res.json({ url: pdfUrl });
+    } catch (err) {
+        console.error('Upload error:', err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
 router.get('/:section', async (req, res) => {
     try {
         let content = await PageContent.findOne({ section: req.params.section });
@@ -98,8 +148,12 @@ router.get('/:section', async (req, res) => {
         // Dynamic URL fix for deployed environments
         if (req.params.section === 'calendar' && content && content.data && content.data.calendar) {
             const baseUrl = process.env.API_URL || `${req.protocol}://${req.get('host')}`;
-            // Always return the computed path to the PDF endpoint to ensure it matches the current environment
             content.data.calendar.pdfUrl = `${baseUrl}/api/content/calendar/pdf`;
+        }
+
+        if (req.params.section === 'fees' && content && content.data && content.data.fees) {
+            const baseUrl = process.env.API_URL || `${req.protocol}://${req.get('host')}`;
+            content.data.fees.pdfUrl = `${baseUrl}/api/content/fees/pdf`;
         }
 
         res.json(content ? content.data[req.params.section] : {});
