@@ -10,13 +10,13 @@ export function TopBar() {
     ];
 
     return (
-        <div className="fixed top-0 left-0 right-0 bg-royal-dark text-white h-auto md:h-[40px] flex items-center py-2 md:py-0 border-b border-white/10 z-[60]">
+        <div className="hidden md:flex fixed top-0 left-0 right-0 bg-royal-dark text-white h-auto md:h-[40px] items-center py-2 md:py-0 border-b border-white/10 z-[60]">
             <div className="container mx-auto px-4 md:px-6">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-2">
+                <div className="flex flex-col md:flex-row items-center md:justify-between justify-center gap-2">
                     {/* Top Links */}
-                    <div className="flex items-center gap-4 md:gap-6 text-xs md:text-sm">
+                    <div className="flex flex-wrap justify-center items-center gap-2 md:gap-6 text-xs md:text-sm">
                         {topLinks.map((link, index) => (
-                            <span key={link.name} className="flex items-center gap-4 md:gap-6">
+                            <span key={link.name} className="flex items-center gap-2 md:gap-6">
                                 <Link
                                     to={link.path}
                                     className="text-white/90 hover:text-gold transition-colors"
