@@ -113,7 +113,7 @@ export function HeroSection({ staticImage, hideStats, removeMobilePadding }: { s
                 </div>
             )}
 
-            <div className="container mx-auto px-4 md:px-6 relative z-10 grid md:grid-cols-12 gap-8 items-center mt-12 md:mt-0 w-full max-w-full">
+            <div className="container mx-auto px-4 md:px-6 relative z-10 grid md:grid-cols-12 gap-8 items-center mt-4 md:mt-0 w-full max-w-full">
                 {/* Left Content */}
                 <div className="md:col-span-7 text-white space-y-6 text-center md:text-left">
                     {displayContent.announcement?.isActive && (

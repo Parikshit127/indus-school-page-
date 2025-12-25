@@ -11,7 +11,7 @@ export default function AdmissionLandingPage() {
     return (
         <>
             <AdmissionNavbar />
-            <div className="pt-[72px] md:pt-0">
+                <div className="pt-2 md:pt-0">
                 <HeroSection staticImage="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop" hideStats={true} removeMobilePadding={true} />
             </div>
             <SchoolOverview />
