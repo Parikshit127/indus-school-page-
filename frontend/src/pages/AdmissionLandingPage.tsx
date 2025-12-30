@@ -12,14 +12,20 @@ export default function AdmissionLandingPage() {
     return (
         <>
             <AdmissionNavbar />
-                <div className="pt-2 md:pt-0">
-                <HeroSection staticImage="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop" hideStats={true} removeMobilePadding={true} />
+            <div className="pt-[72px] md:pt-[80px]"> {/* Exact navbar height for mobile to remove white line */}
+                <HeroSection 
+                    staticImage="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop" 
+                    hideStats={true} 
+                    removeMobilePadding={true}
+                />
             </div>
-            <SchoolOverview />
+            <div className="mt-20 md:mt-32"> {/* Increased spacing before next section */}
+                <SchoolOverview />
+            </div>
             <Infrastructure />
             <Achievements />
             <Gallery />
-            <div className="container mx-auto px-4 py-12 max-w-4xl">
+            <div className="container mx-auto px-4 py-16 md:py-24 max-w-4xl">
                 <h2 className="text-3xl md:text-4xl font-serif text-royal text-center mb-8">
                     Apply for Admission
                 </h2>
