@@ -207,6 +207,7 @@
   justify-content: center;
   cursor: pointer;
   transition: transform 0.2s;
+  flex-shrink: 0;
 }
 
 .send-btn:hover {
@@ -312,13 +313,25 @@
 @media (max-width: 480px) {
   .chatbot-window {
     width: calc(100vw - 2rem);
-    height: calc(100vh - 6rem);
-    bottom: 70px;
-    right: 0.5rem;
+    height: calc(100vh - 8rem);
+    bottom: 80px;
+    right: 0;
   }
   .chatbot-container {
     bottom: 1rem;
     right: 1rem;
+  }
+  .chatbot-input-area {
+    padding: 0.75rem 0.75rem;
+    gap: 8px;
+  }
+  .chatbot-input {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  .send-btn {
+    width: 36px;
+    height: 36px;
   }
 }
 

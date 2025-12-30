@@ -6,6 +6,7 @@ import { Achievements } from "@/components/Achievements";
 import { Gallery } from "@/components/Gallery";
 import { LeadForm } from "@/components/LeadForm";
 import { Footer } from "@/components/Footer";
+import Chatbot from "@/components/chatbot/Chatbot";
 
 export default function AdmissionLandingPage() {
     return (
@@ -24,6 +25,7 @@ export default function AdmissionLandingPage() {
                 </h2>
                 <LeadForm />
             </div>
+            <Chatbot />
             <Footer />
         </>
     );

@@ -1,17 +1,19 @@
 
 import { useState, useRef, useEffect } from 'react';
-import { X, Send, Download, MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { X, Send, Download, MapPin, Phone, Mail, Clock, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import './Chatbot.css';
 
 interface Message {
   id: number;
   text: string;
   isUser: boolean;
-  type?: 'text' | 'fees' | 'contact' | 'location';
+  type?: 'text' | 'fees' | 'contact' | 'location' | 'admission';
 }
 
 const Chatbot = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { id: 1, text: "Hello! Welcome to Indus Public School. How can I help you today?", isUser: false, type: 'text' }
@@ -51,7 +53,7 @@ const Chatbot = () => {
   }, []);
 
   const quickOptions = [
-    { label: "Admission Process", type: 'text' as const, response: "To start the admission process, you can fill out our online inquiry form on the Admissions page or visit the school office between 9:00 AM and 2:00 PM. We require previous school records, birth certificate, and residence proof." },
+    { label: "Admission Process", type: 'admission' as const, response: "To start the admission process, you can fill out our online inquiry form on the Admissions page or visit the school office between 9:00 AM and 2:00 PM. We require previous school records, birth certificate, and residence proof." },
     { label: "Fee Structure", type: 'fees' as const, response: "Our fee structure varies by grade level. You can download the detailed fee breakdown below:" },
     { label: "School Timing", type: 'text' as const, response: "The normal school hours are:\nMon - Sat: 8:00 AM - 2:30 PM" },
     { label: "Location", type: 'location' as const, response: "Indus Public School, Delhi Road, Near Asthal Bohar, Rohtak, Haryana 124001" },
@@ -75,7 +77,7 @@ const Chatbot = () => {
     // Simulate bot thinking
     setTimeout(() => {
       let botResponse = "Hello! How can I assist you today? You can ask about our Admission Process, Fee Structure, or Location.";
-      let responseType: 'text' | 'fees' | 'contact' | 'location' = 'text';
+      let responseType: 'text' | 'fees' | 'contact' | 'location' | 'admission' = 'text';
       
       const lowerText = text.toLowerCase().trim();
       
@@ -126,6 +128,24 @@ const Chatbot = () => {
   const renderMessageContent = (msg: Message) => {
     if (msg.isUser || msg.type === 'text' || !msg.type) {
       return <div className="message-text">{msg.text}</div>;
+    }
+
+    if (msg.type === 'admission') {
+      return (
+        <div className="message-rich-content">
+          <p>{msg.text}</p>
+          <button 
+            onClick={() => {
+              setIsOpen(false);
+              navigate('/admission');
+            }}
+            className="chat-download-btn"
+          >
+            <ExternalLink size={16} />
+            Go to Admission Page
+          </button>
+        </div>
+      );
     }
 
     if (msg.type === 'fees') {
