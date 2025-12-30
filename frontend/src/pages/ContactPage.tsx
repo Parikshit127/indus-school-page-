@@ -41,14 +41,14 @@ export default function ContactPage() {
                                 <ContactInfoItem
                                     icon={<Phone size={24} />}
                                     title="Call Us"
-                                    content="+91 12345 67890, +91 98765 43210"
-                                    link="tel:+911234567890"
+                                    content="+91 9992900574, +91 9992900573"
+                                    link="tel:+919992900573"
                                 />
                                 <ContactInfoItem
                                     icon={<Mail size={24} />}
                                     title="Email Us"
-                                    content="contact@induspublicschool.com"
-                                    link="mailto:contact@induspublicschool.com"
+                                    content=" info@ipsrohtak.edu.in"
+                                    link="mailto:info@ipsrohtak.edu.in"
                                 />
                                 <ContactInfoItem
                                     icon={<Clock size={24} />}
@@ -162,7 +162,7 @@ function ContactForm() {
                         value={formData.phone}
                         onChange={e => setFormData({ ...formData, phone: e.target.value })}
                         className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-royal focus:ring-1 focus:ring-royal outline-none transition-all placeholder:text-slate-400"
-                        placeholder="+91 98765 43210"
+                        placeholder="+919992900574"
                     />
                 </div>
             </div>

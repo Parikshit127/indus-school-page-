@@ -3,8 +3,8 @@ import { Phone, MessageCircle, MapPin, Clock, Calendar, ArrowRight } from "lucid
 import { LeadForm } from "@/components/LeadForm";
 
 const contactInfo = [
-    { icon: Phone, label: "Call Us", value: "+91 12345 67890", action: "tel:+911234567890" },
-    { icon: MessageCircle, label: "WhatsApp", value: "Chat Now", action: "https://wa.me/911234567890" },
+    { icon: Phone, label: "Call Us", value: "+91 9992900573", action: "tel:+919992900573" },
+    { icon: MessageCircle, label: "WhatsApp", value: "Chat Now", action: "https://wa.me/919992900574" },
     { icon: Clock, label: "Office Hours", value: "Mon-Sat: 9AM - 5PM", action: null }
 ];
 

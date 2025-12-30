@@ -46,6 +46,8 @@ import AdminDashboard from "@/pages/AdminDashboard";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { PopupBannerModal } from "@/components/PopupBannerModal";
 
+import Chatbot from "@/components/chatbot/Chatbot";
+
 // Layout for public pages (includes TopBar, Navbar and Footer)
 function PublicLayout() {
   return (
@@ -55,6 +57,7 @@ function PublicLayout() {
       <main className="min-h-screen overflow-x-hidden w-full">
         <Outlet />
       </main>
+      <Chatbot />
       <Footer />
     </>
   );
