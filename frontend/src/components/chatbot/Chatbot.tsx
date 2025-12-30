@@ -297,9 +297,24 @@ const Chatbot = () => {
         )}
       </AnimatePresence>
 
-      <button className="chatbot-toggle" onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? <X size={28} /> : <img src="/image.png" alt="Chatbot" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />}
-      </button>
+      <div className="chatbot-toggle-wrapper">
+        <AnimatePresence>
+          {!isOpen && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="chatbot-label"
+            >
+              Ask Indus Assistant
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        <button className="chatbot-toggle" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <X size={28} /> : <img src="/image.png" alt="Chatbot" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />}
+        </button>
+      </div>
     </div>
   );
 };
